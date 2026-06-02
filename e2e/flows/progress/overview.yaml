@@ -1,0 +1,27 @@
+appId: app.verxion.native
+name: Progress Overview
+tags:
+  - progress
+  - smoke
+---
+- runFlow: ../auth/login.yaml
+
+# Navigate to Progress tab
+- tapOn: "Progress"
+- waitForAnimationToEnd
+
+# Verify ScreenSelector pills
+- assertVisible: "Overview"
+- assertVisible: "Body Comp"
+- assertVisible: "Exercises"
+- assertVisible: "Trends"
+- assertVisible: "Records"
+
+# Verify overview content loads
+- assertVisible:
+    text: "Total Sessions"
+    optional: true
+
+- assertVisible:
+    text: "Total Volume"
+    optional: true

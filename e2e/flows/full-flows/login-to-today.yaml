@@ -1,0 +1,28 @@
+appId: app.verxion.native
+name: "Full Flow: Login to Today Dashboard"
+tags:
+  - full-flow
+  - smoke
+---
+- launchApp:
+    clearState: true
+
+# Login
+- assertVisible: "Sign In"
+- tapOn:
+    id: "email-input"
+- inputText: ${TEST_EMAIL}
+- tapOn:
+    id: "password-input"
+- inputText: ${TEST_PASSWORD}
+- tapOn: "Sign In"
+- waitForAnimationToEnd
+
+# Verify Today dashboard loaded
+- assertVisible: "Today"
+
+# Verify key sections exist
+- assertVisible:
+    text: "Steps"
+- assertVisible:
+    text: "Water"

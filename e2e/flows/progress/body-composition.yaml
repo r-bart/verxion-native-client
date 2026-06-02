@@ -1,0 +1,23 @@
+appId: app.verxion.native
+name: Body Composition Screen
+tags:
+  - progress
+---
+- runFlow: ../auth/login.yaml
+- tapOn: "Progress"
+- waitForAnimationToEnd
+- tapOn: "Body Comp"
+- waitForAnimationToEnd
+
+# Period selector should be visible
+- assertVisible:
+    text: "1M"
+    optional: true
+- assertVisible:
+    text: "3M"
+    optional: true
+
+# Weight data or empty state
+- assertVisible:
+    text: "Weight"
+    optional: true

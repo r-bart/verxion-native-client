@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "Verxion",
+    "slug": "verxion-native-athlete",
+    "scheme": "verxion",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "dark",
+    "platforms": [
+      "ios"
+    ],
+    "ios": {
+      "bundleIdentifier": "app.verxion.native",
+      "supportsTablet": false
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "root": "./app"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#171717"
+        }
+      ],
+      "expo-secure-store",
+      "expo-localization",
+      "expo-font",
+      "expo-image",
+      "expo-status-bar",
+      "expo-web-browser"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {
+        "root": "./app"
+      }
+    }
+  }
+}

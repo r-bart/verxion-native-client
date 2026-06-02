@@ -1,0 +1,14 @@
+appId: app.verxion.native
+name: Logout Flow
+tags:
+  - auth
+---
+# Assumes already logged in
+- assertVisible: "Today"
+
+# Sign out (from settings or profile)
+# For now, verify the auth guard works by clearing app state
+- launchApp:
+    clearState: true
+
+- assertVisible: "Sign In"

@@ -1,0 +1,27 @@
+appId: app.verxion.native
+name: Active Session Banner
+tags:
+  - today
+  - session
+---
+# Login first
+- runFlow: ../auth/login.yaml
+
+# If active session exists, banner should be visible
+# This test is conditional on API state
+- assertVisible:
+    text: "Workout in progress"
+    optional: true
+
+# If banner visible, tap to navigate
+- tapOn:
+    text: "Tap to view"
+    optional: true
+
+# If navigated, should see session viewer
+- assertVisible:
+    text: "Elapsed"
+    optional: true
+
+# Go back
+- pressKey: back

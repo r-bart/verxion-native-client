@@ -1,0 +1,31 @@
+appId: app.verxion.native
+name: Log Weight
+tags:
+  - quick-actions
+  - write
+---
+- runFlow: ../auth/login.yaml
+
+# Scroll to quick action buttons
+- scroll:
+    direction: DOWN
+    speed: SLOW
+
+# Tap weight button
+- tapOn: "Weight"
+- waitForAnimationToEnd
+
+# Should see modal
+- assertVisible: "Log Weight"
+
+# Enter weight
+- tapOn:
+    id: "weight-input"
+- inputText: "78.5"
+
+# Save
+- tapOn: "Save Weight"
+- waitForAnimationToEnd
+
+# Should dismiss modal (back to Today)
+- assertVisible: "Today"

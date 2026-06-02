@@ -1,0 +1,15 @@
+export const todayKeys = {
+  all: () => ["today"] as const,
+  streaks: () => [...todayKeys.all(), "streaks"] as const,
+  dayState: (date: string) => [...todayKeys.all(), "dayState", date] as const,
+  weekView: () => [...todayKeys.all(), "weekView"] as const,
+  activeSession: () => [...todayKeys.all(), "activeSession"] as const,
+  dailySteps: (date: string) => [...todayKeys.all(), "steps", date] as const,
+  dailyWater: (date: string) => [...todayKeys.all(), "water", date] as const,
+  nutritionDayState: (date: string) => [...todayKeys.all(), "nutritionDayState", date] as const,
+  executionScore: (windowDays: number) => [...todayKeys.all(), "executionScore", windowDays] as const,
+  suggestedNextWorkout: () => [...todayKeys.all(), "suggestedNextWorkout"] as const,
+  weeklyTrainingReview: () => [...todayKeys.all(), "weeklyTrainingReview"] as const,
+  weeklyNutritionSummary: () => [...todayKeys.all(), "weeklyNutritionSummary"] as const,
+  weeklySteps: (from: string, to: string) => [...todayKeys.all(), "weeklySteps", from, to] as const,
+};

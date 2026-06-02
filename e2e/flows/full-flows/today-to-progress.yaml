@@ -1,0 +1,23 @@
+appId: app.verxion.native
+name: "Full Flow: Navigate Today to Progress"
+tags:
+  - full-flow
+---
+- runFlow: login-to-today.yaml
+
+# Navigate to Progress
+- tapOn: "Progress"
+- waitForAnimationToEnd
+
+# Verify Progress loaded
+- assertVisible: "Overview"
+
+# Navigate through screens
+- tapOn: "Exercises"
+- waitForAnimationToEnd
+- assertVisible: "Exercises"
+
+# Back to Today
+- tapOn: "Today"
+- waitForAnimationToEnd
+- assertVisible: "Steps"

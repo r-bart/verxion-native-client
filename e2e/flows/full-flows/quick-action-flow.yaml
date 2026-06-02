@@ -1,0 +1,53 @@
+appId: app.verxion.native
+name: "Full Flow: All Quick Actions"
+tags:
+  - full-flow
+  - write
+---
+- runFlow: login-to-today.yaml
+
+# Log weight
+- scroll:
+    direction: DOWN
+    speed: SLOW
+- tapOn: "Weight"
+- waitForAnimationToEnd
+- assertVisible: "Log Weight"
+- tapOn:
+    id: "weight-input"
+- inputText: "78.5"
+- tapOn: "Save Weight"
+- waitForAnimationToEnd
+
+# Log water
+- scroll:
+    direction: DOWN
+    speed: SLOW
+- tapOn:
+    text: "Water"
+    index: 1
+- waitForAnimationToEnd
+- assertVisible: "Log Water"
+- tapOn: "250"
+- waitForAnimationToEnd
+- tapOn:
+    text: "Cancel"
+- waitForAnimationToEnd
+
+# Log steps
+- scroll:
+    direction: DOWN
+    speed: SLOW
+- tapOn:
+    text: "Steps"
+    index: 1
+- waitForAnimationToEnd
+- assertVisible: "Log Steps"
+- tapOn:
+    id: "steps-input"
+- inputText: "8500"
+- tapOn: "Save Steps"
+- waitForAnimationToEnd
+
+# Verify back on Today
+- assertVisible: "Today"

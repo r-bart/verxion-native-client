@@ -1,0 +1,56 @@
+appId: app.verxion.native
+name: "Full Flow: Complete App Walkthrough"
+tags:
+  - full-flow
+  - regression
+---
+# Login
+- launchApp:
+    clearState: true
+- tapOn:
+    id: "email-input"
+- inputText: ${TEST_EMAIL}
+- tapOn:
+    id: "password-input"
+- inputText: ${TEST_PASSWORD}
+- tapOn: "Sign In"
+- waitForAnimationToEnd
+
+# Today Dashboard
+- assertVisible: "Today"
+- scroll:
+    direction: DOWN
+    speed: SLOW
+
+# Quick action - weight
+- tapOn: "Weight"
+- waitForAnimationToEnd
+- assertVisible: "Log Weight"
+- tapOn:
+    text: "Cancel"
+- waitForAnimationToEnd
+
+# Progress tab
+- tapOn: "Progress"
+- waitForAnimationToEnd
+- assertVisible: "Overview"
+
+# Navigate all progress screens
+- tapOn: "Body Comp"
+- waitForAnimationToEnd
+- tapOn: "Exercises"
+- waitForAnimationToEnd
+- tapOn: "Trends"
+- waitForAnimationToEnd
+- tapOn: "Records"
+- waitForAnimationToEnd
+- tapOn: "Overview"
+- waitForAnimationToEnd
+
+# Back to Today
+- tapOn: "Today"
+- waitForAnimationToEnd
+- assertVisible: "Today"
+
+# All good!
+- takeScreenshot: complete-flow-end

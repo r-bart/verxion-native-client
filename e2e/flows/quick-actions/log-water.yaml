@@ -1,0 +1,31 @@
+appId: app.verxion.native
+name: Log Water
+tags:
+  - quick-actions
+  - write
+---
+- runFlow: ../auth/login.yaml
+
+- scroll:
+    direction: DOWN
+    speed: SLOW
+
+- tapOn:
+    text: "Water"
+    index: 1
+
+- waitForAnimationToEnd
+- assertVisible: "Log Water"
+
+# Quick add button
+- tapOn: "250"
+- waitForAnimationToEnd
+
+# Should stay on modal (water doesn't auto-close)
+- assertVisible: "Log Water"
+
+# Close modal
+- tapOn:
+    text: "Cancel"
+- waitForAnimationToEnd
+- assertVisible: "Today"

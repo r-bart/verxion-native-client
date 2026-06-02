@@ -1,0 +1,34 @@
+appId: app.verxion.native
+name: Signup Flow
+tags:
+  - auth
+---
+- launchApp:
+    clearState: true
+
+# Navigate to signup
+- tapOn: "Sign up here"
+
+# Should see signup screen
+- assertVisible: "Create Account"
+- assertVisible: "Start your transformation journey"
+
+# Enter details
+- tapOn:
+    id: "name-input"
+- inputText: ${TEST_NAME}
+
+- tapOn:
+    id: "email-input"
+- inputText: "new-${TEST_EMAIL}"
+
+- tapOn:
+    id: "password-input"
+- inputText: ${TEST_PASSWORD}
+
+# Create account
+- tapOn: "Create Account"
+
+# Should redirect to login
+- waitForAnimationToEnd
+- assertVisible: "Sign In"

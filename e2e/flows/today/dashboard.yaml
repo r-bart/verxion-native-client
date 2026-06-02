@@ -1,0 +1,51 @@
+appId: app.verxion.native
+name: Today Dashboard
+tags:
+  - today
+  - smoke
+---
+# Login first
+- runFlow: ../auth/login.yaml
+
+# Verify dashboard elements
+- assertVisible: "Today"
+- waitForAnimationToEnd
+
+# Greeting should be visible (time-dependent text)
+# Check for date or greeting
+- assertVisible:
+    text: "2026"
+    optional: true
+
+# Streak section
+- assertVisible:
+    text: "streak"
+    optional: true
+
+# Weekly consistency
+- assertVisible:
+    text: "This Week"
+    optional: true
+
+# Steps card
+- assertVisible:
+    text: "Steps"
+    optional: true
+
+# Water card
+- assertVisible:
+    text: "Water"
+    optional: true
+
+# Quick action buttons
+- assertVisible:
+    text: "Weight"
+- assertVisible:
+    text: "Water"
+- assertVisible:
+    text: "Steps"
+
+# Scroll down to see all content
+- scroll:
+    direction: DOWN
+    speed: SLOW

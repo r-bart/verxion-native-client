@@ -1,0 +1,9 @@
+appId: app.verxion.native
+name: Verxion Native E2E Tests
+tags:
+  - all
+env:
+  API_URL: http://localhost:3000
+  TEST_EMAIL: test@verxion.app
+  TEST_PASSWORD: Test123456!
+  TEST_NAME: Test User

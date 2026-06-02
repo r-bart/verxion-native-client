@@ -1,0 +1,23 @@
+appId: app.verxion.native
+name: Timeline Screen
+tags:
+  - progress
+---
+- runFlow: ../auth/login.yaml
+- tapOn: "Progress"
+- waitForAnimationToEnd
+
+# Scroll to quick access or navigate
+- scroll:
+    direction: DOWN
+    speed: SLOW
+
+- tapOn:
+    text: "Timeline"
+    optional: true
+- waitForAnimationToEnd
+
+# Period selector
+- assertVisible:
+    text: "Timeline"
+    optional: true

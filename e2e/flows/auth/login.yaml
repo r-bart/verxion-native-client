@@ -1,0 +1,28 @@
+appId: app.verxion.native
+name: Login Flow
+tags:
+  - auth
+  - smoke
+---
+- launchApp:
+    clearState: true
+
+# Should land on login screen
+- assertVisible: "Verxion"
+- assertVisible: "Keep becoming your best version"
+
+# Enter credentials
+- tapOn:
+    id: "email-input"
+- inputText: ${TEST_EMAIL}
+
+- tapOn:
+    id: "password-input"
+- inputText: ${TEST_PASSWORD}
+
+# Sign in
+- tapOn: "Sign In"
+
+# Wait for navigation to Today tab
+- waitForAnimationToEnd
+- assertVisible: "Today"

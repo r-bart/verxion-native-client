@@ -1,0 +1,22 @@
+appId: app.verxion.native
+name: Weeks Screen
+tags:
+  - progress
+---
+- runFlow: ../auth/login.yaml
+- tapOn: "Progress"
+- waitForAnimationToEnd
+
+- scroll:
+    direction: DOWN
+    speed: SLOW
+
+- tapOn:
+    text: "Weeks"
+    optional: true
+- waitForAnimationToEnd
+
+# Week cards or empty state
+- assertVisible:
+    text: "Weeks"
+    optional: true

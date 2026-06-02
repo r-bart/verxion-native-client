@@ -1,0 +1,53 @@
+appId: app.verxion.native
+name: Progress Screen Navigation
+tags:
+  - progress
+  - navigation
+---
+- runFlow: ../auth/login.yaml
+
+# Navigate to Progress tab
+- tapOn: "Progress"
+- waitForAnimationToEnd
+
+# Navigate through all screens via ScreenSelector
+- tapOn: "Body Comp"
+- waitForAnimationToEnd
+- assertVisible: "Body Comp"
+
+- tapOn: "Exercises"
+- waitForAnimationToEnd
+- assertVisible: "Exercises"
+
+- tapOn: "Trends"
+- waitForAnimationToEnd
+- assertVisible: "Trends"
+
+- tapOn: "Records"
+- waitForAnimationToEnd
+- assertVisible: "Records"
+
+# Go back to Overview
+- tapOn: "Overview"
+- waitForAnimationToEnd
+- assertVisible: "Overview"
+
+# Navigate to history screens via Quick Access (if visible)
+- scroll:
+    direction: DOWN
+    speed: SLOW
+
+- tapOn:
+    text: "Timeline"
+    optional: true
+- waitForAnimationToEnd
+
+- tapOn:
+    text: "Weeks"
+    optional: true
+- waitForAnimationToEnd
+
+- tapOn:
+    text: "Months"
+    optional: true
+- waitForAnimationToEnd
