@@ -37,43 +37,59 @@ if (!spec) {
   );
 }
 
-// (method, /api/v1 path) pairs the repositories call. Path params use the spec's
-// `{param}` template form (repos build concrete URLs from these at runtime).
-const SETTINGS_ENDPOINTS: [string, string][] = [
-  ["GET", "/api/v1/users/me"],
-  ["PUT", "/api/v1/users/me"],
-  ["PUT", "/api/v1/users/me/preferences"],
-  ["DELETE", "/api/v1/users/me"],
-  ["POST", "/api/v1/users/me/export"],
-  ["GET", "/api/v1/users/me/export/latest"],
-  ["GET", "/api/v1/users/me/export/{id}"],
-  ["GET", "/api/v1/profiles/me"],
-  ["PUT", "/api/v1/profiles/me"],
-  ["PUT", "/api/v1/profiles/me/username"],
-  ["POST", "/api/v1/profiles/me/avatar"],
-  ["DELETE", "/api/v1/profiles/me/avatar"],
-  ["PUT", "/api/v1/profiles/me/visibility"],
-  ["PUT", "/api/v1/profiles/me/showcase"],
-  ["PUT", "/api/v1/profiles/me/timeline-detail"],
-  ["PUT", "/api/v1/profiles/me/follow-approval"],
-  ["GET", "/api/v1/profiles/me/feed-sharing"],
-  ["PUT", "/api/v1/profiles/me/feed-sharing"],
-  ["GET", "/api/v1/auth-sessions"],
-  ["DELETE", "/api/v1/auth-sessions/{id}"],
-  ["POST", "/api/v1/auth-sessions/revoke-all"],
-  ["GET", "/api/v1/auth-sessions/apps"],
-  ["DELETE", "/api/v1/auth-sessions/apps/{clientId}"],
-  ["PATCH", "/api/v1/auth-sessions/apps/{clientId}/scopes"],
-];
+// (method, /api/v1 path) pairs the hand-written repositories call, grouped by
+// module. Path params use the spec's `{param}` template form (repos build the
+// concrete URLs from these at runtime). Extend a module's list as its repo grows.
+const ENDPOINTS: Record<string, [string, string][]> = {
+  settings: [
+    ["GET", "/api/v1/users/me"],
+    ["PUT", "/api/v1/users/me"],
+    ["PUT", "/api/v1/users/me/preferences"],
+    ["DELETE", "/api/v1/users/me"],
+    ["POST", "/api/v1/users/me/export"],
+    ["GET", "/api/v1/users/me/export/latest"],
+    ["GET", "/api/v1/users/me/export/{id}"],
+    ["GET", "/api/v1/profiles/me"],
+    ["PUT", "/api/v1/profiles/me"],
+    ["PUT", "/api/v1/profiles/me/username"],
+    ["POST", "/api/v1/profiles/me/avatar"],
+    ["DELETE", "/api/v1/profiles/me/avatar"],
+    ["PUT", "/api/v1/profiles/me/visibility"],
+    ["PUT", "/api/v1/profiles/me/showcase"],
+    ["PUT", "/api/v1/profiles/me/timeline-detail"],
+    ["PUT", "/api/v1/profiles/me/follow-approval"],
+    ["GET", "/api/v1/profiles/me/feed-sharing"],
+    ["PUT", "/api/v1/profiles/me/feed-sharing"],
+    ["GET", "/api/v1/auth-sessions"],
+    ["DELETE", "/api/v1/auth-sessions/{id}"],
+    ["POST", "/api/v1/auth-sessions/revoke-all"],
+    ["GET", "/api/v1/auth-sessions/apps"],
+    ["DELETE", "/api/v1/auth-sessions/apps/{clientId}"],
+    ["PATCH", "/api/v1/auth-sessions/apps/{clientId}/scopes"],
+  ],
+  today: [
+    ["GET", "/api/v1/today"],
+    ["GET", "/api/v1/today/timeline/{kind}/{id}"],
+  ],
+  onboarding: [
+    ["GET", "/api/v1/users/me"],
+    ["GET", "/api/v1/users/check-username/{username}"],
+    ["POST", "/api/v1/users/onboard"],
+  ],
+};
+
+const ROWS: [string, string, string][] = Object.entries(ENDPOINTS).flatMap(
+  ([module, eps]) => eps.map(([method, path]) => [module, method, path] as [string, string, string]),
+);
 
 const describeIfContract = spec ? describe : describe.skip;
 
-describeIfContract("contract drift — settings module", () => {
+describeIfContract("contract drift — native repositories", () => {
   it("validates against a committed contract snapshot", () => {
     expect(CONTRACT_FILE).toBeTruthy();
   });
 
-  it.each(SETTINGS_ENDPOINTS)("%s %s exists in the contract", (method, path) => {
+  it.each(ROWS)("%s · %s %s exists in the contract", (_module, method, path) => {
     const entry = spec!.paths[path];
     expect(entry).toBeDefined();
     expect(entry?.[method.toLowerCase()]).toBeDefined();
