@@ -18,7 +18,7 @@ import { SegmentedControl } from "../components/SegmentedControl";
 import { useEntrenoSegment } from "../hooks/useEntrenoSegment";
 import { RutinaSegment } from "../components/RutinaSegment";
 import { SesionesSegment } from "../components/SesionesSegment";
-import { WipBody } from "../components/WipBody";
+import { EjerciciosSegment } from "../components/EjerciciosSegment";
 
 export function EntrenoScreen() {
   const { t } = useTranslation();
@@ -71,7 +71,7 @@ export function EntrenoScreen() {
           ) : segment === "sessions" ? (
             <SesionesSegment />
           ) : (
-            <WipBody screen={t(`training.segments.${segment}`)} />
+            <EjerciciosSegment />
           )}
         </View>
       </SafeAreaView>

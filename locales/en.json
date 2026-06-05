@@ -101,6 +101,22 @@
       "volume": "Volume",
       "duration": "Duration"
     },
+    "exerciseLibrary": {
+      "lead": "{{count}} exercises",
+      "search": "Search exercise",
+      "all": "All",
+      "filterTitle": "Filter",
+      "groupSection": "Muscle group",
+      "equipmentSection": "Equipment",
+      "sortTitle": "Sort",
+      "logged": "{{count}} logs",
+      "unregistered": "Not logged",
+      "empty": "No results"
+    },
+    "exerciseSort": {
+      "name": "Alphabetical",
+      "logged": "Most logged"
+    },
     "empty": {
       "title": "No routine yet",
       "body": "Ask verxion to build you a plan and it'll show up here.",

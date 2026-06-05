@@ -29,7 +29,7 @@ type FeedItem =
 function FilterButton({ icon, label, onPress }: { icon: React.ReactNode; label: string; onPress: () => void }) {
   return (
     <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => ({ flex: 1, opacity: pressed ? glass.pressOpacity : 1 })}>
-      <GlassSurface radius={9999} style={{ flexDirection: "row", alignItems: "center", gap: 7, paddingVertical: 11, paddingHorizontal: 14 }}>
+      <GlassSurface radius={9999} style={{ width: "100%", flexDirection: "row", alignItems: "center", gap: 7, paddingVertical: 11, paddingHorizontal: 14 }}>
         {icon}
         <Text numberOfLines={1} style={{ flex: 1, fontFamily: sans(600), fontSize: 13, color: glass.white }}>{label}</Text>
         <ChevronDown size={14} color={glass.ink3} strokeWidth={2} />

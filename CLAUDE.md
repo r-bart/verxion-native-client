@@ -80,6 +80,11 @@ Every operation (read or write) flows through a Use Case. No shortcuts.
 ### UI components
 - react-native-reusables (shadcn for RN): Card, Badge, Button, Skeleton, Tabs,
   Progress, Separator. Dark theme, hsl colors via NativeWind CSS variables.
+- **`GlassSurface` as a flex child:** the native Liquid Glass `GlassView`
+  (iOS 26) sizes to its content and does NOT stretch to a `flex:1` parent the
+  way a plain `View` does — give it an explicit `width:"100%"` (or fixed size)
+  when it must fill. Tests run the fallback `View` (which stretches), so this
+  only shows on device. (See the filter pills in `SesionesSegment`/`EjerciciosSegment`.)
 
 ### Code style
 - TypeScript strict, functional components only.

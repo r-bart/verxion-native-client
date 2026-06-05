@@ -7,6 +7,7 @@ describe("GetSessionFeedUseCase", () => {
     return {
       getRoutineDashboard: jest.fn(),
       getSessionFeed: jest.fn().mockResolvedValue(sessionFeedFixture),
+      getExerciseLibrary: jest.fn(),
       getRoutines: jest.fn(),
       getRoutineDetail: jest.fn(),
       getWorkoutDayExercises: jest.fn(),

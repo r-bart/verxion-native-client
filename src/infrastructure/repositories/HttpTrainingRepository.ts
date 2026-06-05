@@ -4,8 +4,10 @@ import type { ExerciseConfigurationData } from "@/domain/training/models/Exercis
 import type { ProgressionPlan, ProgressionExercise } from "@/domain/training/models/ProgressionPlan";
 import type { RoutineDashboard } from "@/domain/training/models/RoutineDashboard";
 import type { SessionFeedPage, SessionFeedParams } from "@/domain/training/models/SessionFeed";
+import type { ExerciseLibrary } from "@/domain/training/models/ExerciseLibrary";
 import { routineDashboardFixture } from "@/domain/training/__fixtures__/routineDashboardFixture";
 import { sessionFeedFixture } from "@/domain/training/__fixtures__/sessionFeedFixture";
+import { exerciseLibraryFixture } from "@/domain/training/__fixtures__/exerciseLibraryFixture";
 import { apiClient, ApiError } from "../api/apiClient";
 
 export class HttpTrainingRepository implements ITrainingPort {
@@ -30,6 +32,15 @@ export class HttpTrainingRepository implements ITrainingPort {
    */
   async getSessionFeed(_params: SessionFeedParams): Promise<SessionFeedPage> {
     return sessionFeedFixture;
+  }
+
+  /**
+   * Entreno landing "Ejercicios" library — proposed platform read-model.
+   * STUB until `GET /training/exercise-library` ships; then swap for:
+   *   `return apiClient.get<ExerciseLibrary>("/training/exercise-library");`
+   */
+  async getExerciseLibrary(): Promise<ExerciseLibrary> {
+    return exerciseLibraryFixture;
   }
 
   async getRoutines(): Promise<Routine[]> {

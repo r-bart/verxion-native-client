@@ -101,6 +101,22 @@
       "volume": "Volumen",
       "duration": "Duración"
     },
+    "exerciseLibrary": {
+      "lead": "{{count}} ejercicios",
+      "search": "Buscar ejercicio",
+      "all": "Todos",
+      "filterTitle": "Filtrar",
+      "groupSection": "Grupo muscular",
+      "equipmentSection": "Equipamiento",
+      "sortTitle": "Ordenar",
+      "logged": "{{count}} registros",
+      "unregistered": "Sin registrar",
+      "empty": "Sin resultados"
+    },
+    "exerciseSort": {
+      "name": "Alfabético",
+      "logged": "Más registrados"
+    },
     "empty": {
       "title": "Aún no tienes una rutina",
       "body": "Pídele a verxion que te arme un plan y aparecerá aquí.",
