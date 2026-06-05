@@ -8,7 +8,8 @@ export const trainingKeys = {
   all: ["training"] as const,
 
   routineDashboard: () => ["training", "routineDashboard"] as const,
-  sessionsSummary: () => ["training", "sessionsSummary"] as const,
+  sessionFeed: (routineId?: string | null, sort?: string) =>
+    ["training", "sessionFeed", routineId ?? "all", sort ?? "recent"] as const,
   routines: () => ["training", "routines"] as const,
   routineDetail: (id: string) => ["training", "routine", id] as const,
   dayExercises: (routineId: string, dayId: string) =>

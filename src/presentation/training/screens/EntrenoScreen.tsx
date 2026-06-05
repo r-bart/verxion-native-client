@@ -5,7 +5,7 @@
  * (the exercise library). Phase 0 wires the segments + navigation skeleton;
  * each section's real composition lands in later phases.
  */
-import { View, ScrollView, Pressable, Text } from "react-native";
+import { View, Pressable, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, type Href } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -58,14 +58,14 @@ export function EntrenoScreen() {
           </Pressable>
         </View>
 
-        <View style={{ paddingHorizontal: 16 }}>
+        <View style={{ paddingHorizontal: 16, paddingBottom: 4 }}>
           <SegmentedControl options={options} value={segment} onChange={setSegment} />
         </View>
 
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 16, paddingTop: 16, paddingBottom: 32 }}
-          showsVerticalScrollIndicator={false}
-        >
+        {/* Each segment owns its own scroll (FlatList feed / ScrollView), so the
+            landing doesn't wrap them — a list inside a ScrollView would lose
+            virtualization. The header + selector above stay fixed. */}
+        <View style={{ flex: 1 }}>
           {segment === "routine" ? (
             <RutinaSegment />
           ) : segment === "sessions" ? (
@@ -73,7 +73,7 @@ export function EntrenoScreen() {
           ) : (
             <WipBody screen={t(`training.segments.${segment}`)} />
           )}
-        </ScrollView>
+        </View>
       </SafeAreaView>
     </View>
   );

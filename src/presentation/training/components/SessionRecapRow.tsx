@@ -1,7 +1,8 @@
 /**
- * SessionRecapRow — one row of the Sesiones segment's recent list: date,
- * day-type bubble, name (+ PR badge), a volume bar, and the tonnage with its
- * week-over-week delta. Taps through to the session report.
+ * SessionRecapRow — one row of the Sesiones feed: a date label (day · month)
+ * heads the card, then the day-type bubble (sole left anchor), the name (+ PR
+ * badge) over a volume bar, and the tonnage with its duration. Taps through to
+ * the session report.
  */
 import { View, Text, Pressable } from "react-native";
 import { useRouter, type Href } from "expo-router";
@@ -11,7 +12,7 @@ import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { DAY_TYPE } from "../lib/dayType";
-import type { SessionRecapRow as Row } from "@/domain/training/models/SessionsSummary";
+import type { SessionFeedRow } from "@/domain/training/models/SessionFeed";
 
 function PRBadge({ count }: { count: number }) {
   return (
@@ -23,11 +24,9 @@ function PRBadge({ count }: { count: number }) {
   );
 }
 
-export function SessionRecapRow({ row }: { row: Row }) {
+export function SessionRecapRow({ row }: { row: SessionFeedRow }) {
   const router = useRouter();
   const cfg = DAY_TYPE[row.type];
-  const deltaColor = row.deltaPct >= 0 ? glass.up : palette.health.text;
-  const deltaLabel = `${row.deltaPct >= 0 ? "+" : ""}${row.deltaPct}%`;
 
   return (
     <Pressable
@@ -35,26 +34,30 @@ export function SessionRecapRow({ row }: { row: Row }) {
       accessibilityRole="button"
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
     >
-      <GlassSurface radius={16} style={{ padding: 12, flexDirection: "row", alignItems: "center", gap: 11 }}>
-        <Text style={{ fontFamily: mono(500), fontSize: 10.5, color: glass.ink3, width: 42 }}>{row.dateLabel}</Text>
+      <GlassSurface radius={16} style={{ padding: 12, gap: 9 }}>
+        <Text style={{ fontFamily: mono(600), fontSize: 9.5, letterSpacing: 0.9, color: glass.ink3, textTransform: "uppercase" }}>
+          {row.dateLabel} · {row.monthLabel}
+        </Text>
 
-        <IconBubble bg={cfg.bg} size={36}>
-          <cfg.Icon size={18} color={cfg.color} strokeWidth={2} />
-        </IconBubble>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 11 }}>
+          <IconBubble bg={cfg.bg} size={36}>
+            <cfg.Icon size={18} color={cfg.color} strokeWidth={2} />
+          </IconBubble>
 
-        <View style={{ flex: 1, gap: 6 }}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
-            <Text style={{ fontFamily: sans(600), fontSize: 14, color: glass.white }}>{row.name}</Text>
-            {row.hasPR && <PRBadge count={row.prCount} />}
+          <View style={{ flex: 1, gap: 6 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
+              <Text style={{ fontFamily: sans(600), fontSize: 14, color: glass.white }}>{row.name}</Text>
+              {row.hasPR && <PRBadge count={row.prCount} />}
+            </View>
+            <View style={{ height: 4, borderRadius: 9999, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
+              <View style={{ height: "100%", width: `${Math.round(row.volumeFraction * 100)}%`, backgroundColor: glass.lava, borderRadius: 9999 }} />
+            </View>
           </View>
-          <View style={{ height: 4, borderRadius: 9999, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
-            <View style={{ height: "100%", width: `${Math.round(row.volumeFraction * 100)}%`, backgroundColor: glass.lava, borderRadius: 9999 }} />
-          </View>
-        </View>
 
-        <View style={{ alignItems: "flex-end", gap: 3 }}>
-          <Text style={{ fontFamily: sans(700), fontSize: 13, color: glass.white, letterSpacing: -0.2 }}>{row.volumeLabel}</Text>
-          <Text style={{ fontFamily: mono(500), fontSize: 10.5, color: deltaColor }}>{deltaLabel}</Text>
+          <View style={{ alignItems: "flex-end", gap: 3 }}>
+            <Text style={{ fontFamily: sans(700), fontSize: 13, color: glass.white, letterSpacing: -0.2 }}>{row.volumeLabel}</Text>
+            <Text style={{ fontFamily: mono(500), fontSize: 10.5, color: glass.ink3 }}>{row.durationLabel}</Text>
+          </View>
         </View>
       </GlassSurface>
     </Pressable>

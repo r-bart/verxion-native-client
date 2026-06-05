@@ -83,12 +83,23 @@
       "subtitle": "your rotation",
       "exercisesCount": "{{count}} exercises"
     },
-    "sessionsSummary": {
-      "statSessions": "Sessions",
-      "statVolume": "Volume",
-      "statTrend": "vs. prev.",
-      "recentTitle": "Recent history",
-      "seeAll": "See all"
+    "sessionFeed": {
+      "lead": "{{count}} sessions",
+      "subtitle": "Your whole training log, by block.",
+      "allRoutines": "All routines",
+      "sortTitle": "Sort",
+      "empty": "No sessions logged yet."
+    },
+    "blockState": {
+      "active": "Active",
+      "completed": "Completed",
+      "paused": "Paused"
+    },
+    "sort": {
+      "recent": "Most recent",
+      "oldest": "Oldest",
+      "volume": "Volume",
+      "duration": "Duration"
     },
     "empty": {
       "title": "No routine yet",

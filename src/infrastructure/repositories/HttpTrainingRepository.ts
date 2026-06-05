@@ -3,9 +3,9 @@ import type { Routine, RoutineDetail, WorkoutDay, WorkoutDayExercise } from "@/d
 import type { ExerciseConfigurationData } from "@/domain/training/models/ExerciseConfiguration";
 import type { ProgressionPlan, ProgressionExercise } from "@/domain/training/models/ProgressionPlan";
 import type { RoutineDashboard } from "@/domain/training/models/RoutineDashboard";
-import type { SessionsSummary } from "@/domain/training/models/SessionsSummary";
+import type { SessionFeedPage, SessionFeedParams } from "@/domain/training/models/SessionFeed";
 import { routineDashboardFixture } from "@/domain/training/__fixtures__/routineDashboardFixture";
-import { sessionsSummaryFixture } from "@/domain/training/__fixtures__/sessionsSummaryFixture";
+import { sessionFeedFixture } from "@/domain/training/__fixtures__/sessionFeedFixture";
 import { apiClient, ApiError } from "../api/apiClient";
 
 export class HttpTrainingRepository implements ITrainingPort {
@@ -23,12 +23,13 @@ export class HttpTrainingRepository implements ITrainingPort {
   }
 
   /**
-   * Entreno landing "Sesiones" recap — proposed platform read-model.
-   * STUB until `GET /training/sessions-summary` ships; then swap for:
-   *   `return apiClient.get<SessionsSummary>("/training/sessions-summary");`
+   * Entreno landing "Sesiones" feed page — proposed platform read-model.
+   * STUB until `GET /training/sessions-feed` ships; serves a single page and
+   * ignores filter/cursor params (the real endpoint honours them). Then swap for:
+   *   `return apiClient.get<SessionFeedPage>("/training/sessions-feed", { ...params });`
    */
-  async getSessionsSummary(): Promise<SessionsSummary> {
-    return sessionsSummaryFixture;
+  async getSessionFeed(_params: SessionFeedParams): Promise<SessionFeedPage> {
+    return sessionFeedFixture;
   }
 
   async getRoutines(): Promise<Routine[]> {

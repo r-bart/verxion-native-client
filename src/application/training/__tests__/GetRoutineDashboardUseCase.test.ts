@@ -28,7 +28,7 @@ describe("GetRoutineDashboardUseCase", () => {
   function createMockPort(overrides: Partial<ITrainingPort> = {}): ITrainingPort {
     return {
       getRoutineDashboard: jest.fn().mockResolvedValue(dashboard),
-      getSessionsSummary: jest.fn(),
+      getSessionFeed: jest.fn(),
       getRoutines: jest.fn(),
       getRoutineDetail: jest.fn(),
       getWorkoutDayExercises: jest.fn(),

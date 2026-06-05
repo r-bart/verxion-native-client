@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react-native";
 import { renderWithProviders, createMockContainer } from "@/__tests__/test-utils";
-import { sessionsSummaryFixture } from "@/domain/training/__fixtures__/sessionsSummaryFixture";
+import { sessionFeedFixture } from "@/domain/training/__fixtures__/sessionFeedFixture";
 import { SesionesSegment } from "../SesionesSegment";
 
 jest.mock("react-native-safe-area-context", () => ({
@@ -12,19 +12,20 @@ jest.mock("react-i18next", () => ({ useTranslation: () => ({ t: (k: string) => k
 jest.mock("lucide-react-native", () => new Proxy({}, { get: () => () => null }));
 
 describe("SesionesSegment", () => {
-  it("renders the recent sessions (not the skeleton) once data resolves", async () => {
-    const execute = jest.fn().mockResolvedValue(sessionsSummaryFixture);
-    const container = createMockContainer({ getSessionsSummary: { execute } });
+  it("renders the block-grouped feed once data resolves", async () => {
+    const execute = jest.fn().mockResolvedValue(sessionFeedFixture);
+    const container = createMockContainer({ getSessionFeed: { execute }, getRoutines: { execute: jest.fn().mockResolvedValue([]) } });
 
-    const { getByText } = renderWithProviders(<SesionesSegment />, { container });
+    const { getByText, getAllByText } = renderWithProviders(<SesionesSegment />, { container });
 
-    await waitFor(() => expect(getByText("Legs B")).toBeTruthy());
-    expect(getByText("Push A")).toBeTruthy();
+    // The block header + session rows prove the feed painted (not the skeleton).
+    await waitFor(() => expect(getByText("PPL Hipertrofia")).toBeTruthy());
+    expect(getAllByText("Legs B").length).toBeGreaterThan(0);
   });
 
-  it("shows the error state with a retry when the read fails", async () => {
+  it("shows the error state when the feed read fails", async () => {
     const execute = jest.fn().mockRejectedValue(new Error("boom"));
-    const container = createMockContainer({ getSessionsSummary: { execute } });
+    const container = createMockContainer({ getSessionFeed: { execute }, getRoutines: { execute: jest.fn().mockResolvedValue([]) } });
 
     const { getByText } = renderWithProviders(<SesionesSegment />, { container });
 

@@ -83,12 +83,23 @@
       "subtitle": "tu rotación",
       "exercisesCount": "{{count}} ejercicios"
     },
-    "sessionsSummary": {
-      "statSessions": "Sesiones",
-      "statVolume": "Volumen",
-      "statTrend": "vs. previa",
-      "recentTitle": "Historial reciente",
-      "seeAll": "Ver todo"
+    "sessionFeed": {
+      "lead": "{{count}} sesiones",
+      "subtitle": "Todo tu log de entrenos, por bloque.",
+      "allRoutines": "Todas las rutinas",
+      "sortTitle": "Ordenar",
+      "empty": "Aún no hay sesiones registradas."
+    },
+    "blockState": {
+      "active": "Activa",
+      "completed": "Completada",
+      "paused": "En pausa"
+    },
+    "sort": {
+      "recent": "Más reciente",
+      "oldest": "Más antiguo",
+      "volume": "Volumen",
+      "duration": "Duración"
     },
     "empty": {
       "title": "Aún no tienes una rutina",

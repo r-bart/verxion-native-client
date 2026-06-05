@@ -7,7 +7,7 @@
  * Note: the agent note (`data.agentNote` → `AgentNoteCard`) is parked here until
  * the insights work lands — the aggregate still carries the field.
  */
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter, type Href } from "expo-router";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
@@ -73,19 +73,29 @@ function LiveBanner({ name }: { name: string }) {
 export function RutinaSegment() {
   const { data, isLoading, isError, refetch } = useRoutineDashboard();
 
-  if (isLoading) return <RoutineDashboardSkeleton />;
-  if (isError || !data) return <SegmentError onRetry={() => refetch()} />;
-  if (data.state === "empty" || !data.activeRoutine) return <EmptyRoutine />;
+  let body: React.ReactNode;
+  if (isLoading) body = <RoutineDashboardSkeleton />;
+  else if (isError || !data) body = <SegmentError onRetry={() => refetch()} />;
+  else if (data.state === "empty" || !data.activeRoutine) body = <EmptyRoutine />;
+  else
+    body = (
+      <View style={{ gap: 14 }}>
+        <RoutineHero routine={data.activeRoutine} />
+        {data.liveSession ? (
+          <LiveBanner name={data.liveSession.name} />
+        ) : data.next ? (
+          <NextSessionCard next={data.next} />
+        ) : null}
+        <WeekSpine spine={data.spine} />
+      </View>
+    );
 
   return (
-    <View style={{ gap: 14 }}>
-      <RoutineHero routine={data.activeRoutine} />
-      {data.liveSession ? (
-        <LiveBanner name={data.liveSession.name} />
-      ) : data.next ? (
-        <NextSessionCard next={data.next} />
-      ) : null}
-      <WeekSpine spine={data.spine} />
-    </View>
+    <ScrollView
+      contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 32, flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
+      {body}
+    </ScrollView>
   );
 }
