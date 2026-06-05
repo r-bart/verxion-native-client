@@ -37,6 +37,26 @@
     "title": "Próximamente",
     "body": "Estamos construyendo esta sección en público, pantalla a pantalla."
   },
+  "training": {
+    "title": "Entreno",
+    "library": "Biblioteca",
+    "segments": {
+      "routine": "Rutina",
+      "sessions": "Sesiones",
+      "exercises": "Ejercicios"
+    },
+    "screens": {
+      "routines": "Rutinas",
+      "routineDetail": "Rutina",
+      "dayDetail": "Día",
+      "prescription": "Sesión de hoy",
+      "liveSession": "Sesión en marcha",
+      "sessions": "Historial de sesiones",
+      "sessionDetail": "Sesión",
+      "exercise": "Ejercicio"
+    },
+    "wip": "En construcción"
+  },
   "settings": {
     "title": "Ajustes",
     "preferences": "Preferencias",

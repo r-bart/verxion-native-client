@@ -85,6 +85,10 @@ Every operation (read or write) flows through a Use Case. No shortcuts.
 - TypeScript strict, functional components only.
 - Co-locate hooks with features. Screen files are thin (compose components);
   logic lives in hooks. Route files are 3-5 lines.
+- **Reanimated:** update shared values only inside `useEffect` (or worklets),
+  never in the render body — a render-body write re-fires the animation on
+  every render. Gate pulses/glow behind `useReducedMotion`. (See
+  `GhostTimeline`, `StepTransition`, `SegmentedControl`.)
 
 ## Quality checks
 

@@ -37,6 +37,26 @@
     "title": "Coming soon",
     "body": "We're building this section in public, screen by screen."
   },
+  "training": {
+    "title": "Training",
+    "library": "Library",
+    "segments": {
+      "routine": "Routine",
+      "sessions": "Sessions",
+      "exercises": "Exercises"
+    },
+    "screens": {
+      "routines": "Routines",
+      "routineDetail": "Routine",
+      "dayDetail": "Day",
+      "prescription": "Today's session",
+      "liveSession": "Live session",
+      "sessions": "Session history",
+      "sessionDetail": "Session",
+      "exercise": "Exercise"
+    },
+    "wip": "Under construction"
+  },
   "settings": {
     "title": "Settings",
     "preferences": "Preferences",
