@@ -4,12 +4,14 @@
  * simple `{ visible, onClose, title }` API: the parent owns the open state and
  * this bridges it to the modal's imperative `present()/dismiss()`.
  *
- * `enableDynamicSizing` sizes the sheet to its content (short menus hug, long
- * ones cap near full height and scroll inside via `BottomSheetScrollView`).
+ * Uses an explicit snap point (not dynamic sizing): `enableDynamicSizing` +
+ * `BottomSheetScrollView` intermittently measures content height as 0 on the
+ * first `present()`, so the sheet "opens" at zero height — a fixed detent always
+ * opens reliably, and `BottomSheetScrollView` scrolls when content is taller.
  * Visuals match the handoff: panel #131316, 26px top radius, 38px grab, 0.62
  * scrim.
  */
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -37,6 +39,7 @@ function renderBackdrop(props: BottomSheetBackdropProps) {
 export function BottomSheet({ visible, onClose, title, children }: Props) {
   const ref = useRef<BottomSheetModal>(null);
   const insets = useSafeAreaInsets();
+  const snapPoints = useMemo(() => ["50%"], []);
 
   useEffect(() => {
     if (visible) ref.current?.present();
@@ -50,7 +53,8 @@ export function BottomSheet({ visible, onClose, title, children }: Props) {
     <BottomSheetModal
       ref={ref}
       onDismiss={handleDismiss}
-      enableDynamicSizing
+      snapPoints={snapPoints}
+      enableDynamicSizing={false}
       backdropComponent={renderBackdrop}
       handleIndicatorStyle={{ backgroundColor: "rgba(255,255,255,0.18)", width: 38 }}
       backgroundStyle={{ backgroundColor: PANEL, borderTopLeftRadius: 26, borderTopRightRadius: 26 }}
