@@ -20,13 +20,16 @@ import { SegmentError } from "./SegmentError";
 
 const SORTS: ExerciseSort[] = ["name", "logged"];
 
+// flex:1 lives on the row wrapper View (textbook flex), not on this Pressable —
+// a flex returned from Pressable's style callback doesn't size the row slot. A
+// plain translucent View (not GlassSurface) fills reliably and reads the same.
 function PillButton({ icon, label, onPress }: { icon: React.ReactNode; label: string; onPress: () => void }) {
   return (
-    <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => ({ flex: 1, opacity: pressed ? glass.pressOpacity : 1 })}>
-      <GlassSurface radius={9999} style={{ width: "100%", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, paddingVertical: 11 }}>
+    <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}>
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7, paddingVertical: 12, borderRadius: 9999, backgroundColor: glass.fill2, borderWidth: 1, borderColor: glass.stroke }}>
         {icon}
         <Text style={{ fontFamily: sans(600), fontSize: 13, color: glass.white }}>{label}</Text>
-      </GlassSurface>
+      </View>
     </Pressable>
   );
 }
@@ -75,8 +78,12 @@ export function EjerciciosSegment() {
       </GlassSurface>
 
       <View style={{ flexDirection: "row", gap: 8 }}>
-        <PillButton icon={<SlidersHorizontal size={15} color={glass.ink2} strokeWidth={2} />} label={t("training.exerciseLibrary.filterTitle")} onPress={() => setSheet("filter")} />
-        <PillButton icon={<ArrowUpDown size={15} color={glass.ink2} strokeWidth={2} />} label={t(`training.exerciseSort.${view.sort}`)} onPress={() => setSheet("sort")} />
+        <View style={{ flex: 1 }}>
+          <PillButton icon={<SlidersHorizontal size={15} color={glass.ink2} strokeWidth={2} />} label={t("training.exerciseLibrary.filterTitle")} onPress={() => setSheet("filter")} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <PillButton icon={<ArrowUpDown size={15} color={glass.ink2} strokeWidth={2} />} label={t(`training.exerciseSort.${view.sort}`)} onPress={() => setSheet("sort")} />
+        </View>
       </View>
 
       {(view.group || view.equipment) && (

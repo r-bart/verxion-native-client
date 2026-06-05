@@ -26,14 +26,17 @@ type FeedItem =
   | { kind: "header"; block: SessionFeedBlock }
   | { kind: "row"; row: SessionFeedRow };
 
+// flex:1 lives on the row wrapper View (textbook flex), not on this Pressable —
+// a flex returned from Pressable's style callback doesn't size the row slot. A
+// plain translucent View (not GlassSurface) fills reliably and reads the same.
 function FilterButton({ icon, label, onPress }: { icon: React.ReactNode; label: string; onPress: () => void }) {
   return (
-    <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => ({ flex: 1, opacity: pressed ? glass.pressOpacity : 1 })}>
-      <GlassSurface radius={9999} style={{ width: "100%", flexDirection: "row", alignItems: "center", gap: 7, paddingVertical: 11, paddingHorizontal: 14 }}>
+    <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 7, paddingVertical: 12, paddingHorizontal: 14, borderRadius: 9999, backgroundColor: glass.fill2, borderWidth: 1, borderColor: glass.stroke }}>
         {icon}
         <Text numberOfLines={1} style={{ flex: 1, fontFamily: sans(600), fontSize: 13, color: glass.white }}>{label}</Text>
         <ChevronDown size={14} color={glass.ink3} strokeWidth={2} />
-      </GlassSurface>
+      </View>
     </Pressable>
   );
 }
@@ -78,8 +81,12 @@ export function SesionesSegment() {
         <Text style={{ fontFamily: mono(400), fontSize: 12, color: glass.ink2 }}>{t("training.sessionFeed.subtitle")}</Text>
       </View>
       <View style={{ flexDirection: "row", gap: 8 }}>
-        <FilterButton icon={<Layers size={15} color={glass.ink2} strokeWidth={2} />} label={routineLabel} onPress={() => setSheet("routine")} />
-        <FilterButton icon={<ArrowUpDown size={15} color={glass.ink2} strokeWidth={2} />} label={t(`training.sort.${sort}`)} onPress={() => setSheet("sort")} />
+        <View style={{ flex: 1 }}>
+          <FilterButton icon={<Layers size={15} color={glass.ink2} strokeWidth={2} />} label={routineLabel} onPress={() => setSheet("routine")} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <FilterButton icon={<ArrowUpDown size={15} color={glass.ink2} strokeWidth={2} />} label={t(`training.sort.${sort}`)} onPress={() => setSheet("sort")} />
+        </View>
       </View>
     </View>
   );

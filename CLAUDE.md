@@ -80,11 +80,15 @@ Every operation (read or write) flows through a Use Case. No shortcuts.
 ### UI components
 - react-native-reusables (shadcn for RN): Card, Badge, Button, Skeleton, Tabs,
   Progress, Separator. Dark theme, hsl colors via NativeWind CSS variables.
-- **`GlassSurface` as a flex child:** the native Liquid Glass `GlassView`
-  (iOS 26) sizes to its content and does NOT stretch to a `flex:1` parent the
-  way a plain `View` does — give it an explicit `width:"100%"` (or fixed size)
-  when it must fill. Tests run the fallback `View` (which stretches), so this
-  only shows on device. (See the filter pills in `SesionesSegment`/`EjerciciosSegment`.)
+- **Equal-width controls in a flex row** (e.g. filter pills): put `flex:1` on a
+  plain wrapper `View` around each item — NOT on a `Pressable`'s style-callback
+  (a flex returned from `({pressed}) => …` doesn't size the row slot) and NOT on
+  a `GlassSurface` (the native iOS 26 GlassView under-fills, or overflows with
+  `width:"100%"`). The pill itself is a plain translucent `View`
+  (`glass.fill2` + `glass.stroke`), which reads the same as glass at that size.
+  GlassSurface is fine as a lone full-width / fixed-size surface. Tests run the
+  fallback `View`, so flex-row sizing only shows on device. (See the filter pills
+  in `SesionesSegment`/`EjerciciosSegment`.)
 
 ### Code style
 - TypeScript strict, functional components only.
