@@ -4,11 +4,13 @@ import type { ProgressionPlan } from "../models/ProgressionPlan";
 import type { RoutineDashboard } from "../models/RoutineDashboard";
 import type { SessionFeedPage, SessionFeedParams } from "../models/SessionFeed";
 import type { ExerciseLibrary } from "../models/ExerciseLibrary";
+import type { RoutineLibrary } from "../models/RoutineLibrary";
 
 export interface ITrainingPort {
   getRoutineDashboard(): Promise<RoutineDashboard>;
   getSessionFeed(params: SessionFeedParams): Promise<SessionFeedPage>;
   getExerciseLibrary(): Promise<ExerciseLibrary>;
+  getRoutineLibrary(): Promise<RoutineLibrary>;
   getRoutines(): Promise<Routine[]>;
   getRoutineDetail(id: string): Promise<RoutineDetail>;
   getWorkoutDayExercises(routineId: string, dayId: string): Promise<WorkoutDayExercise[]>;

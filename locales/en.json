@@ -117,6 +117,62 @@
       "name": "Alphabetical",
       "logged": "Most logged"
     },
+    "routineLibrary": {
+      "allRoutines": "All your routines",
+      "lead": "{{count}} routines",
+      "subtitle": "Your active routine and the archive of blocks you've completed.",
+      "search": "Search routine, goal or split",
+      "filterTitle": "Filters",
+      "sortTitle": "Sort by",
+      "stateSection": "State",
+      "goalSection": "Goal",
+      "clearAll": "Clear all",
+      "apply": "Show {{count}} routines",
+      "applyOne": "Show {{count}} routine",
+      "results": "{{count}} results",
+      "resultsOne": "{{count}} result",
+      "noResults": "No results",
+      "noResultsBody": "Try removing a filter or changing your search.",
+      "perWeek": "{{count}} days/wk",
+      "weeksPlanned": "Not started · {{weeks}} weeks planned",
+      "viewPlan": "View plan",
+      "completedWeeks": "Completed · {{weeks}} wk",
+      "adherence": "{{done}}/{{planned}} sessions · {{pct}}% adherence",
+      "volTrend": "+{{pct}}% vol.",
+      "archiveUntil": "{{goal}} · until {{date}}",
+      "sections": {
+        "active": "In progress",
+        "draft": "Agent proposal",
+        "paused": "Paused",
+        "completed": "Archive · completed"
+      },
+      "stateEyebrow": {
+        "active": "Active routine",
+        "draft": "Draft · verxion",
+        "paused": "Paused",
+        "completed": "Completed"
+      },
+      "stateLabel": {
+        "active": "Active",
+        "draft": "Draft",
+        "paused": "Paused",
+        "completed": "Completed"
+      },
+      "sortHint": {
+        "recent": "Active first, then by date",
+        "name": "From A to Z",
+        "adherence": "Best adherence first"
+      },
+      "ask": {
+        "title": "Ask verxion for a new routine",
+        "body": "Routines are built and activated by the agent — describe what you want and it'll show up here."
+      }
+    },
+    "routineSort": {
+      "recent": "Recent",
+      "name": "Alphabetical",
+      "adherence": "Adherence"
+    },
     "empty": {
       "title": "No routine yet",
       "body": "Ask verxion to build you a plan and it'll show up here.",

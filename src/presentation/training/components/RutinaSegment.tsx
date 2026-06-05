@@ -10,6 +10,7 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter, type Href } from "expo-router";
+import { Rows3, ChevronRight } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { Isotype } from "@/presentation/_shared/components/Isotype";
 import { glass } from "@/presentation/_shared/design/glass";
@@ -25,12 +26,30 @@ function EmptyRoutine() {
   const { t } = useTranslation();
   const router = useRouter();
   return (
-    <GlassSurface radius={20} style={{ padding: 22, alignItems: "center", gap: 12 }}>
+    <GlassSurface
+      radius={20}
+      style={{ padding: 22, alignItems: "center", gap: 12 }}
+    >
       <Isotype size={34} glow />
-      <Text style={{ fontFamily: sans(700), fontSize: 18, color: glass.white, textAlign: "center" }}>
+      <Text
+        style={{
+          fontFamily: sans(700),
+          fontSize: 18,
+          color: glass.white,
+          textAlign: "center",
+        }}
+      >
         {t("training.empty.title")}
       </Text>
-      <Text style={{ fontFamily: mono(400), fontSize: 13, lineHeight: 19, color: glass.ink2, textAlign: "center" }}>
+      <Text
+        style={{
+          fontFamily: mono(400),
+          fontSize: 13,
+          lineHeight: 19,
+          color: glass.ink2,
+          textAlign: "center",
+        }}
+      >
         {t("training.empty.body")}
       </Text>
       <Pressable
@@ -38,11 +57,61 @@ function EmptyRoutine() {
         accessibilityRole="button"
         style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
       >
-        <View style={{ paddingHorizontal: 18, paddingVertical: 11, borderRadius: 9999, backgroundColor: glass.lava }}>
-          <Text style={{ fontFamily: sans(700), fontSize: 14, color: glass.fgOnLava }}>{t("training.empty.cta")}</Text>
+        <View
+          style={{
+            paddingHorizontal: 18,
+            paddingVertical: 11,
+            borderRadius: 9999,
+            backgroundColor: glass.lava,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: sans(700),
+              fontSize: 14,
+              color: glass.fgOnLava,
+            }}
+          >
+            {t("training.empty.cta")}
+          </Text>
         </View>
       </Pressable>
     </GlassSurface>
+  );
+}
+
+function AllRoutinesLink() {
+  const { t } = useTranslation();
+  const router = useRouter();
+  return (
+    <Pressable
+      onPress={() => router.push("/workout/rutinas" as Href)}
+      accessibilityRole="button"
+      style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
+    >
+      <GlassSurface
+        radius={16}
+        style={{
+          padding: 14,
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 11,
+        }}
+      >
+        <Rows3 size={16} color={glass.ink2} strokeWidth={2} />
+        <Text
+          style={{
+            flex: 1,
+            fontFamily: sans(600),
+            fontSize: 14,
+            color: glass.white,
+          }}
+        >
+          {t("training.routineLibrary.allRoutines")}
+        </Text>
+        <ChevronRight size={17} color="rgba(255,255,255,0.3)" strokeWidth={2} />
+      </GlassSurface>
+    </Pressable>
   );
 }
 
@@ -59,12 +128,29 @@ function LiveBanner({ name }: { name: string }) {
         radius={20}
         tintColor={glass.lavaBg}
         fallbackFill={glass.lavaBg}
-        style={{ padding: 16, gap: 4, borderColor: glass.lavaBorder, borderWidth: 1 }}
+        style={{
+          padding: 16,
+          gap: 4,
+          borderColor: glass.lavaBorder,
+          borderWidth: 1,
+        }}
       >
-        <Text style={{ fontFamily: mono(600), fontSize: 10, letterSpacing: 1, color: glass.lava, textTransform: "uppercase" }}>
+        <Text
+          style={{
+            fontFamily: mono(600),
+            fontSize: 10,
+            letterSpacing: 1,
+            color: glass.lava,
+            textTransform: "uppercase",
+          }}
+        >
           {t("training.screens.liveSession")}
         </Text>
-        <Text style={{ fontFamily: sans(700), fontSize: 17, color: glass.white }}>{name}</Text>
+        <Text
+          style={{ fontFamily: sans(700), fontSize: 17, color: glass.white }}
+        >
+          {name}
+        </Text>
       </GlassSurface>
     </Pressable>
   );
@@ -76,7 +162,8 @@ export function RutinaSegment() {
   let body: React.ReactNode;
   if (isLoading) body = <RoutineDashboardSkeleton />;
   else if (isError || !data) body = <SegmentError onRetry={() => refetch()} />;
-  else if (data.state === "empty" || !data.activeRoutine) body = <EmptyRoutine />;
+  else if (data.state === "empty" || !data.activeRoutine)
+    body = <EmptyRoutine />;
   else
     body = (
       <View style={{ gap: 14 }}>
@@ -87,12 +174,18 @@ export function RutinaSegment() {
           <NextSessionCard next={data.next} />
         ) : null}
         <WeekSpine spine={data.spine} />
+        <AllRoutinesLink />
       </View>
     );
 
   return (
     <ScrollView
-      contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 32, flexGrow: 1 }}
+      contentContainerStyle={{
+        paddingHorizontal: 16,
+        paddingTop: 16,
+        paddingBottom: 32,
+        flexGrow: 1,
+      }}
       showsVerticalScrollIndicator={false}
     >
       {body}

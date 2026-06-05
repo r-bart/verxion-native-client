@@ -117,6 +117,62 @@
       "name": "Alfabético",
       "logged": "Más registrados"
     },
+    "routineLibrary": {
+      "allRoutines": "Todas tus rutinas",
+      "lead": "{{count}} rutinas",
+      "subtitle": "Tu rutina activa y el archivo de bloques que ya has completado.",
+      "search": "Buscar rutina, objetivo o split",
+      "filterTitle": "Filtros",
+      "sortTitle": "Ordenar por",
+      "stateSection": "Estado",
+      "goalSection": "Objetivo",
+      "clearAll": "Limpiar todo",
+      "apply": "Ver {{count}} rutinas",
+      "applyOne": "Ver {{count}} rutina",
+      "results": "{{count}} resultados",
+      "resultsOne": "{{count}} resultado",
+      "noResults": "Sin resultados",
+      "noResultsBody": "Prueba a quitar algún filtro o cambiar la búsqueda.",
+      "perWeek": "{{count}} días/sem",
+      "weeksPlanned": "Sin empezar · {{weeks}} semanas planeadas",
+      "viewPlan": "Ver plan",
+      "completedWeeks": "Completada · {{weeks}} sem",
+      "adherence": "{{done}}/{{planned}} sesiones · {{pct}}% adherencia",
+      "volTrend": "+{{pct}}% vol.",
+      "archiveUntil": "{{goal}} · hasta {{date}}",
+      "sections": {
+        "active": "En curso",
+        "draft": "Propuesta del agente",
+        "paused": "En pausa",
+        "completed": "Archivo · completadas"
+      },
+      "stateEyebrow": {
+        "active": "Rutina activa",
+        "draft": "Borrador · verxion",
+        "paused": "En pausa",
+        "completed": "Completada"
+      },
+      "stateLabel": {
+        "active": "Activa",
+        "draft": "Borrador",
+        "paused": "En pausa",
+        "completed": "Completada"
+      },
+      "sortHint": {
+        "recent": "La activa primero, luego por fecha",
+        "name": "De la A a la Z",
+        "adherence": "Mejor cumplimiento primero"
+      },
+      "ask": {
+        "title": "Pídele a verxion una rutina nueva",
+        "body": "Las rutinas las arma y activa el agente — descríbele qué buscas y aparecerá aquí."
+      }
+    },
+    "routineSort": {
+      "recent": "Recientes",
+      "name": "Alfabético",
+      "adherence": "Adherencia"
+    },
     "empty": {
       "title": "Aún no tienes una rutina",
       "body": "Pídele a verxion que te arme un plan y aparecerá aquí.",

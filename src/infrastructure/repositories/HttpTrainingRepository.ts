@@ -5,9 +5,11 @@ import type { ProgressionPlan, ProgressionExercise } from "@/domain/training/mod
 import type { RoutineDashboard } from "@/domain/training/models/RoutineDashboard";
 import type { SessionFeedPage, SessionFeedParams } from "@/domain/training/models/SessionFeed";
 import type { ExerciseLibrary } from "@/domain/training/models/ExerciseLibrary";
+import type { RoutineLibrary } from "@/domain/training/models/RoutineLibrary";
 import { routineDashboardFixture } from "@/domain/training/__fixtures__/routineDashboardFixture";
 import { sessionFeedFixture } from "@/domain/training/__fixtures__/sessionFeedFixture";
 import { exerciseLibraryFixture } from "@/domain/training/__fixtures__/exerciseLibraryFixture";
+import { routineLibraryFixture } from "@/domain/training/__fixtures__/routineLibraryFixture";
 import { apiClient, ApiError } from "../api/apiClient";
 
 export class HttpTrainingRepository implements ITrainingPort {
@@ -41,6 +43,17 @@ export class HttpTrainingRepository implements ITrainingPort {
    */
   async getExerciseLibrary(): Promise<ExerciseLibrary> {
     return exerciseLibraryFixture;
+  }
+
+  /**
+   * "Todas las rutinas" library — proposed platform read-model.
+   * STUB until `GET /training/routine-library` ships; then swap for:
+   *   `return apiClient.get<RoutineLibrary>("/training/routine-library");`
+   * The backend composes this from the raw routine list (see `getRoutines`),
+   * enriching each with the per-block week/adherence/score the screen renders.
+   */
+  async getRoutineLibrary(): Promise<RoutineLibrary> {
+    return routineLibraryFixture;
   }
 
   async getRoutines(): Promise<Routine[]> {
