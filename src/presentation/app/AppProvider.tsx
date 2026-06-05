@@ -1,4 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { queryClient } from "@/infrastructure/di/queryClient";
 import { DIProvider } from "@/infrastructure/di/DIContext";
 // Side-effect import: runs i18next `.init()` once at app startup so every
@@ -15,7 +16,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // a Hermes debugger crash (`Debugger::runUntilValidPauseLocation` SIGSEGV).
   return (
     <QueryClientProvider client={queryClient}>
-      <DIProvider>{children}</DIProvider>
+      <DIProvider>
+        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+      </DIProvider>
     </QueryClientProvider>
   );
 }

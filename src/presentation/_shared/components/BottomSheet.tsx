@@ -1,14 +1,23 @@
 /**
- * BottomSheet — the app's bottom sheet: a dimmed scrim over a dark panel that
- * slides up from the bottom, with a grab handle and an optional title. Used for
- * filters / sort / select surfaces. Ported from the design handoff (scrim
- * rgba(8,8,10,0.62), panel #131316, 26px top radius, 38×4 grab).
+ * BottomSheet — the app's bottom sheet, backed by @gorhom/bottom-sheet for
+ * native detents, drag-to-dismiss, gesture scroll and dynamic sizing. Keeps a
+ * simple `{ visible, onClose, title }` API: the parent owns the open state and
+ * this bridges it to the modal's imperative `present()/dismiss()`.
  *
- * Uses the native Modal slide for a reliable, jank-free transition; tapping the
- * scrim or the hardware back closes it.
+ * `enableDynamicSizing` sizes the sheet to its content (short menus hug, long
+ * ones cap near full height and scroll inside via `BottomSheetScrollView`).
+ * Visuals match the handoff: panel #131316, 26px top radius, 38px grab, 0.62
+ * scrim.
  */
-import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useCallback, useEffect, useRef } from "react";
+import { Text } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  BottomSheetModal,
+  BottomSheetScrollView,
+  BottomSheetBackdrop,
+  type BottomSheetBackdropProps,
+} from "@gorhom/bottom-sheet";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans } from "@/presentation/_shared/design/fonts";
 
@@ -21,44 +30,39 @@ type Props = {
 
 const PANEL = "#131316";
 
+function renderBackdrop(props: BottomSheetBackdropProps) {
+  return <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.62} pressBehavior="close" />;
+}
+
 export function BottomSheet({ visible, onClose, title, children }: Props) {
+  const ref = useRef<BottomSheetModal>(null);
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    if (visible) ref.current?.present();
+    else ref.current?.dismiss();
+  }, [visible]);
+
+  // Fires on drag-down, scrim tap, and programmatic dismiss — keep parent state in sync.
+  const handleDismiss = useCallback(() => onClose(), [onClose]);
+
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
-        <Pressable
-          style={StyleSheet.absoluteFill}
-          onPress={onClose}
-          accessibilityRole="button"
-          accessibilityLabel="close"
-        >
-          <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(8,8,10,0.62)" }]} />
-        </Pressable>
-
-        <View
-          style={{
-            backgroundColor: PANEL,
-            borderTopLeftRadius: 26,
-            borderTopRightRadius: 26,
-            borderWidth: 1,
-            borderColor: glass.stroke,
-            borderBottomWidth: 0,
-          }}
-        >
-          <SafeAreaView edges={["bottom"]}>
-            <View style={{ alignItems: "center", paddingTop: 10 }}>
-              <View style={{ width: 38, height: 4, borderRadius: 9999, backgroundColor: "rgba(255,255,255,0.18)" }} />
-            </View>
-
-            {title && (
-              <Text style={{ fontFamily: sans(700), fontSize: 16, color: glass.white, textAlign: "center", paddingTop: 14 }}>
-                {title}
-              </Text>
-            )}
-
-            <View style={{ padding: 16, paddingTop: 12 }}>{children}</View>
-          </SafeAreaView>
-        </View>
-      </View>
-    </Modal>
+    <BottomSheetModal
+      ref={ref}
+      onDismiss={handleDismiss}
+      enableDynamicSizing
+      backdropComponent={renderBackdrop}
+      handleIndicatorStyle={{ backgroundColor: "rgba(255,255,255,0.18)", width: 38 }}
+      backgroundStyle={{ backgroundColor: PANEL, borderTopLeftRadius: 26, borderTopRightRadius: 26 }}
+    >
+      <BottomSheetScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 4, paddingBottom: insets.bottom + 16 }}>
+        {title && (
+          <Text style={{ fontFamily: sans(700), fontSize: 16, color: glass.white, textAlign: "center", paddingBottom: 8 }}>
+            {title}
+          </Text>
+        )}
+        {children}
+      </BottomSheetScrollView>
+    </BottomSheetModal>
   );
 }

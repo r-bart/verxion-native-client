@@ -1,5 +1,6 @@
 import "../src/presentation/_shared/styles/global.css";
 import * as SplashScreen from "expo-splash-screen";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppProvider } from "@/presentation/app/AppProvider";
 import { AppShell } from "@/presentation/app/AppShell";
 import { useAppFonts } from "@/presentation/_shared/design/fonts";
@@ -13,9 +14,13 @@ export default function RootLayout() {
   // the session resolves.
   if (!fontsLoaded) return null;
 
+  // GestureHandlerRootView is required by @gorhom/bottom-sheet (and gesture-
+  // driven UI generally) and must wrap the whole app.
   return (
-    <AppProvider>
-      <AppShell />
-    </AppProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AppProvider>
+        <AppShell />
+      </AppProvider>
+    </GestureHandlerRootView>
   );
 }

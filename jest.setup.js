@@ -33,6 +33,10 @@ jest.mock("expo-image-picker", () => ({
   MediaTypeOptions: { Images: "Images", Videos: "Videos", All: "All" },
 }));
 
+// @gorhom/bottom-sheet — the official mock renders sheet content inline as
+// plain Views (no gestures/reanimated needed in jsdom).
+jest.mock("@gorhom/bottom-sheet", () => require("@gorhom/bottom-sheet/mock"));
+
 // Liquid Glass (iOS 26+) — unavailable in the test env; render the translucent
 // fallback path. GlassView passes through as a plain View.
 jest.mock("expo-glass-effect", () => {

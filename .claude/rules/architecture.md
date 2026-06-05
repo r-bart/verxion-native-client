@@ -85,6 +85,13 @@ domain  ←  application  ←  infrastructure
 | `presentation/` | `domain/` (types only), `infrastructure/di/` (useDI hook only) |
 | `app/` (routes) | `presentation/` (screens only) |
 
+> **App-shell exception.** The composition root under `presentation/app/`
+> (`AppProvider`, `AppShell`, the `*Stack`/`*Layout` delegators) is where global
+> providers get wired, so it may import DI/bootstrap artifacts from
+> `infrastructure/di/` directly — e.g. `queryClient`, `DIProvider`,
+> `BottomSheetModalProvider`. This is the only presentation code allowed past the
+> `useDI`-only rule; feature screens/components still go through `useDI`.
+
 ### What each layer CANNOT import (violations)
 
 | Violation | Example | Why it's wrong |
