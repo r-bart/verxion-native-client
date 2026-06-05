@@ -1,5 +1,17 @@
 # "Entreno" — rationale, edge cases & API spec
 
+> ⚠️ **SUPERSEDED (2026-06-05).** This doc specs an earlier single-aggregate design
+> (`GET /training/overview` → `TrainingOverview`) that was **not** the shape we built.
+> The Entreno landing shipped as **four separate read-models**, each with its own
+> spec — use those instead:
+> - `docs/training-routine-dashboard-spec.md` → `GET /training/routine-dashboard`
+> - `docs/training-routine-library-spec.md` → `GET /training/routine-library`
+> - `docs/training-sessions-feed-spec.md` → `GET /training/sessions-feed`
+> - `docs/training-exercise-library-spec.md` → `GET /training/exercise-library`
+>
+> Kept for the product rationale + edge-case notes below; **§1–§2 endpoint/shape are
+> stale.** Do not implement from this file.
+
 > Architecture contract (fixed — see `CLAUDE.md` + `.claude/rules/architecture.md`):
 > - One screen → **one aggregate read-model** under `/api/v1`, not client fan-out.
 > - The aggregate is a **domain UC composing other domain UCs/repos**. It does
