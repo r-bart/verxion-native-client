@@ -6,6 +6,7 @@ import type { SessionFeedPage, SessionFeedParams } from "../models/SessionFeed";
 import type { ExerciseLibrary } from "../models/ExerciseLibrary";
 import type { RoutineLibrary } from "../models/RoutineLibrary";
 import type { RoutineDetailView } from "../models/RoutineDetailView";
+import type { DayDetailView } from "../models/DayDetailView";
 
 export interface ITrainingPort {
   getRoutineDashboard(): Promise<RoutineDashboard>;
@@ -13,6 +14,7 @@ export interface ITrainingPort {
   getExerciseLibrary(): Promise<ExerciseLibrary>;
   getRoutineLibrary(): Promise<RoutineLibrary>;
   getRoutineDetailView(id: string): Promise<RoutineDetailView>;
+  getDayDetailView(dayId: string): Promise<DayDetailView>;
   getRoutines(): Promise<Routine[]>;
   getRoutineDetail(id: string): Promise<RoutineDetail>;
   getWorkoutDayExercises(routineId: string, dayId: string): Promise<WorkoutDayExercise[]>;

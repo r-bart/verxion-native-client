@@ -205,6 +205,24 @@
         }
       }
     },
+    "dayDetail": {
+      "context": "{{routine}} · día {{day}}/{{total}}",
+      "exercisesUnit": "ejercicios",
+      "setsUnit": "series",
+      "minUnit": "min",
+      "volEstUnit": "vol. est.",
+      "key": "principal",
+      "target": "objetivo",
+      "last": "última · {{result}}",
+      "plan": "El plan",
+      "planCount": "{{count}} ejercicios · en orden",
+      "restTitle": "Día de descanso",
+      "restBody": "{{focus}}. Sin ejercicios programados — recupera y vuelve mañana.",
+      "ask": {
+        "title": "Cambia este día con el agente",
+        "body": "El plan es de solo lectura — para sustituir o reordenar ejercicios, díselo a verxion."
+      }
+    },
     "empty": {
       "title": "Aún no tienes una rutina",
       "body": "Pídele a verxion que te arme un plan y aparecerá aquí.",

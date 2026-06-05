@@ -205,6 +205,24 @@
         }
       }
     },
+    "dayDetail": {
+      "context": "{{routine}} · day {{day}}/{{total}}",
+      "exercisesUnit": "exercises",
+      "setsUnit": "sets",
+      "minUnit": "min",
+      "volEstUnit": "est. vol.",
+      "key": "main",
+      "target": "target",
+      "last": "last · {{result}}",
+      "plan": "The plan",
+      "planCount": "{{count}} exercises · in order",
+      "restTitle": "Rest day",
+      "restBody": "{{focus}}. No exercises scheduled — recover and come back tomorrow.",
+      "ask": {
+        "title": "Change this day with the agent",
+        "body": "The plan is read-only — to swap or reorder exercises, tell verxion."
+      }
+    },
     "empty": {
       "title": "No routine yet",
       "body": "Ask verxion to build you a plan and it'll show up here.",

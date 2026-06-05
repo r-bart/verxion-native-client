@@ -61,6 +61,7 @@ import { GetSessionFeedUseCase } from "@/application/training/GetSessionFeedUseC
 import { GetExerciseLibraryUseCase } from "@/application/training/GetExerciseLibraryUseCase";
 import { GetRoutineLibraryUseCase } from "@/application/training/GetRoutineLibraryUseCase";
 import { GetRoutineDetailViewUseCase } from "@/application/training/GetRoutineDetailViewUseCase";
+import { GetDayDetailViewUseCase } from "@/application/training/GetDayDetailViewUseCase";
 import { GetRoutinesUseCase } from "@/application/training/GetRoutinesUseCase";
 import { GetRoutineDetailUseCase } from "@/application/training/GetRoutineDetailUseCase";
 import { GetWorkoutDayExercisesUseCase } from "@/application/training/GetWorkoutDayExercisesUseCase";
@@ -202,6 +203,7 @@ export const container = {
   getExerciseLibrary: new GetExerciseLibraryUseCase(trainingRepo),
   getRoutineLibrary: new GetRoutineLibraryUseCase(trainingRepo),
   getRoutineDetailView: new GetRoutineDetailViewUseCase(trainingRepo),
+  getDayDetailView: new GetDayDetailViewUseCase(trainingRepo),
   getRoutines: new GetRoutinesUseCase(trainingRepo),
   getRoutineDetail: new GetRoutineDetailUseCase(trainingRepo),
   getWorkoutDayExercises: new GetWorkoutDayExercisesUseCase(trainingRepo),
