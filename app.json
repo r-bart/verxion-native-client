@@ -13,7 +13,8 @@
     "ios": {
       "bundleIdentifier": "app.verxion.native",
       "supportsTablet": false,
-      "usesAppleSignIn": true
+      "usesAppleSignIn": true,
+      "appleTeamId": "YJ37Y4TMK5"
     },
     "plugins": [
       [
@@ -34,7 +35,8 @@
       "expo-image",
       "expo-status-bar",
       "expo-web-browser",
-      "expo-apple-authentication"
+      "expo-apple-authentication",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,

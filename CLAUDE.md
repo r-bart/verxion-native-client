@@ -55,8 +55,21 @@ Every operation (read or write) flows through a Use Case. No shortcuts.
 ### Read-only first
 - This app does NOT create, update, or delete resources — except 3 quick
   actions: log weight, water, steps.
-- No workout session store, routine wizard, or exercise config. If a feature
-  requires CRUD, it belongs on the platform, not here.
+- One more write is allowed: **onboarding** (`POST /users/onboard`). It is the
+  entry gate, not content CRUD — a brand-new social sign-in has no athlete
+  profile, so there is nothing to view until it completes. Same justified
+  exception as the 3 micro-writes. The gate is `GET /users/me` →
+  `hasAthleteProfile`; `AuthGuard` routes profile-less users to `(onboarding)`.
+- **Account & settings management is also a write surface** (the `settings`
+  module): your profile (username, display name, bio), personal/fitness
+  preferences, app preferences, security (revoke sessions & connected apps),
+  and data/privacy (export, delete account). This is *account* management, not
+  *fitness-content* CRUD — the same justified-exception family as onboarding
+  and the micro-writes. The line is: **content** (workouts, routines, meals,
+  measurements beyond the 3 micro-writes) stays read-only and lives on the
+  platform; **your account** can be managed here.
+- No workout session store, routine wizard, or exercise config. If a *content*
+  feature requires CRUD, it belongs on the platform, not here.
 
 ### API communication
 - All data comes from a Verxion REST API (`${EXPO_PUBLIC_API_URL}/api/v1/*`).

@@ -23,6 +23,28 @@ jest.mock("expo-crypto", () => ({
   randomUUID: jest.fn(() => "test-nonce-uuid"),
 }));
 
+// Image picker — native module; stub the library launcher (default: canceled).
+jest.mock("expo-image-picker", () => ({
+  __esModule: true,
+  launchImageLibraryAsync: jest.fn().mockResolvedValue({ canceled: true, assets: [] }),
+  requestMediaLibraryPermissionsAsync: jest
+    .fn()
+    .mockResolvedValue({ granted: true, status: "granted" }),
+  MediaTypeOptions: { Images: "Images", Videos: "Videos", All: "All" },
+}));
+
+// Liquid Glass (iOS 26+) — unavailable in the test env; render the translucent
+// fallback path. GlassView passes through as a plain View.
+jest.mock("expo-glass-effect", () => {
+  const React = require("react");
+  const { View } = require("react-native");
+  return {
+    __esModule: true,
+    GlassView: ({ children, style }) => React.createElement(View, { style }, children),
+    isLiquidGlassAvailable: () => false,
+  };
+});
+
 // Mock react-native-worklets before reanimated tries to load it
 jest.mock("react-native-worklets", () => ({
   createRunOnJS: jest.fn(),

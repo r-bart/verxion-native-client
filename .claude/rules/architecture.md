@@ -234,6 +234,25 @@ Rules:
 - Default export (Expo Router requirement)
 - NO hooks, NO data fetching, NO logic
 
+### `_layout.tsx` navigators follow the same rule
+
+Layout files are routes too: keep them thin and delegate the navigator
+definition to a `presentation/` component — never author `<Stack>` / `<Tabs>` /
+`<NativeTabs>` config, hooks (`useTranslation`, etc.), or design-token imports
+in `app/`. Mirror the established `app/_layout.tsx` → `presentation/app/AppShell`
+and `app/(tabs)/_layout.tsx` → `presentation/app/TabLayout` split.
+
+```typescript
+// app/(tabs)/_layout.tsx
+import { TabLayout } from "@/presentation/app/TabLayout";
+export default function TabsLayout() {
+  return <TabLayout />;
+}
+```
+
+The navigator (triggers, icons, tints, i18n labels) lives in
+`presentation/app/TabLayout.tsx`.
+
 ## Module Inventory
 
 | Module | Domain models | Port | Repo | UCs |
@@ -244,6 +263,13 @@ Rules:
 | `measurements` | WeightLog, PerimeterLog | IMeasurementsPort | HttpMeasurementsRepository | LogWeight, ListWeightLogs, ListPerimeterLogs |
 | `activity` | StepLog, WaterLog | IActivityPort | HttpActivityRepository | LogSteps, LogWater, GetDailySteps, GetDailyWater |
 | `analytics` | Streak, WeekView, ContributionGrid | IAnalyticsPort | HttpAnalyticsRepository | GetStreaks, GetWeekView, GetContributionGrid |
+| `settings` | UserAccount, AthleteProfile, AuthSessionItem, ConnectedApp, PrivacyExportJob | ISettingsPort | HttpSettingsRepository | Get/Update Account, UpdatePreferences, Get/Update Profile, UpdateUsername, List/Revoke/RevokeAll Sessions, List/Revoke/UpdateScopes ConnectedApps, Request/GetLatest/GetExport, DeleteAccount |
+| `health` | HealthStatus | IHealthPort | HealthKitRepository (stub) | GetHealthStatus, RequestHealthAuthorization, SetHealthMetric |
+
+> **Note** — `settings` is a *write* module (account management), the deliberate
+> exception to read-only documented in `CLAUDE.md`. `health` is an Apple Health
+> scaffold: the port + stub adapter are real so DI/UI are wired now; the native
+> HealthKit binding swaps in behind `IHealthPort` later.
 
 ## Naming Conventions
 

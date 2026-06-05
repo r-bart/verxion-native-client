@@ -1,23 +1,17 @@
 import { useRef, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, TextInput, Pressable, ActivityIndicator, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 import { SignInCancelled } from "@/domain/auth";
 import { useSignInGoogle } from "../hooks/useSignInGoogle";
 import { useSignInApple } from "../hooks/useSignInApple";
 import { useSignIn } from "../hooks/useSignIn";
 import { AppleSignInButton } from "../components/AppleSignInButton";
-import { BrandLogo } from "@/presentation/_shared/components/BrandLogo";
 import { GoogleIcon } from "@/presentation/_shared/components/icons/GoogleIcon";
-import {
-  PROGRESS_COLORS,
-  METRIC_TYPOGRAPHY,
-} from "@/presentation/_shared/constants/progress-colors";
+import { Isotype } from "@/presentation/_shared/components/Isotype";
+import { Wordmark } from "@/presentation/_shared/components/Wordmark";
+import { tokens } from "@/presentation/_shared/design/tokens";
+import { sans, mono } from "@/presentation/_shared/design/fonts";
 
 // Taps on the logo needed to reveal the reviewer email/password form. Mirrors
 // the web app's `?reviewer=1` gate — a discoverability gesture, not security
@@ -46,8 +40,7 @@ export function LoginScreen() {
     if (tapCount.current >= REVIEWER_GESTURE_TAPS) setShowReviewerForm(true);
   };
 
-  const canSubmitReviewer =
-    email.length > 0 && password.length > 0 && !reviewer.isPending;
+  const canSubmitReviewer = email.length > 0 && password.length > 0 && !reviewer.isPending;
 
   const handleReviewerSignIn = () => {
     if (!canSubmitReviewer) return;
@@ -72,34 +65,43 @@ export function LoginScreen() {
 
   const inputStyle = {
     height: 52,
-    borderRadius: 16,
+    borderRadius: tokens.radius.lg,
     borderWidth: 1,
-    borderColor: PROGRESS_COLORS.tertiaryText + "40",
-    backgroundColor: PROGRESS_COLORS.cardBackground,
+    borderColor: tokens.color.border,
+    backgroundColor: tokens.color.input,
     paddingHorizontal: 16,
-    fontSize: 15,
-    color: PROGRESS_COLORS.primaryText,
+    fontFamily: mono(400),
+    fontSize: 14,
+    color: tokens.text.primary,
   } as const;
 
   return (
-    <SafeAreaView
-      className="flex-1"
-      style={{ backgroundColor: PROGRESS_COLORS.screenBackground }}
-    >
-      <View className="flex-1 justify-center" style={{ paddingHorizontal: 24 }}>
+    <SafeAreaView className="flex-1" style={{ backgroundColor: tokens.color.background }}>
+      {/* subtle lava glow from the top */}
+      <LinearGradient
+        colors={["rgba(255,98,98,0.10)", "rgba(255,98,98,0)"]}
+        style={{ position: "absolute", top: 0, left: 0, right: 0, height: "46%" }}
+        pointerEvents="none"
+      />
+
+      <View className="flex-1 justify-center" style={{ paddingHorizontal: 28 }}>
+        {/* brand */}
         <Pressable
           onPress={handleLogoTap}
           testID="brand-logo-tap"
-          style={{ alignItems: "center", marginBottom: 24 }}
+          style={{ alignItems: "center", marginBottom: 14 }}
         >
-          <BrandLogo width={120} height={72} />
+          <Isotype size={68} glow />
+          <Wordmark size={32} color={tokens.text.primary} align="center" style={{ marginTop: 18 }} />
         </Pressable>
         <Text
           style={{
-            ...METRIC_TYPOGRAPHY.cardSubtitle,
-            color: PROGRESS_COLORS.secondaryText,
+            fontFamily: mono(400),
+            fontSize: 13,
+            lineHeight: 20,
+            color: tokens.text.secondary,
             textAlign: "center",
-            marginBottom: 48,
+            marginBottom: 52,
           }}
         >
           Keep becoming your best version
@@ -123,27 +125,14 @@ export function LoginScreen() {
             }}
             disabled={isBusy}
             className="active:opacity-80"
-            style={{
-              height: 52,
-              borderRadius: 16,
-              backgroundColor: "#FFFFFF",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 12,
-              opacity: isBusy ? 0.6 : 1,
-            }}
+            style={[styles.googleButton, { opacity: isBusy ? 0.6 : 1 }]}
           >
             {google.isPending ? (
               <ActivityIndicator color="#1F1F1F" />
             ) : (
               <>
                 <GoogleIcon size={20} />
-                <Text
-                  style={{ fontSize: 16, fontWeight: "600", color: "#1F1F1F" }}
-                >
-                  Continue with Google
-                </Text>
+                <Text style={{ fontFamily: sans(600), fontSize: 15, color: "#1F1F1F" }}>Continue with Google</Text>
               </>
             )}
           </Pressable>
@@ -153,8 +142,11 @@ export function LoginScreen() {
           <View style={{ gap: 12, marginTop: 24 }} testID="reviewer-form">
             <Text
               style={{
-                ...METRIC_TYPOGRAPHY.cardSubtitle,
-                color: PROGRESS_COLORS.tertiaryText,
+                fontFamily: mono(600),
+                fontSize: 12,
+                letterSpacing: 0.9,
+                textTransform: "uppercase",
+                color: tokens.text.tertiary,
                 textAlign: "center",
               }}
             >
@@ -163,7 +155,7 @@ export function LoginScreen() {
             <TextInput
               testID="email-input"
               placeholder="Email"
-              placeholderTextColor={PROGRESS_COLORS.tertiaryText}
+              placeholderTextColor={tokens.text.tertiary}
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -174,7 +166,7 @@ export function LoginScreen() {
             <TextInput
               testID="password-input"
               placeholder="Password"
-              placeholderTextColor={PROGRESS_COLORS.tertiaryText}
+              placeholderTextColor={tokens.text.tertiary}
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -187,21 +179,17 @@ export function LoginScreen() {
               disabled={!canSubmitReviewer}
               className="active:opacity-80"
               style={{
-                backgroundColor: canSubmitReviewer
-                  ? PROGRESS_COLORS.positive.primary
-                  : PROGRESS_COLORS.cardBackground,
-                borderRadius: 16,
+                backgroundColor: canSubmitReviewer ? tokens.color.accent : tokens.color.card,
+                borderRadius: tokens.radius.lg,
                 paddingVertical: 16,
                 alignItems: "center",
               }}
             >
               <Text
                 style={{
-                  fontSize: 16,
-                  fontWeight: "700",
-                  color: canSubmitReviewer
-                    ? "#FFFFFF"
-                    : PROGRESS_COLORS.tertiaryText,
+                  fontFamily: sans(700),
+                  fontSize: 15,
+                  color: canSubmitReviewer ? tokens.color.accentForeground : tokens.text.tertiary,
                 }}
               >
                 {reviewer.isPending ? "Signing in..." : "Sign In"}
@@ -214,8 +202,10 @@ export function LoginScreen() {
           <Text
             testID="login-error"
             style={{
-              ...METRIC_TYPOGRAPHY.cardSubtitle,
-              color: PROGRESS_COLORS.health.primary,
+              fontFamily: mono(400),
+              fontSize: 12,
+              lineHeight: 16,
+              color: tokens.color.destructive,
               textAlign: "center",
               marginTop: 16,
             }}
@@ -227,3 +217,15 @@ export function LoginScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  googleButton: {
+    height: 52,
+    borderRadius: tokens.radius.lg,
+    backgroundColor: "#FFFFFF",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+  },
+});

@@ -10,6 +10,18 @@ export function createMockContainer(overrides: Partial<Record<string, any>> = {}
     signInApple: { execute: jest.fn().mockResolvedValue(null) },
     signOut: { execute: jest.fn() },
     getSession: { execute: jest.fn().mockResolvedValue(null) },
+    getCurrentUser: {
+      execute: jest.fn().mockResolvedValue({
+        id: "user-1",
+        authUserId: "auth-1",
+        email: "test@example.com",
+        name: "Test User",
+        username: "tester",
+        hasAthleteProfile: true,
+        language: null,
+        currentHealthConsentVersion: "1",
+      }),
+    },
     getStreaks: {
       execute: jest.fn().mockResolvedValue({ current: 0, longest: 0, lastActiveDate: "" }),
     },
@@ -70,8 +82,115 @@ export function createMockContainer(overrides: Partial<Record<string, any>> = {}
     getMonths: { execute: jest.fn().mockResolvedValue([]) },
     getMonthDetail: { execute: jest.fn() },
     getSessionReport: { execute: jest.fn() },
+
+    // Onboarding username check (reused by the settings Account editor).
+    checkUsername: {
+      execute: jest.fn().mockResolvedValue({ isAvailable: true, isValid: true }),
+    },
+
+    // Settings
+    getAccount: {
+      execute: jest.fn().mockResolvedValue({
+        id: "user-1",
+        email: "test@example.com",
+        name: "Test User",
+        username: "tester",
+        gender: "not_specified",
+        dateOfBirth: null,
+        heightCm: null,
+        measurementSystem: "metric",
+        experienceLevel: "beginner",
+        primaryGoal: null,
+        language: null,
+        currentHealthConsentVersion: "1",
+      }),
+    },
+    updateAccount: { execute: jest.fn().mockResolvedValue(undefined) },
+    updatePreferences: { execute: jest.fn().mockResolvedValue(undefined) },
+    getAthleteProfile: {
+      execute: jest.fn().mockResolvedValue({
+        username: "tester",
+        displayName: "Test User",
+        bio: null,
+        avatarUrl: null,
+        sportTags: [],
+        isPublic: false,
+        followerCount: 0,
+        followingCount: 0,
+        usernameChangedAt: null,
+        sectionVisibility: { bio: true, training: true, bodyMetrics: true, nutrition: true },
+        showcaseMetrics: [],
+        timelineDetailLevel: "summary",
+        requireFollowApproval: false,
+      }),
+    },
+    updateAthleteProfile: { execute: jest.fn().mockResolvedValue(undefined) },
+    updateUsername: { execute: jest.fn().mockResolvedValue(undefined) },
+    uploadAvatar: { execute: jest.fn().mockResolvedValue(undefined) },
+    removeAvatar: { execute: jest.fn().mockResolvedValue(undefined) },
+    updateVisibility: { execute: jest.fn().mockResolvedValue(undefined) },
+    updateShowcase: { execute: jest.fn().mockResolvedValue(undefined) },
+    updateTimelineDetail: { execute: jest.fn().mockResolvedValue(undefined) },
+    updateFollowApproval: { execute: jest.fn().mockResolvedValue(undefined) },
+    getFeedSharing: {
+      execute: jest.fn().mockResolvedValue({ training: false, nutrition: false, bodyMetrics: false }),
+    },
+    updateFeedSharing: { execute: jest.fn().mockResolvedValue(undefined) },
+    listAuthSessions: {
+      execute: jest.fn().mockResolvedValue({ items: [], total: 0 }),
+    },
+    revokeSession: { execute: jest.fn().mockResolvedValue(undefined) },
+    revokeAllSessions: {
+      execute: jest.fn().mockResolvedValue({ revokedCount: 0, keptCurrent: true }),
+    },
+    listConnectedApps: { execute: jest.fn().mockResolvedValue([]) },
+    revokeConnectedApp: { execute: jest.fn().mockResolvedValue(undefined) },
+    updateConnectedAppScopes: { execute: jest.fn().mockResolvedValue(undefined) },
+    requestDataExport: {
+      execute: jest.fn().mockResolvedValue({
+        id: "job-1",
+        status: "requested",
+        requestedAt: null,
+        expiresAt: null,
+      }),
+    },
+    getLatestExport: { execute: jest.fn().mockResolvedValue(null) },
+    getExportJob: { execute: jest.fn() },
+    deleteAccount: { execute: jest.fn().mockResolvedValue(undefined) },
+
+    // Health (stub adapter — unavailable in JS test/dev builds)
+    getHealthStatus: {
+      execute: jest.fn().mockResolvedValue({
+        available: false,
+        connected: false,
+        metrics: { weight: false, steps: false, water: false },
+      }),
+    },
+    requestHealthAuthorization: {
+      execute: jest.fn().mockResolvedValue({
+        available: false,
+        connected: false,
+        metrics: { weight: false, steps: false, water: false },
+      }),
+    },
+    setHealthMetric: {
+      execute: jest.fn().mockResolvedValue({
+        available: false,
+        connected: false,
+        metrics: { weight: false, steps: false, water: false },
+      }),
+    },
   };
-  return { ...defaultMocks, ...overrides };
+  // Cross-cutting services (not use-cases) and static config.
+  const services: Record<string, any> = {
+    languagePreference: {
+      getStoredLanguage: jest.fn().mockResolvedValue(null),
+      setStoredLanguage: jest.fn().mockResolvedValue(undefined),
+    },
+    appInfo: { version: "0.0.0-test" },
+    telemetry: { track: jest.fn(), identify: jest.fn() },
+  };
+  return { ...defaultMocks, ...services, ...overrides };
 }
 
 export function createTestQueryClient() {
