@@ -3,7 +3,9 @@ import type { Routine, RoutineDetail, WorkoutDay, WorkoutDayExercise } from "@/d
 import type { ExerciseConfigurationData } from "@/domain/training/models/ExerciseConfiguration";
 import type { ProgressionPlan, ProgressionExercise } from "@/domain/training/models/ProgressionPlan";
 import type { RoutineDashboard } from "@/domain/training/models/RoutineDashboard";
+import type { SessionsSummary } from "@/domain/training/models/SessionsSummary";
 import { routineDashboardFixture } from "@/domain/training/__fixtures__/routineDashboardFixture";
+import { sessionsSummaryFixture } from "@/domain/training/__fixtures__/sessionsSummaryFixture";
 import { apiClient, ApiError } from "../api/apiClient";
 
 export class HttpTrainingRepository implements ITrainingPort {
@@ -18,6 +20,15 @@ export class HttpTrainingRepository implements ITrainingPort {
    */
   async getRoutineDashboard(): Promise<RoutineDashboard> {
     return routineDashboardFixture;
+  }
+
+  /**
+   * Entreno landing "Sesiones" recap — proposed platform read-model.
+   * STUB until `GET /training/sessions-summary` ships; then swap for:
+   *   `return apiClient.get<SessionsSummary>("/training/sessions-summary");`
+   */
+  async getSessionsSummary(): Promise<SessionsSummary> {
+    return sessionsSummaryFixture;
   }
 
   async getRoutines(): Promise<Routine[]> {

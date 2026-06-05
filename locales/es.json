@@ -83,6 +83,13 @@
       "subtitle": "tu rotación",
       "exercisesCount": "{{count}} ejercicios"
     },
+    "sessionsSummary": {
+      "statSessions": "Sesiones",
+      "statVolume": "Volumen",
+      "statTrend": "vs. previa",
+      "recentTitle": "Historial reciente",
+      "seeAll": "Ver todo"
+    },
     "empty": {
       "title": "Aún no tienes una rutina",
       "body": "Pídele a verxion que te arme un plan y aparecerá aquí.",

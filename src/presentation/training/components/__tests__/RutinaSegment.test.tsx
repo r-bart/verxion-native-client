@@ -23,7 +23,6 @@ describe("RutinaSegment", () => {
     // The hero name proves we left the skeleton and painted the aggregate —
     // the exact regression the placeholderData/isLoading guard hid.
     await waitFor(() => expect(getByText("PPL Hipertrofia")).toBeTruthy());
-    expect(getByText(routineDashboardFixture.agentNote!)).toBeTruthy();
   });
 
   it("shows the error state with a retry when the read fails", async () => {

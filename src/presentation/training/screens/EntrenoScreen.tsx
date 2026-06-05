@@ -17,6 +17,7 @@ import { sans } from "@/presentation/_shared/design/fonts";
 import { SegmentedControl } from "../components/SegmentedControl";
 import { useEntrenoSegment } from "../hooks/useEntrenoSegment";
 import { RutinaSegment } from "../components/RutinaSegment";
+import { SesionesSegment } from "../components/SesionesSegment";
 import { WipBody } from "../components/WipBody";
 
 export function EntrenoScreen() {
@@ -67,6 +68,8 @@ export function EntrenoScreen() {
         >
           {segment === "routine" ? (
             <RutinaSegment />
+          ) : segment === "sessions" ? (
+            <SesionesSegment />
           ) : (
             <WipBody screen={t(`training.segments.${segment}`)} />
           )}

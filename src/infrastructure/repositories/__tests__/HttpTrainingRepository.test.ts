@@ -1,5 +1,6 @@
 import { HttpTrainingRepository } from "../HttpTrainingRepository";
 import { routineDashboardFixture } from "@/domain/training/__fixtures__/routineDashboardFixture";
+import { sessionsSummaryFixture } from "@/domain/training/__fixtures__/sessionsSummaryFixture";
 
 jest.mock("../../api/apiClient", () => ({
   apiClient: { get: jest.fn() },
@@ -23,6 +24,15 @@ describe("HttpTrainingRepository", () => {
       expect(result).toBe(routineDashboardFixture);
       expect(result.state).toBe("active");
       expect(result.spine).toHaveLength(7);
+    });
+  });
+
+  describe("getSessionsSummary", () => {
+    it("returns the sessions-summary aggregate (stub of the proposed endpoint)", async () => {
+      const result = await repo.getSessionsSummary();
+      expect(result).toBe(sessionsSummaryFixture);
+      expect(result.recent).toHaveLength(6);
+      expect(result.stats.sessions).toBe(14);
     });
   });
 });

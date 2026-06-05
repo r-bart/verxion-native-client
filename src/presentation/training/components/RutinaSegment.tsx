@@ -1,8 +1,11 @@
 /**
  * RutinaSegment — the Entreno landing's primary segment (the active-routine day
- * view). Composes the hero, the next action (live banner or next session), the
- * agent note, and the weekly spine over the RoutineDashboard aggregate. Empty
- * state (no routine) invites the user to the agent. Loading → skeleton.
+ * view). Composes the hero, the next action (live banner or next session), and
+ * the weekly spine over the RoutineDashboard aggregate. Empty state (no routine)
+ * invites the user to the agent. Loading → skeleton.
+ *
+ * Note: the agent note (`data.agentNote` → `AgentNoteCard`) is parked here until
+ * the insights work lands — the aggregate still carries the field.
  */
 import { View, Text, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -15,8 +18,8 @@ import { useRoutineDashboard } from "../hooks/useRoutineDashboard";
 import { RoutineHero } from "./RoutineHero";
 import { NextSessionCard } from "./NextSessionCard";
 import { WeekSpine } from "./WeekSpine";
-import { AgentNoteCard } from "./AgentNoteCard";
 import { RoutineDashboardSkeleton } from "./RoutineDashboardSkeleton";
+import { SegmentError } from "./SegmentError";
 
 function EmptyRoutine() {
   const { t } = useTranslation();
@@ -67,27 +70,11 @@ function LiveBanner({ name }: { name: string }) {
   );
 }
 
-function ErrorRoutine({ onRetry }: { onRetry: () => void }) {
-  const { t } = useTranslation();
-  return (
-    <GlassSurface radius={20} style={{ padding: 22, alignItems: "center", gap: 12 }}>
-      <Text style={{ fontFamily: sans(700), fontSize: 16, color: glass.white, textAlign: "center" }}>
-        {t("common.somethingWentWrong")}
-      </Text>
-      <Pressable onPress={onRetry} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}>
-        <View style={{ paddingHorizontal: 18, paddingVertical: 11, borderRadius: 9999, backgroundColor: glass.lava }}>
-          <Text style={{ fontFamily: sans(700), fontSize: 14, color: glass.fgOnLava }}>{t("common.retry")}</Text>
-        </View>
-      </Pressable>
-    </GlassSurface>
-  );
-}
-
 export function RutinaSegment() {
   const { data, isLoading, isError, refetch } = useRoutineDashboard();
 
   if (isLoading) return <RoutineDashboardSkeleton />;
-  if (isError || !data) return <ErrorRoutine onRetry={() => refetch()} />;
+  if (isError || !data) return <SegmentError onRetry={() => refetch()} />;
   if (data.state === "empty" || !data.activeRoutine) return <EmptyRoutine />;
 
   return (
@@ -98,7 +85,6 @@ export function RutinaSegment() {
       ) : data.next ? (
         <NextSessionCard next={data.next} />
       ) : null}
-      {data.agentNote && <AgentNoteCard message={data.agentNote} />}
       <WeekSpine spine={data.spine} />
     </View>
   );
