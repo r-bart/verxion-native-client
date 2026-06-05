@@ -2,9 +2,24 @@ import type { ITrainingPort } from "@/domain/training/ports/ITrainingPort";
 import type { Routine, RoutineDetail, WorkoutDay, WorkoutDayExercise } from "@/domain/training/models/Routine";
 import type { ExerciseConfigurationData } from "@/domain/training/models/ExerciseConfiguration";
 import type { ProgressionPlan, ProgressionExercise } from "@/domain/training/models/ProgressionPlan";
+import type { RoutineDashboard } from "@/domain/training/models/RoutineDashboard";
+import { routineDashboardFixture } from "@/domain/training/__fixtures__/routineDashboardFixture";
 import { apiClient, ApiError } from "../api/apiClient";
 
 export class HttpTrainingRepository implements ITrainingPort {
+  /**
+   * Entreno landing "Rutina" aggregate — proposed platform read-model.
+   *
+   * STUB: the platform endpoint isn't built yet, so this returns the typed
+   * contract fixture (same justified pattern as `HealthKitRepository`). When
+   * `GET /training/routine-dashboard` ships, swap the body for:
+   *   `return apiClient.get<RoutineDashboard>("/training/routine-dashboard");`
+   * and register the endpoint in the contract drift guard.
+   */
+  async getRoutineDashboard(): Promise<RoutineDashboard> {
+    return routineDashboardFixture;
+  }
+
   async getRoutines(): Promise<Routine[]> {
     return apiClient.get<Routine[]>("/routines");
   }

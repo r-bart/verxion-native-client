@@ -56,6 +56,7 @@ import { GetMonthsUseCase } from "@/application/progress/GetMonthsUseCase";
 import { GetMonthDetailUseCase } from "@/application/progress/GetMonthDetailUseCase";
 import { GetSessionReportUseCase } from "@/application/progress/GetSessionReportUseCase";
 
+import { GetRoutineDashboardUseCase } from "@/application/training/GetRoutineDashboardUseCase";
 import { GetRoutinesUseCase } from "@/application/training/GetRoutinesUseCase";
 import { GetRoutineDetailUseCase } from "@/application/training/GetRoutineDetailUseCase";
 import { GetWorkoutDayExercisesUseCase } from "@/application/training/GetWorkoutDayExercisesUseCase";
@@ -192,6 +193,7 @@ export const container = {
   getSessionReport: new GetSessionReportUseCase(progressRepo),
 
   // Training (routines & workout days)
+  getRoutineDashboard: new GetRoutineDashboardUseCase(trainingRepo),
   getRoutines: new GetRoutinesUseCase(trainingRepo),
   getRoutineDetail: new GetRoutineDetailUseCase(trainingRepo),
   getWorkoutDayExercises: new GetWorkoutDayExercisesUseCase(trainingRepo),

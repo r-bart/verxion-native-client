@@ -55,6 +55,39 @@
       "sessionDetail": "Sesión",
       "exercise": "Ejercicio"
     },
+    "dayType": {
+      "push": "Push",
+      "pull": "Pull",
+      "legs": "Legs",
+      "core": "Core",
+      "rest": "Descanso"
+    },
+    "routine": {
+      "activeEyebrow": "Rutina activa",
+      "week": "Semana {{week}} de {{weeks}}",
+      "sessions": "{{done}} de {{planned}} sesiones",
+      "score": {
+        "ahead": "Vas adelantado",
+        "on": "En objetivo",
+        "behind": "Vas justo"
+      }
+    },
+    "next": {
+      "today": "Hoy toca",
+      "rest": "Hoy descansas",
+      "start": "Empezar sesión",
+      "meta": "{{exercises}} ejercicios · {{sets}} series · ~{{min}} min"
+    },
+    "spine": {
+      "title": "La semana",
+      "subtitle": "tu rotación",
+      "exercisesCount": "{{count}} ejercicios"
+    },
+    "empty": {
+      "title": "Aún no tienes una rutina",
+      "body": "Pídele a verxion que te arme un plan y aparecerá aquí.",
+      "cta": "Hablar con verxion"
+    },
     "wip": "En construcción"
   },
   "settings": {

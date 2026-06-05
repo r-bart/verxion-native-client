@@ -1,7 +1,7 @@
 /**
  * EntrenoScreen — the landing and spine of the Entreno tab. Header (title +
  * library button → Rutinas) over a sliding `SegmentedControl` with three
- * sections: Rutina (the day cockpit), Sesiones (recent history), Ejercicios
+ * sections: Rutina (the active-routine day view), Sesiones (recent history), Ejercicios
  * (the exercise library). Phase 0 wires the segments + navigation skeleton;
  * each section's real composition lands in later phases.
  */
@@ -16,6 +16,7 @@ import { glass } from "@/presentation/_shared/design/glass";
 import { sans } from "@/presentation/_shared/design/fonts";
 import { SegmentedControl } from "../components/SegmentedControl";
 import { useEntrenoSegment } from "../hooks/useEntrenoSegment";
+import { RutinaSegment } from "../components/RutinaSegment";
 import { WipBody } from "../components/WipBody";
 
 export function EntrenoScreen() {
@@ -60,8 +61,15 @@ export function EntrenoScreen() {
           <SegmentedControl options={options} value={segment} onChange={setSegment} />
         </View>
 
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-          <WipBody screen={t(`training.segments.${segment}`)} />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 16, paddingTop: 16, paddingBottom: 32 }}
+          showsVerticalScrollIndicator={false}
+        >
+          {segment === "routine" ? (
+            <RutinaSegment />
+          ) : (
+            <WipBody screen={t(`training.segments.${segment}`)} />
+          )}
         </ScrollView>
       </SafeAreaView>
     </View>
