@@ -9,6 +9,7 @@ describe("GetExerciseLibraryUseCase", () => {
       getSessionFeed: jest.fn(),
       getExerciseLibrary: jest.fn().mockResolvedValue(exerciseLibraryFixture),
       getRoutineLibrary: jest.fn(),
+      getRoutineDetailView: jest.fn(),
       getRoutines: jest.fn(),
       getRoutineDetail: jest.fn(),
       getWorkoutDayExercises: jest.fn(),

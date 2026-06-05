@@ -173,6 +173,38 @@
       "name": "Alphabetical",
       "adherence": "Adherence"
     },
+    "routineDetail": {
+      "perWeekUnit": "days/wk",
+      "weeksUnit": "weeks",
+      "sessionsUnit": "sessions",
+      "adherenceUnit": "adherence",
+      "volumeUnit": "volume",
+      "progressMeta": "{{done}} of {{planned}} sessions",
+      "rotation": "The rotation",
+      "rotationCount": "{{days}} training days · {{rest}} rest",
+      "rotationCountNoRest": "{{days}} training days",
+      "today": "today",
+      "dayMeta": "{{ex}} exercises · {{sets}} sets · {{est}}",
+      "sessionsLink": "Sessions in this block",
+      "ask": {
+        "adjust": {
+          "title": "Adjust this routine with the agent",
+          "body": "The routine is read-only. Changes are made by verxion via chat."
+        },
+        "activate": {
+          "title": "Ask verxion to activate this routine",
+          "body": "It's a draft — the agent starts it when you ask."
+        },
+        "resume": {
+          "title": "Ask verxion to resume it",
+          "body": "The routine is read-only. Changes are made by verxion via chat."
+        },
+        "repeat": {
+          "title": "Ask verxion to repeat or adjust it",
+          "body": "The routine is read-only. Changes are made by verxion via chat."
+        }
+      }
+    },
     "empty": {
       "title": "No routine yet",
       "body": "Ask verxion to build you a plan and it'll show up here.",

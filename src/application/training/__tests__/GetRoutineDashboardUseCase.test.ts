@@ -31,6 +31,7 @@ describe("GetRoutineDashboardUseCase", () => {
       getSessionFeed: jest.fn(),
       getExerciseLibrary: jest.fn(),
       getRoutineLibrary: jest.fn(),
+      getRoutineDetailView: jest.fn(),
       getRoutines: jest.fn(),
       getRoutineDetail: jest.fn(),
       getWorkoutDayExercises: jest.fn(),

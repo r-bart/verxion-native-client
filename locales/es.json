@@ -173,6 +173,38 @@
       "name": "Alfabético",
       "adherence": "Adherencia"
     },
+    "routineDetail": {
+      "perWeekUnit": "días/sem",
+      "weeksUnit": "semanas",
+      "sessionsUnit": "sesiones",
+      "adherenceUnit": "adherencia",
+      "volumeUnit": "volumen",
+      "progressMeta": "{{done}} de {{planned}} sesiones",
+      "rotation": "La rotación",
+      "rotationCount": "{{days}} días de entreno · {{rest}} descanso",
+      "rotationCountNoRest": "{{days}} días de entreno",
+      "today": "hoy",
+      "dayMeta": "{{ex}} ejercicios · {{sets}} series · {{est}}",
+      "sessionsLink": "Sesiones de este bloque",
+      "ask": {
+        "adjust": {
+          "title": "Ajusta esta rutina con el agente",
+          "body": "La rutina es de solo lectura. Los cambios los hace verxion vía chat."
+        },
+        "activate": {
+          "title": "Pídele a verxion que active esta rutina",
+          "body": "Es un borrador — el agente la pone en marcha cuando se lo dices."
+        },
+        "resume": {
+          "title": "Pídele a verxion que la reanude",
+          "body": "La rutina es de solo lectura. Los cambios los hace verxion vía chat."
+        },
+        "repeat": {
+          "title": "Pídele a verxion que la repita o la ajuste",
+          "body": "La rutina es de solo lectura. Los cambios los hace verxion vía chat."
+        }
+      }
+    },
     "empty": {
       "title": "Aún no tienes una rutina",
       "body": "Pídele a verxion que te arme un plan y aparecerá aquí.",

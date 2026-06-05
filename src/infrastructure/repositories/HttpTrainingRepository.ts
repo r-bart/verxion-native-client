@@ -6,10 +6,12 @@ import type { RoutineDashboard } from "@/domain/training/models/RoutineDashboard
 import type { SessionFeedPage, SessionFeedParams } from "@/domain/training/models/SessionFeed";
 import type { ExerciseLibrary } from "@/domain/training/models/ExerciseLibrary";
 import type { RoutineLibrary } from "@/domain/training/models/RoutineLibrary";
+import type { RoutineDetailView } from "@/domain/training/models/RoutineDetailView";
 import { routineDashboardFixture } from "@/domain/training/__fixtures__/routineDashboardFixture";
 import { sessionFeedFixture } from "@/domain/training/__fixtures__/sessionFeedFixture";
 import { exerciseLibraryFixture } from "@/domain/training/__fixtures__/exerciseLibraryFixture";
 import { routineLibraryFixture } from "@/domain/training/__fixtures__/routineLibraryFixture";
+import { routineDetailFixtureFor } from "@/domain/training/__fixtures__/routineDetailFixture";
 import { apiClient, ApiError } from "../api/apiClient";
 
 export class HttpTrainingRepository implements ITrainingPort {
@@ -54,6 +56,17 @@ export class HttpTrainingRepository implements ITrainingPort {
    */
   async getRoutineLibrary(): Promise<RoutineLibrary> {
     return routineLibraryFixture;
+  }
+
+  /**
+   * "Detalle de rutina" aggregate — proposed platform read-model.
+   * STUB until `GET /training/routines/{id}/detail` ships; then swap for:
+   *   `return apiClient.get<RoutineDetailView>(`/training/routines/${id}/detail`);`
+   * The backend composes it from the raw routine + days + per-day exercise counts
+   * (see `getRoutineDetail` / `getWorkoutDayExercises`).
+   */
+  async getRoutineDetailView(id: string): Promise<RoutineDetailView> {
+    return routineDetailFixtureFor(id);
   }
 
   async getRoutines(): Promise<Routine[]> {
