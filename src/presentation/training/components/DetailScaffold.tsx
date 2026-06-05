@@ -4,7 +4,10 @@
  * and a scrolling content area. Keeps each screen thin (compose, don't plumb).
  */
 import { View, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
 import { glass } from "@/presentation/_shared/design/glass";
 import { DetailHeader } from "./DetailHeader";
@@ -15,14 +18,25 @@ type Props = {
   children: React.ReactNode;
 };
 
+// The native liquid-glass tab bar floats over the content; SafeAreaView only
+// claims the top edge, so the scroll runs to the screen bottom (behind the bar).
+// Clear it with the home-indicator inset plus the tab bar's own height so the
+// last card scrolls fully clear instead of hiding under the bar.
+const TAB_BAR_CLEARANCE = 64;
+
 export function DetailScaffold({ title, right, children }: Props) {
+  const insets = useSafeAreaInsets();
   return (
     <View style={{ flex: 1, backgroundColor: glass.screenBg }}>
       <ScreenBloom />
       <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
         <DetailHeader title={title} right={right} />
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 16, paddingBottom: 32 }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingHorizontal: 16,
+            paddingBottom: insets.bottom + TAB_BAR_CLEARANCE,
+          }}
           showsVerticalScrollIndicator={false}
         >
           {children}

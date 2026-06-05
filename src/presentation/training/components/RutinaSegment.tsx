@@ -8,6 +8,7 @@
  * the insights work lands — the aggregate still carries the field.
  */
 import { View, Text, Pressable, ScrollView } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useRouter, type Href } from "expo-router";
 import { Rows3, ChevronRight } from "lucide-react-native";
@@ -157,6 +158,7 @@ function LiveBanner({ name }: { name: string }) {
 }
 
 export function RutinaSegment() {
+  const insets = useSafeAreaInsets();
   const { data, isLoading, isError, refetch } = useRoutineDashboard();
 
   let body: React.ReactNode;
@@ -183,7 +185,7 @@ export function RutinaSegment() {
       contentContainerStyle={{
         paddingHorizontal: 16,
         paddingTop: 16,
-        paddingBottom: 32,
+        paddingBottom: insets.bottom + 64,
         flexGrow: 1,
       }}
       showsVerticalScrollIndicator={false}
