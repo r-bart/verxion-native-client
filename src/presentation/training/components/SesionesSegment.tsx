@@ -10,6 +10,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { Layers, ChevronDown, ArrowUpDown } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
+import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import type {
@@ -42,6 +44,7 @@ export function SesionesSegment() {
 
   const feed = useSessionFeed(routineId, sort);
   const { data: routines } = useRoutines();
+  const refresh = usePullToRefresh(feed.refetch);
 
   const routineLabel = routineId
     ? routines?.find((r) => r.id === routineId)?.name ??
@@ -165,6 +168,7 @@ export function SesionesSegment() {
         }
         contentContainerStyle={contentContainerStyle}
         showsVerticalScrollIndicator={false}
+        refreshControl={<GlassRefreshControl {...refresh} />}
         onEndReachedThreshold={0.5}
         onEndReached={() =>
           feed.hasNextPage && !feed.isFetchingNextPage && feed.fetchNextPage()

@@ -15,6 +15,8 @@ import { useRouter, type Href } from "expo-router";
 import { Rows3, ChevronRight } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { Isotype } from "@/presentation/_shared/components/Isotype";
+import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
+import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { useRoutineDashboard } from "../hooks/useRoutineDashboard";
@@ -161,7 +163,8 @@ function LiveBanner({ name }: { name: string }) {
 export function RutinaSegment() {
   const insets = useSafeAreaInsets();
   const { data, isLoading, isError, refetch } = useRoutineDashboard();
-  
+  const refresh = usePullToRefresh(refetch);
+
   const contentContainerStyle = useMemo(() => ({
     paddingHorizontal: 16,
     paddingTop: 16,
@@ -192,6 +195,7 @@ export function RutinaSegment() {
     <ScrollView
       contentContainerStyle={contentContainerStyle}
       showsVerticalScrollIndicator={false}
+      refreshControl={<GlassRefreshControl {...refresh} />}
     >
       {body}
     </ScrollView>

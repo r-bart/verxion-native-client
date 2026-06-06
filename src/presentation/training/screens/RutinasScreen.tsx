@@ -20,6 +20,8 @@ import {
 } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { BottomSheet } from "@/presentation/_shared/components/BottomSheet";
+import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
+import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { DetailScaffold } from "../components/DetailScaffold";
@@ -201,7 +203,7 @@ function AskAgentSurface() {
       accessibilityRole="button"
       style={({ pressed }) => ({
         opacity: pressed ? glass.pressOpacity : 1,
-        marginTop: 22,
+        marginTop: 32,
       })}
     >
       <GlassSurface
@@ -259,6 +261,7 @@ export function RutinasScreen() {
   const { data, isLoading, isError, refetch } = useRoutineLibrary();
   const view = useRoutineLibraryView(data);
   const [sheet, setSheet] = useState<"filter" | "sort" | null>(null);
+  const refresh = usePullToRefresh(refetch);
 
   if (isLoading) {
     return (
@@ -290,7 +293,7 @@ export function RutinasScreen() {
   const resultCount = view.results.length;
 
   return (
-    <DetailScaffold title={t("training.screens.routines")}>
+    <DetailScaffold title={t("training.screens.routines")} refreshControl={<GlassRefreshControl {...refresh} />}>
       <View style={{ gap: 6, paddingTop: 4, paddingBottom: 14 }}>
         <Text
           style={{

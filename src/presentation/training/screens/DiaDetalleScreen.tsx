@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { ChevronRight, Sparkles, Moon } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
+import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
+import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
 import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
@@ -82,6 +84,7 @@ export function DiaDetalleScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data, isLoading, isError, refetch } = useDayDetailView(id ?? "");
+  const refresh = usePullToRefresh(refetch);
 
   if (isLoading) {
     return (
@@ -107,7 +110,7 @@ export function DiaDetalleScreen() {
 
   if (data.isRest) {
     return (
-      <DetailScaffold title={data.header.name}>
+      <DetailScaffold title={data.header.name} refreshControl={<GlassRefreshControl {...refresh} />}>
         <View style={{ paddingTop: 4, gap: 18 }}>
           <GlassSurface
             radius={24}
@@ -146,7 +149,7 @@ export function DiaDetalleScreen() {
   }
 
   return (
-    <DetailScaffold title={data.header.name}>
+    <DetailScaffold title={data.header.name} refreshControl={<GlassRefreshControl {...refresh} />}>
       <View style={{ paddingTop: 4, gap: 18 }}>
         <DayDetailHero header={data.header} />
 

@@ -11,6 +11,8 @@ import { useTranslation } from "react-i18next";
 import { Search, SlidersHorizontal, ArrowUpDown, X } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { BottomSheet } from "@/presentation/_shared/components/BottomSheet";
+import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
+import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { useExerciseLibrary } from "../hooks/useExerciseLibrary";
@@ -70,6 +72,7 @@ export function EjerciciosSegment() {
   const { data, isLoading, isError, refetch } = useExerciseLibrary();
   const view = useExerciseLibraryView(data);
   const [sheet, setSheet] = useState<"filter" | "sort" | null>(null);
+  const refresh = usePullToRefresh(refetch);
 
   const renderExerciseItem = ({ item }: { item: any }) => (
     <View style={{ marginBottom: 8 }}>
@@ -192,6 +195,7 @@ export function EjerciciosSegment() {
         contentContainerStyle={contentContainerStyle}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
+        refreshControl={<GlassRefreshControl {...refresh} />}
       />
 
       <BottomSheet

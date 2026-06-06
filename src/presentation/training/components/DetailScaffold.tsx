@@ -4,7 +4,7 @@
  * and a scrolling content area. Keeps each screen thin (compose, don't plumb).
  */
 import { useMemo } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, type ScrollViewProps } from "react-native";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -17,6 +17,8 @@ type Props = {
   title?: string;
   right?: React.ReactNode;
   children: React.ReactNode;
+  /** Pull-to-refresh control (from `usePullToRefresh`) for the scroll area. */
+  refreshControl?: ScrollViewProps["refreshControl"];
 };
 
 // The native liquid-glass tab bar floats over the content; SafeAreaView only
@@ -25,7 +27,7 @@ type Props = {
 // last card scrolls fully clear instead of hiding under the bar.
 const TAB_BAR_CLEARANCE = 64;
 
-export function DetailScaffold({ title, right, children }: Props) {
+export function DetailScaffold({ title, right, children, refreshControl }: Props) {
   const insets = useSafeAreaInsets();
   
   const contentContainerStyle = useMemo(() => ({
@@ -42,6 +44,7 @@ export function DetailScaffold({ title, right, children }: Props) {
         <ScrollView
           contentContainerStyle={contentContainerStyle}
           showsVerticalScrollIndicator={false}
+          refreshControl={refreshControl}
         >
           {children}
         </ScrollView>

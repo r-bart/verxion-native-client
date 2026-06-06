@@ -11,6 +11,8 @@ import { useTranslation } from "react-i18next";
 import { ChevronRight, Layers, Star, Activity } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { Isotype } from "@/presentation/_shared/components/Isotype";
+import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
+import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { DetailScaffold } from "../components/DetailScaffold";
@@ -177,6 +179,7 @@ export function SesionDetalleScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data, isLoading, isError, refetch } = useSessionDetailView(id ?? "");
+  const refresh = usePullToRefresh(refetch);
 
   if (isLoading) {
     return (
@@ -211,7 +214,7 @@ export function SesionDetalleScreen() {
   }
 
   return (
-    <DetailScaffold title={data.header.name}>
+    <DetailScaffold title={data.header.name} refreshControl={<GlassRefreshControl {...refresh} />}>
       <View style={{ paddingTop: 4, gap: 18 }}>
         <SessionDetailHero header={data.header} />
         {data.recap ? <RecapCard message={data.recap} /> : null}

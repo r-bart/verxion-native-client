@@ -11,13 +11,16 @@
  *   timeline ("la espina"); an empty timeline on an otherwise-active day still
  *   shows the ghost timeline rather than dead space.
  */
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Pressable, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { Sparkles } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
+import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
+import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
 import { glass } from "@/presentation/_shared/design/glass";
+import { sans } from "@/presentation/_shared/design/fonts";
 import { useTodayDashboard } from "../hooks/useTodayDashboard";
 import { TodayHeader } from "../components/TodayHeader";
 import { DaySummary } from "../components/DaySummary";
@@ -32,9 +35,34 @@ function Divider() {
   return <View style={{ height: 1, backgroundColor: glass.stroke }} />;
 }
 
+function RetryButton({ onPress }: { onPress: () => void }) {
+  const { t } = useTranslation();
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
+    >
+      <View
+        style={{
+          paddingHorizontal: 18,
+          paddingVertical: 11,
+          borderRadius: 9999,
+          backgroundColor: glass.lava,
+        }}
+      >
+        <Text style={{ fontFamily: sans(700), fontSize: 14, color: glass.fgOnLava }}>
+          {t("common.retry")}
+        </Text>
+      </View>
+    </Pressable>
+  );
+}
+
 export function TodayScreen() {
   const { t } = useTranslation();
-  const { data, isLoading, isError } = useTodayDashboard();
+  const { data, isLoading, isError, refetch } = useTodayDashboard();
+  const refresh = usePullToRefresh(refetch);
 
   // The empty day: a cold-start (no fronts/plan/events), or a sparse day with
   // nothing logged and too few fronts for a meaningful ring. Both become the
@@ -56,11 +84,13 @@ export function TodayScreen() {
             icon={<Sparkles size={28} color={glass.lava} strokeWidth={2} />}
             title={t("today.error.title")}
             body={t("today.error.body")}
+            action={<RetryButton onPress={() => refetch()} />}
           />
         ) : showEmpty ? (
           <ScrollView
             contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 120, gap: 22 }}
             showsVerticalScrollIndicator={false}
+            refreshControl={<GlassRefreshControl {...refresh} />}
           >
             <TodayHeader date={data.date} />
             <TodayEmptyState />
@@ -69,6 +99,7 @@ export function TodayScreen() {
           <ScrollView
             contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 120, gap: 20 }}
             showsVerticalScrollIndicator={false}
+            refreshControl={<GlassRefreshControl {...refresh} />}
           >
             <TodayHeader date={data.date} />
             <DaySummary ring={data.ring} fronts={data.fronts} />
