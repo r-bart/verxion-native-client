@@ -9,7 +9,17 @@ jest.mock("react-native-safe-area-context", () => ({
 
 const mockBack = jest.fn();
 const mockPush = jest.fn();
-jest.mock("expo-router", () => ({ useRouter: () => ({ back: mockBack, push: mockPush }) }));
+const mockReplace = jest.fn();
+jest.mock("expo-router", () => ({
+  useRouter: () => ({
+    back: mockBack,
+    push: mockPush,
+    replace: mockReplace,
+    dismissAll: jest.fn(),
+    canDismiss: () => false,
+    canGoBack: () => true,
+  }),
+}));
 
 const mockChangeLanguage = jest.fn();
 jest.mock("react-i18next", () => ({
@@ -32,6 +42,9 @@ describe("SettingsScreen (hub)", () => {
     fireEvent.press(getByTestId("sign-out"));
 
     await waitFor(() => expect(execute).toHaveBeenCalled());
+    // Logout completes by redirecting to login; await it so the mutation's
+    // post-success state updates settle inside act().
+    await waitFor(() => expect(mockReplace).toHaveBeenCalledWith("/(auth)/login"));
   });
 
   it("switches language via the toggle and persists it", () => {

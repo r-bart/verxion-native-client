@@ -1,6 +1,6 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useRouter, type Href } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ChevronLeft } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
@@ -25,6 +25,16 @@ export function SettingsScaffold({ title, subtitle, children, footer }: Props) {
   const router = useRouter();
   const { t } = useTranslation();
 
+  // Settings is pushed over the tab bar, so back normally pops within this
+  // stack (subscreen → hub) or dismisses it (hub → tabs). But when settings is
+  // the only route on the stack — a dev reload that lands on /settings, or a
+  // deep link straight into it — there is nothing to pop and `router.back()`
+  // throws "GO_BACK was not handled". Fall back to the home tab in that case.
+  const handleBack = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace("/(tabs)/today" as Href);
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: glass.screenBg }}>
       <ScreenBloom />
@@ -39,7 +49,7 @@ export function SettingsScaffold({ title, subtitle, children, footer }: Props) {
           }}
         >
           <Pressable
-            onPress={() => router.back()}
+            onPress={handleBack}
             hitSlop={8}
             accessibilityRole="button"
             accessibilityLabel={t("common.back")}
