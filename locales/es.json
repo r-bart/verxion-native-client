@@ -60,7 +60,14 @@
       "pull": "Pull",
       "legs": "Legs",
       "core": "Core",
-      "rest": "Descanso"
+      "rest": "Descanso",
+      "workout": "Entreno",
+      "cardio": "Cardio",
+      "deload": "Descarga",
+      "mobility": "Movilidad",
+      "active_rest": "Descanso activo",
+      "conditioning": "Acondicionamiento",
+      "technique": "Técnica"
     },
     "routine": {
       "activeEyebrow": "Rutina activa",
@@ -221,6 +228,40 @@
       "ask": {
         "title": "Cambia este día con el agente",
         "body": "El plan es de solo lectura — para sustituir o reordenar ejercicios, díselo a verxion."
+      }
+    },
+    "sessionDetail": {
+      "completed": "Sesión completada",
+      "planPerfect": "Plan perfecto",
+      "planFollowed": "Plan seguido",
+      "completedPct": "{{pct}}% completado",
+      "prCount": "{{count}} PR",
+      "prCount_other": "{{count}} PRs",
+      "recapFrom": "verxion · informe",
+      "pr": "PR",
+      "exercises": "Ejercicios · {{count}}",
+      "yourRating": "Tu valoración",
+      "muscleGroups": "Grupos musculares",
+      "yourNote": "Tu nota al cerrar",
+      "tiles": {
+        "volume": "Volumen",
+        "duration": "Duración",
+        "series": "Series",
+        "reps": "Reps",
+        "peak": "Peak",
+        "avgRir": "RIR medio",
+        "tonneUnit": "t",
+        "minUnit": "m",
+        "kgUnit": "kg"
+      },
+      "assessment": {
+        "effort": "Esfuerzo",
+        "quality": "Calidad",
+        "pump": "Pump"
+      },
+      "ask": {
+        "title": "¿Algún dato mal? Corrígelo con el agente",
+        "body": "El registro es de solo lectura — dile a verxion qué ajustar y lo corrige."
       }
     },
     "empty": {
@@ -526,6 +567,13 @@
     "yourDay": "Tu día",
     "now": "Ahora",
     "pending": "Pendiente · sin hora",
+    "pendingGroups": {
+      "meals": "Comidas",
+      "supplements": "Suplementos",
+      "training": "Entreno",
+      "activity": "Actividad",
+      "notes": "Notas"
+    },
     "card": {
       "alt": "Alternativas",
       "duration": "Duración",

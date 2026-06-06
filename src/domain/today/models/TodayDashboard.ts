@@ -33,6 +33,14 @@ export type DayFrontStatus =
  */
 export interface DayFront {
   key: DayFrontKey;
+  /**
+   * Whether the front is configured (a goal/plan exists) and so counts toward
+   * the ring. Configured fronts get a ring segment and are in `ring.total`;
+   * unconfigured ones (`counted:false`) are painted as a dash "—" for
+   * discovery, have no segment, and are excluded from `ring.total`.
+   * `counted:false ⇒ closed:false`.
+   */
+  counted: boolean;
   /** Whether this front counts as closed toward the completion ring. */
   closed: boolean;
   /** Progress value (e.g. 2250 kcal, 2.5 L, 11260 steps, 3 supps). Null when N/A. */

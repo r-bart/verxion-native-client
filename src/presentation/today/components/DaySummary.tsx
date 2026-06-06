@@ -19,8 +19,9 @@ const RING_MAX = 220;
 function FrontRow({ front }: { front: DayFront }) {
   const { t, i18n } = useTranslation();
   const { Icon, color } = FRONT_VISUALS[front.key];
+  // Unconfigured fronts (dash) read as "available, not set up" — dimmed.
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, opacity: front.counted ? 1 : 0.45 }}>
       <Icon size={18} color={color} strokeWidth={2} />
       <Text
         style={{ flex: 1, fontFamily: sans(700), fontSize: 15, color: glass.white, letterSpacing: -0.2 }}
@@ -43,7 +44,12 @@ export function DaySummary({ ring, fronts }: { ring: DayRing; fronts: DayFront[]
   const ringSize = Math.min(RING_MAX, Math.round((width - SCREEN_PADDING) * RING_FRACTION));
   const stroke = Math.round(ringSize * 0.12); // fat segments
 
-  const segments = fronts.map((f) => ({ color: FRONT_VISUALS[f.key].color, filled: f.closed }));
+  // The ring summarizes only configured fronts (one segment each); unconfigured
+  // fronts still appear in the list below as a dash, but never as a segment —
+  // so the segment count matches `ring.total`.
+  const segments = fronts
+    .filter((f) => f.counted)
+    .map((f) => ({ color: FRONT_VISUALS[f.key].color, filled: f.closed }));
 
   return (
     <View>

@@ -60,7 +60,14 @@
       "pull": "Pull",
       "legs": "Legs",
       "core": "Core",
-      "rest": "Rest"
+      "rest": "Rest",
+      "workout": "Workout",
+      "cardio": "Cardio",
+      "deload": "Deload",
+      "mobility": "Mobility",
+      "active_rest": "Active rest",
+      "conditioning": "Conditioning",
+      "technique": "Technique"
     },
     "routine": {
       "activeEyebrow": "Active routine",
@@ -221,6 +228,40 @@
       "ask": {
         "title": "Change this day with the agent",
         "body": "The plan is read-only — to swap or reorder exercises, tell verxion."
+      }
+    },
+    "sessionDetail": {
+      "completed": "Session completed",
+      "planPerfect": "Perfect plan",
+      "planFollowed": "Plan followed",
+      "completedPct": "{{pct}}% completed",
+      "prCount": "{{count}} PR",
+      "prCount_other": "{{count}} PRs",
+      "recapFrom": "verxion · report",
+      "pr": "PR",
+      "exercises": "Exercises · {{count}}",
+      "yourRating": "Your rating",
+      "muscleGroups": "Muscle groups",
+      "yourNote": "Your close-out note",
+      "tiles": {
+        "volume": "Volume",
+        "duration": "Duration",
+        "series": "Series",
+        "reps": "Reps",
+        "peak": "Peak",
+        "avgRir": "Avg RIR",
+        "tonneUnit": "t",
+        "minUnit": "m",
+        "kgUnit": "kg"
+      },
+      "assessment": {
+        "effort": "Effort",
+        "quality": "Quality",
+        "pump": "Pump"
+      },
+      "ask": {
+        "title": "Something off? Correct it with the agent",
+        "body": "The record is read-only — tell verxion what to adjust and it fixes it."
       }
     },
     "empty": {
@@ -526,6 +567,13 @@
     "yourDay": "Your day",
     "now": "Now",
     "pending": "Pending · no time",
+    "pendingGroups": {
+      "meals": "Meals",
+      "supplements": "Supplements",
+      "training": "Training",
+      "activity": "Activity",
+      "notes": "Notes"
+    },
     "card": {
       "alt": "Alternatives",
       "duration": "Duration",

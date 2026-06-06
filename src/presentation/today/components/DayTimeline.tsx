@@ -98,12 +98,15 @@ function Event({
   last,
   open,
   onToggle,
+  timed = true,
 }: {
   event: TimelineEvent;
   first: boolean;
   last: boolean;
   open: boolean;
   onToggle: () => void;
+  /** Timed rows reserve the left hour column; pending (untimed) rows drop it. */
+  timed?: boolean;
 }) {
   const { i18n } = useTranslation();
   const Icon = KIND_ICONS[event.kind];
@@ -114,11 +117,13 @@ function Event({
   return (
     <Pressable onPress={expandable ? onToggle : undefined} disabled={!expandable}>
       <View style={{ flexDirection: "row", gap: 12 }}>
-        <Text
-          style={{ width: TIME_W, fontFamily: mono(500), fontSize: 11, color: glass.ink3, marginTop: 1 }}
-        >
-          {event.time != null ? formatTime(event.time, i18n.language) : ""}
-        </Text>
+        {timed && (
+          <Text
+            style={{ width: TIME_W, fontFamily: mono(500), fontSize: 11, color: glass.ink3, marginTop: 1 }}
+          >
+            {event.time != null ? formatTime(event.time, i18n.language) : ""}
+          </Text>
+        )}
 
         {/* spine + node */}
         <View style={{ width: NODE, alignItems: "center" }}>
@@ -164,15 +169,26 @@ function Event({
   );
 }
 
-function PendingDivider() {
-  const { t } = useTranslation();
+/**
+ * Pending (untimed) items are grouped by type — we don't know what hour the
+ * athlete will do each thing, so a flat "no time" list says little. Each
+ * non-empty category gets a header; rows render without the hour column.
+ */
+const PENDING_CATEGORIES: { key: string; kinds: TimelineEventKind[] }[] = [
+  { key: "meals", kinds: ["meal"] },
+  { key: "supplements", kinds: ["supplement"] },
+  { key: "training", kinds: ["workout", "session"] },
+  { key: "activity", kinds: ["weight", "water", "steps", "cardio", "perimeter"] },
+  { key: "notes", kinds: ["note"] },
+];
+
+function CategoryHeader({ label }: { label: string }) {
   return (
     <View
       style={{
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
-        paddingLeft: TIME_W + 12 + NODE + 12,
         marginTop: 6,
         marginBottom: 12,
       }}
@@ -186,7 +202,7 @@ function PendingDivider() {
           textTransform: "uppercase",
         }}
       >
-        {t("today.pending")}
+        {label}
       </Text>
       <View style={{ flex: 1, height: 1, backgroundColor: glass.stroke }} />
     </View>
@@ -203,11 +219,12 @@ export function DayTimeline({ events }: { events: TimelineEvent[] }) {
   const untimed = events.filter((e) => e.time == null);
   const firstUpcoming = timed.findIndex((e) => e.state === "upcoming");
 
-  const renderRow = (e: TimelineEvent, i: number, count: number) => (
+  const renderRow = (e: TimelineEvent, i: number, count: number, timed = true) => (
     <Event
       event={e}
       first={i === 0}
       last={i === count - 1}
+      timed={timed}
       open={openId === e.id}
       onToggle={() => setOpenId(openId === e.id ? null : e.id)}
     />
@@ -224,14 +241,19 @@ export function DayTimeline({ events }: { events: TimelineEvent[] }) {
           </View>
         ))}
 
-        {untimed.length > 0 && (
-          <>
-            <PendingDivider />
-            {untimed.map((e, i) => (
-              <View key={e.id}>{renderRow(e, i, untimed.length)}</View>
-            ))}
-          </>
-        )}
+        {untimed.length > 0 &&
+          PENDING_CATEGORIES.map((cat) => {
+            const items = untimed.filter((e) => cat.kinds.includes(e.kind));
+            if (items.length === 0) return null;
+            return (
+              <View key={cat.key}>
+                <CategoryHeader label={t(`today.pendingGroups.${cat.key}`)} />
+                {items.map((e, i) => (
+                  <View key={e.id}>{renderRow(e, i, items.length, false)}</View>
+                ))}
+              </View>
+            );
+          })}
       </View>
     </View>
   );
