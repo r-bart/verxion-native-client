@@ -31,9 +31,8 @@ const spec: Spec | null = CONTRACT_FILE
   : null;
 
 if (!spec) {
-  // eslint-disable-next-line no-console
   console.warn(
-    "[contract-drift] ../verxion-platform/contracts not found — skipping drift guard.",
+    "[contract-drift] ../verxion-platform/contracts not found — skipping drift guard."
   );
 }
 
@@ -71,6 +70,14 @@ const ENDPOINTS: Record<string, [string, string][]> = {
     ["GET", "/api/v1/today"],
     ["GET", "/api/v1/today/timeline/{kind}/{id}"],
   ],
+  training: [
+    // Entreno landing "Rutina" aggregate — live read-model the repo calls.
+    ["GET", "/api/v1/training/routine-dashboard"],
+    // Entreno landing "Sesiones" feed — live read-model behind getSessionFeed.
+    ["GET", "/api/v1/training/sessions-feed"],
+    // "Detalle de sesión" report — live read-model behind getSessionDetailView.
+    ["GET", "/api/v1/sessions/{id}/detail"],
+  ],
   onboarding: [
     ["GET", "/api/v1/users/me"],
     ["GET", "/api/v1/users/check-username/{username}"],
@@ -79,7 +86,10 @@ const ENDPOINTS: Record<string, [string, string][]> = {
 };
 
 const ROWS: [string, string, string][] = Object.entries(ENDPOINTS).flatMap(
-  ([module, eps]) => eps.map(([method, path]) => [module, method, path] as [string, string, string]),
+  ([module, eps]) =>
+    eps.map(
+      ([method, path]) => [module, method, path] as [string, string, string]
+    )
 );
 
 const describeIfContract = spec ? describe : describe.skip;
@@ -89,28 +99,45 @@ describeIfContract("contract drift — native repositories", () => {
     expect(CONTRACT_FILE).toBeTruthy();
   });
 
-  it.each(ROWS)("%s · %s %s exists in the contract", (_module, method, path) => {
-    const entry = spec!.paths[path];
-    expect(entry).toBeDefined();
-    expect(entry?.[method.toLowerCase()]).toBeDefined();
-  });
+  it.each(ROWS)(
+    "%s · %s %s exists in the contract",
+    (_module, method, path) => {
+      const entry = spec!.paths[path];
+      expect(entry).toBeDefined();
+      expect(entry?.[method.toLowerCase()]).toBeDefined();
+    }
+  );
 
   describe("shape invariants the repos rely on", () => {
     it("GET /profiles/me signals 'no profile' with 404 (not 204)", () => {
-      const responses = (spec!.paths["/api/v1/profiles/me"].get as any).responses;
+      const responses = (spec!.paths["/api/v1/profiles/me"].get as any)
+        .responses;
       expect(responses["404"]).toBeDefined();
       expect(responses["204"]).toBeUndefined();
     });
 
     it("UserProfileResponse exposes appPreferences.language (drives §8.3 reconcile)", () => {
-      const prefs = spec!.components.schemas.UserProfileResponse?.properties?.preferences;
+      const prefs =
+        spec!.components.schemas.UserProfileResponse?.properties?.preferences;
       expect(prefs?.properties?.language).toBeDefined();
     });
 
     it("responses use the { data } envelope (apiClient unwraps it)", () => {
-      const schema = (spec!.paths["/api/v1/users/me"].get as any).responses["200"]
-        .content["application/json"].schema;
+      const schema = (spec!.paths["/api/v1/users/me"].get as any).responses[
+        "200"
+      ].content["application/json"].schema;
       expect(schema.properties?.data).toBeDefined();
+    });
+
+    it("SessionFeedPage stays raw — block.totalVolume + session.volume are { value, unit }", () => {
+      const block =
+        spec!.components.schemas.SessionFeedPage?.properties?.blocks?.items;
+      expect(block?.properties?.totalVolume?.properties?.value).toBeDefined();
+      const session = block?.properties?.sessions?.items;
+      expect(session?.properties?.volume?.properties?.value).toBeDefined();
+      // raw fields the repo passes through unmapped (presentation formats them)
+      expect(session?.properties?.completedAt).toBeDefined();
+      expect(session?.properties?.durationSeconds).toBeDefined();
     });
   });
 });

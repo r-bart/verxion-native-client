@@ -14,6 +14,7 @@ export const trainingKeys = {
   routineLibrary: () => ["training", "routineLibrary"] as const,
   routineDetailView: (id: string) => ["training", "routineDetailView", id] as const,
   dayDetailView: (dayId: string) => ["training", "dayDetailView", dayId] as const,
+  sessionDetailView: (id: string) => ["training", "sessionDetailView", id] as const,
   routines: () => ["training", "routines"] as const,
   routineDetail: (id: string) => ["training", "routine", id] as const,
   dayExercises: (routineId: string, dayId: string) =>

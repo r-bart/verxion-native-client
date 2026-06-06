@@ -3,6 +3,7 @@ import { useDI } from "@/infrastructure/di/DIContext";
 
 export const authKeys = {
   session: () => ["auth", "session"] as const,
+  lastProvider: () => ["auth", "lastProvider"] as const,
 };
 
 export function useSession() {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { ExerciseLibrary, ExerciseLibraryItem } from "@/domain/training/models/ExerciseLibrary";
 
 export type ExerciseSort = "name" | "logged";
@@ -22,7 +22,7 @@ export function useExerciseLibraryView(library?: ExerciseLibrary) {
 
   const exercises = library?.exercises;
 
-  const filtered = useMemo<ExerciseLibraryItem[]>(() => {
+  const filtered: ExerciseLibraryItem[] = (() => {
     const q = norm(query.trim());
     const out = (exercises ?? []).filter((e) => {
       if (group && e.group !== group) return false;
@@ -33,7 +33,7 @@ export function useExerciseLibraryView(library?: ExerciseLibrary) {
     return out.sort((a, b) =>
       sort === "logged" ? b.logCount - a.logCount : a.name.localeCompare(b.name),
     );
-  }, [exercises, query, group, equipment, sort]);
+  })();
 
   return {
     query,

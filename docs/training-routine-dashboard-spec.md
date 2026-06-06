@@ -9,8 +9,9 @@
 > - Response type → Zod schema in `@verxion/shared` → OpenAPI (`/openapi.json`) →
 >   native codegen. The parity test enforces the route is documented.
 >
-> Status: **draft for the API agent.** | Design ref: `design_handoff_entreno/screenshots/01-entreno-rutina.png`, `01-02-entreno.png`.
-> Native built against the `getRoutineDashboard` STUB in `HttpTrainingRepository` (returns `routineDashboardFixture`; swap to HTTP is a one-line repo change).
+> Status: **SHIPPED & RECONCILED** (staging). | Design ref: `design_handoff_entreno/screenshots/01-entreno-rutina.png`, `01-02-entreno.png`.
+> The platform serves `GET /api/v1/training/routine-dashboard`; `HttpTrainingRepository.getRoutineDashboard` now calls it live (`routineDashboardFixture` kept only as the test payload). The native `RoutineDashboard` model mirrors the contract 1:1.
+> **Reconciled deltas vs. this draft:** §8.1 resolved in favour of RAW — `activeRoutine.volume` is `{value,unit}` (not a display string), `spine` carries `orderIndex` + `estimateMin` (not `dayOfWeek` + display `estimate`), and `weeks`/`sessionsPlanned`/`volumeTrendPct` are nullable. The muscle-split `DayType` was a design liberty — the spine/next now use the platform's `DayKind` taxonomy (`workout|rest|cardio|deload|mobility|active_rest|conditioning|technique`). Per-kind chip visuals are a deferred follow-up (`lib/dayType.dayKindChip` is a temporary fallback). The TS in §2 below predates this — the live contract + `src/domain/training/models/RoutineDashboard.ts` are authoritative.
 > Design thesis: *"el plan vive en la plataforma; aquí lees tu bloque activo de un vistazo y el agente lo ejecuta."*
 
 ---

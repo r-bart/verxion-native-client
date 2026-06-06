@@ -6,8 +6,9 @@
  * and tests can read it. Values mirror the design handoff's `rutinas-data` /
  * `entreno-core` scenario (PPL Hipertrofia, week 3).
  *
- * TEMPORARY: the repository returns this as a stub until the platform serves the
- * endpoint. Remove (and switch the repo to `apiClient.get`) once it ships.
+ * TEMPORARY: kept as the example payload for tests. The repository now reads the
+ * live `GET /api/v1/training/routine-dashboard`; this mirrors the contract shape
+ * (raw values, `DayKind` taxonomy) and can be deleted once tests stop importing it.
  */
 import type { RoutineDashboard } from "../models/RoutineDashboard";
 
@@ -24,22 +25,22 @@ export const routineDashboardFixture: RoutineDashboard = {
     scoreState: "ahead",
     sessionsDone: 14,
     sessionsPlanned: 36,
-    volumeTotal: "32,1 t",
+    volume: { value: 32.1, unit: "t" },
     volumeTrendPct: 8,
   },
   spine: [
-    { dayOfWeek: "Lun", name: "Push A", focus: "Pecho y hombros", type: "push", exercisesCount: 7, setsCount: 24, estimate: "~62 min", status: "done", dayId: "push-a" },
-    { dayOfWeek: "Mar", name: "Pull A", focus: "Espalda y bíceps", type: "pull", exercisesCount: 6, setsCount: 22, estimate: "~58 min", status: "done", dayId: "pull-a" },
-    { dayOfWeek: "Mié", name: "Legs A", focus: "Cuádriceps y core", type: "legs", exercisesCount: 7, setsCount: 23, estimate: "~65 min", status: "now", dayId: "legs-a" },
-    { dayOfWeek: "Jue", name: "Push B", focus: "Hombros y tríceps", type: "push", exercisesCount: 6, setsCount: 21, estimate: "~55 min", status: "up", dayId: "push-b" },
-    { dayOfWeek: "Vie", name: "Pull B", focus: "Dorsal y trapecio", type: "pull", exercisesCount: 6, setsCount: 20, estimate: "~54 min", status: "up", dayId: "pull-b" },
-    { dayOfWeek: "Sáb", name: "Legs B", focus: "Femoral y glúteo", type: "legs", exercisesCount: 7, setsCount: 24, estimate: "~66 min", status: "up", dayId: "legs-b" },
-    { dayOfWeek: "Dom", name: "Descanso", focus: "Movilidad opcional · 10 min", type: "rest", exercisesCount: null, setsCount: null, estimate: null, status: "up", dayId: null },
+    { orderIndex: 0, name: "Push A", focus: "Pecho y hombros", type: "workout", exercisesCount: 7, setsCount: 24, estimateMin: 62, status: "done", dayId: "push-a" },
+    { orderIndex: 1, name: "Pull A", focus: "Espalda y bíceps", type: "workout", exercisesCount: 6, setsCount: 22, estimateMin: 58, status: "done", dayId: "pull-a" },
+    { orderIndex: 2, name: "Legs A", focus: "Cuádriceps y core", type: "workout", exercisesCount: 7, setsCount: 23, estimateMin: 65, status: "now", dayId: "legs-a" },
+    { orderIndex: 3, name: "Push B", focus: "Hombros y tríceps", type: "workout", exercisesCount: 6, setsCount: 21, estimateMin: 55, status: "up", dayId: "push-b" },
+    { orderIndex: 4, name: "Pull B", focus: "Dorsal y trapecio", type: "workout", exercisesCount: 6, setsCount: 20, estimateMin: 54, status: "up", dayId: "pull-b" },
+    { orderIndex: 5, name: "Legs B", focus: "Femoral y glúteo", type: "workout", exercisesCount: 7, setsCount: 24, estimateMin: 66, status: "up", dayId: "legs-b" },
+    { orderIndex: 6, name: "Descanso", focus: "Movilidad opcional · 10 min", type: "rest", exercisesCount: 0, setsCount: 0, estimateMin: null, status: "up", dayId: "rest-dom" },
   ],
   next: {
     kind: "workout",
-    type: "legs",
-    title: "Legs A",
+    type: "workout",
+    name: "Legs A",
     focus: "Cuádriceps y core",
     exercisesCount: 7,
     setsCount: 23,

@@ -62,6 +62,7 @@ import { GetExerciseLibraryUseCase } from "@/application/training/GetExerciseLib
 import { GetRoutineLibraryUseCase } from "@/application/training/GetRoutineLibraryUseCase";
 import { GetRoutineDetailViewUseCase } from "@/application/training/GetRoutineDetailViewUseCase";
 import { GetDayDetailViewUseCase } from "@/application/training/GetDayDetailViewUseCase";
+import { GetSessionDetailViewUseCase } from "@/application/training/GetSessionDetailViewUseCase";
 import { GetRoutinesUseCase } from "@/application/training/GetRoutinesUseCase";
 import { GetRoutineDetailUseCase } from "@/application/training/GetRoutineDetailUseCase";
 import { GetWorkoutDayExercisesUseCase } from "@/application/training/GetWorkoutDayExercisesUseCase";
@@ -114,6 +115,7 @@ import { track, identify } from "../analytics/analytics";
 import { initPostHog } from "../analytics/posthogClient";
 import * as onboardingDraftStore from "../storage/onboardingDraft";
 import * as languagePreference from "../storage/languagePreference";
+import * as lastAuthProvider from "../storage/lastAuthProvider";
 import { appVersion } from "../config/appConfig";
 
 // Wire auth cookie to API client at infrastructure initialization
@@ -154,10 +156,12 @@ export const container = {
   // `telemetry`: fire-and-forget analytics (PostHog behind an adapter).
   // `onboardingDraftStore`: durable onboarding UI state (SecureStore).
   // `languagePreference`: persisted app-language override (SecureStore).
+  // `lastAuthProvider`: last sign-in provider, for the login "Last used" hint.
   // `appInfo`: static build metadata (version) from expo-constants.
   telemetry: { track, identify },
   onboardingDraftStore,
   languagePreference,
+  lastAuthProvider,
   appInfo: { version: appVersion },
 
   // Analytics
@@ -204,6 +208,7 @@ export const container = {
   getRoutineLibrary: new GetRoutineLibraryUseCase(trainingRepo),
   getRoutineDetailView: new GetRoutineDetailViewUseCase(trainingRepo),
   getDayDetailView: new GetDayDetailViewUseCase(trainingRepo),
+  getSessionDetailView: new GetSessionDetailViewUseCase(trainingRepo),
   getRoutines: new GetRoutinesUseCase(trainingRepo),
   getRoutineDetail: new GetRoutineDetailUseCase(trainingRepo),
   getWorkoutDayExercises: new GetWorkoutDayExercisesUseCase(trainingRepo),

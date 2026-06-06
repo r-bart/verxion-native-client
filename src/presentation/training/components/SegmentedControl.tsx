@@ -5,7 +5,7 @@
  * driven by Reanimated (gated by reduced-motion). Generic over the option key
  * so callers stay type-safe.
  */
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Pressable, Text, LayoutChangeEvent } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -37,9 +37,9 @@ export function SegmentedControl<K extends string>({ options, value, onChange }:
   const segW = trackW > 0 ? (trackW - PAD * 2) / options.length : 0;
 
   const x = useSharedValue(0);
-  const onTrackLayout = useCallback((e: LayoutChangeEvent) => {
+  const onTrackLayout = (e: LayoutChangeEvent) => {
     setTrackW(e.nativeEvent.layout.width);
-  }, []);
+  };
 
   // Keep the thumb in sync with the selected index / measured width. Driving
   // the shared value from an effect (not the render body) is the project's

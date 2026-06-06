@@ -13,13 +13,13 @@ import { Check } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
-import { DAY_TYPE } from "../lib/dayType";
+import { dayKindChip } from "../lib/dayType";
 import type { SpineDay } from "@/domain/training/models/RoutineDashboard";
 
 const NODE = 22;
 
 function hrefFor(day: SpineDay): Href | null {
-  if (day.type === "rest" || !day.dayId) return null;
+  if (day.type === "rest") return null;
   if (day.status === "live") return "/workout/sesion" as Href;
   if (day.status === "now") return `/workout/prescripcion?dayId=${day.dayId}` as Href;
   return `/workout/dia/${day.dayId}` as Href;
@@ -46,7 +46,7 @@ function Node({ status }: { status: SpineDay["status"] }) {
 function SpineRow({ day, last }: { day: SpineDay; last: boolean }) {
   const { t } = useTranslation();
   const router = useRouter();
-  const cfg = DAY_TYPE[day.type];
+  const cfg = dayKindChip(day.type);
   const href = hrefFor(day);
 
   const card = (
@@ -61,7 +61,7 @@ function SpineRow({ day, last }: { day: SpineDay; last: boolean }) {
           </View>
         </View>
         <Text style={{ fontFamily: mono(400), fontSize: 11.5, color: glass.ink2 }}>
-          {day.exercisesCount != null ? t("training.spine.exercisesCount", { count: day.exercisesCount }) : day.focus}
+          {day.exercisesCount > 0 ? t("training.spine.exercisesCount", { count: day.exercisesCount }) : (day.focus ?? "")}
         </Text>
       </View>
     </GlassSurface>
@@ -71,7 +71,6 @@ function SpineRow({ day, last }: { day: SpineDay; last: boolean }) {
     <View style={{ flexDirection: "row", gap: 12 }}>
       {/* node + connector column */}
       <View style={{ alignItems: "center", width: NODE }}>
-        <Text style={{ fontFamily: mono(500), fontSize: 9.5, color: glass.ink3, marginBottom: 4 }}>{day.dayOfWeek}</Text>
         <Node status={day.status} />
         {!last && <View style={{ flex: 1, width: 2, backgroundColor: "rgba(255,255,255,0.10)", marginTop: 2 }} />}
       </View>
@@ -106,7 +105,7 @@ export function WeekSpine({ spine }: { spine: SpineDay[] }) {
       </Text>
       <View>
         {spine.map((day, i) => (
-          <SpineRow key={`${day.dayOfWeek}-${i}`} day={day} last={i === spine.length - 1} />
+          <SpineRow key={day.dayId} day={day} last={i === spine.length - 1} />
         ))}
       </View>
     </View>

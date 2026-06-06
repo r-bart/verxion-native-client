@@ -7,11 +7,13 @@ export function Toggle({
   onValueChange,
   disabled,
   testID,
+  accessibilityLabel,
 }: {
   value: boolean;
   onValueChange: (next: boolean) => void;
   disabled?: boolean;
   testID?: string;
+  accessibilityLabel?: string;
 }) {
   return (
     <Switch
@@ -19,6 +21,7 @@ export function Toggle({
       onValueChange={onValueChange}
       disabled={disabled}
       testID={testID}
+      accessibilityLabel={accessibilityLabel}
       trackColor={{ false: glass.fill2, true: "rgba(95,227,154,0.55)" }}
       thumbColor={glass.white}
       ios_backgroundColor={glass.fill2}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type {
   RoutineLibrary,
   RoutineLibraryItem,
@@ -33,7 +33,7 @@ export function useRoutineLibraryView(library?: RoutineLibrary) {
   const filterCount = states.length + goals.length;
   const filtering = query.trim() !== "" || filterCount > 0 || sort !== "recent";
 
-  const results = useMemo<RoutineLibraryItem[]>(() => {
+  const results: RoutineLibraryItem[] = (() => {
     const q = norm(query.trim());
     const out = (routines ?? []).filter((r) => {
       if (states.length && !states.includes(r.state)) return false;
@@ -52,17 +52,15 @@ export function useRoutineLibraryView(library?: RoutineLibrary) {
             adherence(b) - adherence(a) || a.name.localeCompare(b.name, "es")
         );
     return out; // "recent" = catalog order
-  }, [routines, query, states, goals, sort]);
+  })();
 
-  const groups = useMemo(() => {
-    const all = routines ?? [];
-    return {
-      active: all.filter((r) => r.state === "active"),
-      draft: all.filter((r) => r.state === "draft"),
-      paused: all.filter((r) => r.state === "paused"),
-      completed: all.filter((r) => r.state === "completed"),
-    };
-  }, [routines]);
+  const all = routines ?? [];
+  const groups = {
+    active: all.filter((r) => r.state === "active"),
+    draft: all.filter((r) => r.state === "draft"),
+    paused: all.filter((r) => r.state === "paused"),
+    completed: all.filter((r) => r.state === "completed"),
+  };
 
   const toggleState = (s: RoutineLibraryState) =>
     setStates((p) => (p.includes(s) ? p.filter((x) => x !== s) : [...p, s]));

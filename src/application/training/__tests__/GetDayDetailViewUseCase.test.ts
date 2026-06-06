@@ -15,6 +15,7 @@ describe("GetDayDetailViewUseCase", () => {
       getDayDetailView: jest.fn((dayId: string) =>
         Promise.resolve(dayDetailFixtureFor(dayId))
       ),
+      getSessionDetailView: jest.fn(),
       getRoutines: jest.fn(),
       getRoutineDetail: jest.fn(),
       getWorkoutDayExercises: jest.fn(),

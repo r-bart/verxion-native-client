@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { View, Text, TextInput, ActivityIndicator } from "react-native";
 import { useTranslation } from "react-i18next";
 import type {
@@ -53,16 +53,64 @@ export function PersonalScreen() {
   return <PersonalForm key={seedKey} data={data} />;
 }
 
+type PersonalFormState = {
+  gender: GenderType | undefined;
+  dob: string | undefined;
+  system: MeasurementSystemType;
+  heightCm: number | null;
+  experience: ExperienceLevelType;
+  goal: FitnessGoalType | undefined;
+};
+
+type PersonalFormAction =
+  | { type: 'SET_GENDER'; value: GenderType | undefined }
+  | { type: 'SET_DOB'; value: string | undefined }
+  | { type: 'SET_SYSTEM'; value: MeasurementSystemType }
+  | { type: 'SET_HEIGHT_CM'; value: number | null }
+  | { type: 'SET_EXPERIENCE'; value: ExperienceLevelType }
+  | { type: 'SET_GOAL'; value: FitnessGoalType | undefined }
+  | { type: 'RESET'; data: UserAccount };
+
+function personalFormReducer(state: PersonalFormState, action: PersonalFormAction): PersonalFormState {
+  switch (action.type) {
+    case 'SET_GENDER':
+      return { ...state, gender: action.value };
+    case 'SET_DOB':
+      return { ...state, dob: action.value };
+    case 'SET_SYSTEM':
+      return { ...state, system: action.value };
+    case 'SET_HEIGHT_CM':
+      return { ...state, heightCm: action.value };
+    case 'SET_EXPERIENCE':
+      return { ...state, experience: action.value };
+    case 'SET_GOAL':
+      return { ...state, goal: action.value };
+    case 'RESET':
+      return {
+        gender: action.data.gender ?? undefined,
+        dob: action.data.dateOfBirth ?? undefined,
+        system: action.data.measurementSystem,
+        heightCm: action.data.heightCm,
+        experience: action.data.experienceLevel,
+        goal: action.data.primaryGoal ?? undefined,
+      };
+    default:
+      return state;
+  }
+}
+
 function PersonalForm({ data }: { data: UserAccount }) {
   const { t } = useTranslation();
   const save = useUpdatePersonal();
 
-  const [gender, setGender] = useState<GenderType | undefined>(data.gender ?? undefined);
-  const [dob, setDob] = useState<string | undefined>(data.dateOfBirth ?? undefined);
-  const [system, setSystem] = useState<MeasurementSystemType>(data.measurementSystem);
-  const [heightCm, setHeightCm] = useState<number | null>(data.heightCm);
-  const [experience, setExperience] = useState<ExperienceLevelType>(data.experienceLevel);
-  const [goal, setGoal] = useState<FitnessGoalType | undefined>(data.primaryGoal ?? undefined);
+  const [state, dispatch] = useReducer(personalFormReducer, {
+    gender: data.gender ?? undefined,
+    dob: data.dateOfBirth ?? undefined,
+    system: data.measurementSystem,
+    heightCm: data.heightCm,
+    experience: data.experienceLevel,
+    goal: data.primaryGoal ?? undefined,
+  });
 
   const genderOptions: Option<GenderType>[] = [
     { value: "male", label: t("settings.screens.personal.genderMale") },
@@ -89,50 +137,45 @@ function PersonalForm({ data }: { data: UserAccount }) {
   ];
 
   const dirty =
-    (gender ?? null) !== data.gender ||
-    (dob ?? null) !== data.dateOfBirth ||
-    system !== data.measurementSystem ||
-    heightCm !== data.heightCm ||
-    experience !== data.experienceLevel ||
-    (goal ?? null) !== data.primaryGoal;
+    (state.gender ?? null) !== data.gender ||
+    (state.dob ?? null) !== data.dateOfBirth ||
+    state.system !== data.measurementSystem ||
+    state.heightCm !== data.heightCm ||
+    state.experience !== data.experienceLevel ||
+    (state.goal ?? null) !== data.primaryGoal;
 
   const handleDiscard = () => {
-    setGender(data.gender ?? undefined);
-    setDob(data.dateOfBirth ?? undefined);
-    setSystem(data.measurementSystem);
-    setHeightCm(data.heightCm);
-    setExperience(data.experienceLevel);
-    setGoal(data.primaryGoal ?? undefined);
+    dispatch({ type: 'RESET', data });
   };
 
   const handleSave = () => {
     const accountInput: UpdateAccountInput = {};
-    if ((gender ?? null) !== data.gender) accountInput.sex = gender ?? null;
-    if ((dob ?? null) !== data.dateOfBirth) accountInput.dateOfBirth = dob ?? null;
-    if (heightCm !== data.heightCm && heightCm != null && heightCm > 0) {
-      accountInput.heightCm = heightCm;
+    if ((state.gender ?? null) !== data.gender) accountInput.sex = state.gender ?? null;
+    if ((state.dob ?? null) !== data.dateOfBirth) accountInput.dateOfBirth = state.dob ?? null;
+    if (state.heightCm !== data.heightCm && state.heightCm != null && state.heightCm > 0) {
+      accountInput.heightCm = state.heightCm;
     }
-    if (system !== data.measurementSystem) accountInput.measurementSystem = system;
-    if (experience !== data.experienceLevel) accountInput.experienceLevel = experience;
+    if (state.system !== data.measurementSystem) accountInput.measurementSystem = state.system;
+    if (state.experience !== data.experienceLevel) accountInput.experienceLevel = state.experience;
 
     const preferences: UpdatePreferencesInput = {};
-    if (goal && goal !== data.primaryGoal) preferences.fitnessPreferences = { primaryGoal: goal };
+    if (state.goal && state.goal !== data.primaryGoal) preferences.fitnessPreferences = { primaryGoal: state.goal };
 
     save.mutate({ account: accountInput, preferences });
   };
 
-  const imperial = heightCm != null ? cmToFeetInches(heightCm) : { ft: 0, inch: 0 };
+  const imperial = state.heightCm != null ? cmToFeetInches(state.heightCm) : { ft: 0, inch: 0 };
   const setHeightFromCm = (text: string) => {
     const n = parseInt(text.replace(/[^0-9]/g, ""), 10);
-    setHeightCm(Number.isFinite(n) ? n : null);
+    dispatch({ type: 'SET_HEIGHT_CM', value: Number.isFinite(n) ? n : null });
   };
   const setFeet = (text: string) => {
     const ft = parseInt(text.replace(/[^0-9]/g, ""), 10) || 0;
-    setHeightCm(feetInchesToCm(ft, imperial.inch));
+    dispatch({ type: 'SET_HEIGHT_CM', value: feetInchesToCm(ft, imperial.inch) });
   };
   const setInches = (text: string) => {
     const inch = parseInt(text.replace(/[^0-9]/g, ""), 10) || 0;
-    setHeightCm(feetInchesToCm(imperial.ft, inch));
+    dispatch({ type: 'SET_HEIGHT_CM', value: feetInchesToCm(imperial.ft, inch) });
   };
 
   return (
@@ -151,28 +194,28 @@ function PersonalForm({ data }: { data: UserAccount }) {
     >
       <View>
         <FieldLabel>{t("settings.screens.personal.gender")}</FieldLabel>
-        <OptionList value={gender} onChange={setGender} options={genderOptions} testID="personal-gender" />
+        <OptionList value={state.gender} onChange={(value) => dispatch({ type: 'SET_GENDER', value })} options={genderOptions} testID="personal-gender" />
       </View>
 
       <DateOfBirthField
-        value={dob}
-        onChange={setDob}
+        value={state.dob}
+        onChange={(value) => dispatch({ type: 'SET_DOB', value })}
         label={t("settings.screens.personal.dateOfBirth")}
         placeholder={t("settings.screens.personal.dateOfBirthPlaceholder")}
       />
 
       <View>
         <FieldLabel>{t("settings.screens.personal.measurementSystem")}</FieldLabel>
-        <OptionList value={system} onChange={setSystem} options={systemOptions} testID="personal-system" />
+        <OptionList value={state.system} onChange={(value) => dispatch({ type: 'SET_SYSTEM', value })} options={systemOptions} testID="personal-system" />
       </View>
 
       <View>
         <FieldLabel>{t("settings.screens.personal.height")}</FieldLabel>
-        {system === "metric" ? (
+        {state.system === "metric" ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <TextInput
               testID="personal-height-cm"
-              value={heightCm != null ? String(heightCm) : ""}
+              value={state.heightCm != null ? String(state.heightCm) : ""}
               onChangeText={setHeightFromCm}
               keyboardType="number-pad"
               maxLength={3}
@@ -187,7 +230,7 @@ function PersonalForm({ data }: { data: UserAccount }) {
             <View style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 8 }}>
               <TextInput
                 testID="personal-height-ft"
-                value={heightCm != null ? String(imperial.ft) : ""}
+                value={state.heightCm != null ? String(imperial.ft) : ""}
                 onChangeText={setFeet}
                 keyboardType="number-pad"
                 maxLength={1}
@@ -200,7 +243,7 @@ function PersonalForm({ data }: { data: UserAccount }) {
             <View style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 8 }}>
               <TextInput
                 testID="personal-height-in"
-                value={heightCm != null ? String(imperial.inch) : ""}
+                value={state.heightCm != null ? String(imperial.inch) : ""}
                 onChangeText={setInches}
                 keyboardType="number-pad"
                 maxLength={2}
@@ -216,12 +259,12 @@ function PersonalForm({ data }: { data: UserAccount }) {
 
       <View>
         <FieldLabel>{t("settings.screens.personal.experience")}</FieldLabel>
-        <OptionList value={experience} onChange={setExperience} options={experienceOptions} testID="personal-experience" />
+        <OptionList value={state.experience} onChange={(value) => dispatch({ type: 'SET_EXPERIENCE', value })} options={experienceOptions} testID="personal-experience" />
       </View>
 
       <View>
         <FieldLabel>{t("settings.screens.personal.primaryGoal")}</FieldLabel>
-        <OptionList value={goal} onChange={setGoal} options={goalOptions} testID="personal-goal" />
+        <OptionList value={state.goal} onChange={(value) => dispatch({ type: 'SET_GOAL', value })} options={goalOptions} testID="personal-goal" />
       </View>
     </SettingsScaffold>
   );

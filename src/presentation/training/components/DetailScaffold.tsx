@@ -3,6 +3,7 @@
  * the landing: the screen bloom, a top-safe area, the `DetailHeader` chrome,
  * and a scrolling content area. Keeps each screen thin (compose, don't plumb).
  */
+import { useMemo } from "react";
 import { View, ScrollView } from "react-native";
 import {
   SafeAreaView,
@@ -26,17 +27,20 @@ const TAB_BAR_CLEARANCE = 64;
 
 export function DetailScaffold({ title, right, children }: Props) {
   const insets = useSafeAreaInsets();
+  
+  const contentContainerStyle = useMemo(() => ({
+    flexGrow: 1,
+    paddingHorizontal: 16,
+    paddingBottom: insets.bottom + TAB_BAR_CLEARANCE,
+  }), [insets.bottom]);
+  
   return (
     <View style={{ flex: 1, backgroundColor: glass.screenBg }}>
       <ScreenBloom />
       <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
         <DetailHeader title={title} right={right} />
         <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingHorizontal: 16,
-            paddingBottom: insets.bottom + TAB_BAR_CLEARANCE,
-          }}
+          contentContainerStyle={contentContainerStyle}
           showsVerticalScrollIndicator={false}
         >
           {children}

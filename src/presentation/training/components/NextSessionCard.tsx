@@ -13,7 +13,7 @@ import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
-import { DAY_TYPE } from "../lib/dayType";
+import { dayKindChip } from "../lib/dayType";
 import type { NextSession } from "@/domain/training/models/RoutineDashboard";
 
 export function NextSessionCard({ next }: { next: NextSession }) {
@@ -21,7 +21,7 @@ export function NextSessionCard({ next }: { next: NextSession }) {
   const router = useRouter();
 
   if (next.kind === "rest") {
-    const rest = DAY_TYPE.rest;
+    const rest = dayKindChip("rest");
     return (
       <GlassSurface radius={20} fallbackFill={glass.fill} style={{ padding: 16, flexDirection: "row", alignItems: "center", gap: 14 }}>
         <IconBubble bg={rest.bg} size={44}>
@@ -32,15 +32,14 @@ export function NextSessionCard({ next }: { next: NextSession }) {
             {t("training.next.rest")}
           </Text>
           <Text style={{ fontFamily: sans(700), fontSize: 17, color: glass.white, letterSpacing: -0.3 }}>
-            {next.title}
+            {next.reason}
           </Text>
-          <Text style={{ fontFamily: mono(400), fontSize: 12, color: glass.ink2 }}>{next.subtitle}</Text>
         </View>
       </GlassSurface>
     );
   }
 
-  const day = DAY_TYPE[next.type];
+  const day = dayKindChip(next.type);
   return (
     <GlassSurface
       radius={20}
@@ -57,10 +56,10 @@ export function NextSessionCard({ next }: { next: NextSession }) {
           {t("training.next.today")}
         </Text>
         <Text style={{ fontFamily: sans(700), fontSize: 17, color: glass.white, letterSpacing: -0.3 }}>
-          {next.title} · {next.focus}
+          {next.focus ? `${next.name} · ${next.focus}` : next.name}
         </Text>
         <Text style={{ fontFamily: mono(400), fontSize: 12, color: glass.ink2 }}>
-          {t("training.next.meta", { exercises: next.exercisesCount, sets: next.setsCount, min: next.estimatedMin })}
+          {t("training.next.meta", { exercises: next.exercisesCount, sets: next.setsCount, min: next.estimatedMin ?? 0 })}
         </Text>
       </View>
 

@@ -1,11 +1,24 @@
 import React from "react";
-import { fireEvent, waitFor } from "@testing-library/react-native";
+import { act, fireEvent, waitFor } from "@testing-library/react-native";
 import { SignInCancelled } from "@/domain/auth";
 import {
   createMockContainer,
   renderWithProviders,
 } from "@/__tests__/test-utils";
 import { LoginScreen } from "../LoginScreen";
+
+// The "Last used" badge query settles on a macrotask (TanStack's notifyManager
+// batches re-renders via setTimeout). Tests that don't otherwise await it use
+// this to absorb that final state update into act() and stay warning-free.
+// Order matters: drain microtasks first so the (mocked) query promise resolves
+// and schedules its notify timer, THEN flush that timer — otherwise our
+// setTimeout can run before the notify is even queued, leaving a stray update.
+const flushBadgeQuery = () =>
+  act(async () => {
+    await Promise.resolve();
+    await Promise.resolve();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
 
 jest.mock("react-native-safe-area-context", () => ({
   SafeAreaView: ({ children }: any) => children,
@@ -18,19 +31,41 @@ describe("LoginScreen", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the Google and Apple sign-in buttons", () => {
-    const { getByText, getByTestId } = renderWithProviders(<LoginScreen />);
+  it("renders the Google and Apple sign-in buttons", async () => {
+    const { findByText, getByTestId } = renderWithProviders(<LoginScreen />);
 
-    expect(getByText("Continue with Google")).toBeTruthy();
+    expect(await findByText("Continue with Google")).toBeTruthy();
     expect(getByTestId("apple-signin-button")).toBeTruthy();
+    await flushBadgeQuery();
   });
 
-  it("hides the reviewer form by default", () => {
+  it("shows a 'Last used' badge on the last provider used", async () => {
+    const container = createMockContainer();
+    container.lastAuthProvider.getLastAuthProvider.mockResolvedValue("google");
+
+    const { findByTestId, queryByTestId } = renderWithProviders(<LoginScreen />, {
+      container,
+    });
+
+    expect(await findByTestId("last-used-google")).toBeTruthy();
+    expect(queryByTestId("last-used-apple")).toBeNull();
+  });
+
+  it("shows no 'Last used' badge on a fresh install", async () => {
+    const { queryByTestId } = renderWithProviders(<LoginScreen />);
+
+    await flushBadgeQuery();
+    expect(queryByTestId("last-used-google")).toBeNull();
+    expect(queryByTestId("last-used-apple")).toBeNull();
+  });
+
+  it("hides the reviewer form by default", async () => {
     const { queryByTestId } = renderWithProviders(<LoginScreen />);
     expect(queryByTestId("reviewer-form")).toBeNull();
+    await flushBadgeQuery();
   });
 
-  it("reveals the reviewer form after 7 taps on the logo", () => {
+  it("reveals the reviewer form after 7 taps on the logo", async () => {
     const { getByTestId, queryByTestId } = renderWithProviders(<LoginScreen />);
 
     const logo = getByTestId("brand-logo-tap");
@@ -39,6 +74,7 @@ describe("LoginScreen", () => {
 
     fireEvent.press(logo);
     expect(getByTestId("reviewer-form")).toBeTruthy();
+    await flushBadgeQuery();
   });
 
   it("signs in via the reviewer use case", async () => {
@@ -64,6 +100,7 @@ describe("LoginScreen", () => {
         expect.anything()
       )
     );
+    await flushBadgeQuery();
   });
 
   it("triggers the Google use case on press", async () => {
@@ -77,6 +114,7 @@ describe("LoginScreen", () => {
     fireEvent.press(getByTestId("google-signin-button"));
 
     await waitFor(() => expect(executeMock).toHaveBeenCalledTimes(1));
+    await flushBadgeQuery();
   });
 
   it("triggers the Apple use case on press", async () => {
@@ -90,6 +128,7 @@ describe("LoginScreen", () => {
     fireEvent.press(getByTestId("apple-signin-button"));
 
     await waitFor(() => expect(executeMock).toHaveBeenCalledTimes(1));
+    await flushBadgeQuery();
   });
 
   it("stays silent when Apple sign-in is cancelled", async () => {
@@ -109,6 +148,7 @@ describe("LoginScreen", () => {
       expect(container.signInApple.execute).toHaveBeenCalled()
     );
     expect(queryByTestId("login-error")).toBeNull();
+    await flushBadgeQuery();
   });
 
   it("shows an error message when Google sign-in fails", async () => {
@@ -127,6 +167,7 @@ describe("LoginScreen", () => {
     await waitFor(() =>
       expect(getByText("Google sign in failed")).toBeTruthy()
     );
+    await flushBadgeQuery();
   });
 
   it("does not show a stale provider error after switching providers", async () => {
@@ -153,5 +194,6 @@ describe("LoginScreen", () => {
       expect(container.signInApple.execute).toHaveBeenCalled()
     );
     expect(queryByTestId("login-error")).toBeNull();
+    await flushBadgeQuery();
   });
 });

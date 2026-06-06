@@ -1,34 +1,42 @@
 /**
  * SessionFeed — the read model behind the Entreno landing's "Sesiones" segment,
- * now an infinite feed (no dedicated history screen). One page = some blocks of
- * sessions grouped by routine, plus a cursor for the next page. The rutina and
- * sort filters are server params.
+ * an infinite feed (no dedicated history screen). One page = some blocks of
+ * sessions grouped by routine, plus a cursor for the next page.
  *
- * CONTRACT proposal for the platform. Proposed endpoint:
- * `GET /training/sessions-feed?routineId=&sort=&cursor=` (cursor-paginated).
+ * RAW / locale-neutral: mirrors `GET /api/v1/training/sessions-feed`
+ * (`SessionFeedPage`) 1:1 — numbers + units + ISO instants, no formatted
+ * strings. Presentation formats via `lib/sessionFormat.ts` (the layer that owns
+ * locale). The rutina + sort + cursor filters are server query params: the route
+ * honours `routineId` / `sort` / `cursor` even though the OpenAPI snapshot does
+ * not document them (the Zod schema is inline, not a named `@verxion/shared`
+ * export — same documentation gap as `routine-dashboard`'s `tzOffsetMinutes`).
  */
-import type { DayType } from "./RoutineDashboard";
+import type { DayKind } from "./RoutineDashboard";
 
 export type BlockState = "active" | "completed" | "paused";
 export type SessionSort = "recent" | "oldest" | "volume" | "duration";
 
+/** A tonnage measure as the contract returns it (kg); presentation → tonnes. */
+export interface SessionVolume {
+  value: number;
+  unit: "kg";
+}
+
 export interface SessionFeedRow {
   /** Session report id — target of the session-detail navigation. */
   id: string;
-  /** Short localized day+date (e.g. "Sáb 31"). */
-  dateLabel: string;
-  /** Localized month (e.g. "may"). */
-  monthLabel: string;
-  type: DayType;
+  type: DayKind;
   name: string;
+  /** Completion instant, ISO-8601 → presentation renders day · month. */
+  completedAt: string;
   hasPR: boolean;
   prCount: number;
-  /** Session tonnage, already formatted (e.g. "16,3 t"). */
-  volumeLabel: string;
+  /** Session tonnage in kg. */
+  volume: SessionVolume;
   /** Volume relative to the block's heaviest session, 0..1 (drives the bar). */
   volumeFraction: number;
-  /** Duration, already formatted (e.g. "66m"). */
-  durationLabel: string;
+  /** Elapsed seconds, or null when not tracked. */
+  durationSeconds: number | null;
 }
 
 export interface SessionFeedBlock {
@@ -36,10 +44,10 @@ export interface SessionFeedBlock {
   id: string;
   name: string;
   state: BlockState;
-  /** Localized date range (e.g. "12-31 may"). */
-  dateRange: string;
-  /** Block tonnage, already formatted (e.g. "174,6 t"). */
-  totalVolume: string;
+  /** First→last session instants of the block, ISO-8601. */
+  dateRange: { start: string; end: string };
+  /** Block tonnage in kg. */
+  totalVolume: SessionVolume;
   sessions: SessionFeedRow[];
 }
 

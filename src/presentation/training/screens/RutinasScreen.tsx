@@ -23,6 +23,7 @@ import { BottomSheet } from "@/presentation/_shared/components/BottomSheet";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { DetailScaffold } from "../components/DetailScaffold";
+import { FilterPill } from "../components/FilterPill";
 import { SegmentError } from "../components/SegmentError";
 import { RoutineLibraryCard } from "../components/RoutineLibraryCard";
 import { RoutineArchiveRow } from "../components/RoutineArchiveRow";
@@ -33,70 +34,6 @@ import {
 } from "../hooks/useRoutineLibraryView";
 
 const SORTS: RoutineSort[] = ["recent", "name", "adherence"];
-
-function PillButton({
-  icon,
-  label,
-  badge,
-  onPress,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  badge?: number;
-  onPress: () => void;
-}) {
-  return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 7,
-          paddingVertical: 12,
-          borderRadius: 9999,
-          backgroundColor: glass.fill2,
-          borderWidth: 1,
-          borderColor: glass.stroke,
-        }}
-      >
-        {icon}
-        <Text
-          style={{ fontFamily: sans(600), fontSize: 13, color: glass.white }}
-        >
-          {label}
-        </Text>
-        {badge != null && badge > 0 && (
-          <View
-            style={{
-              minWidth: 17,
-              height: 17,
-              paddingHorizontal: 4,
-              borderRadius: 9999,
-              backgroundColor: glass.lava,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: sans(700),
-                fontSize: 10.5,
-                color: glass.fgOnLava,
-              }}
-            >
-              {badge}
-            </Text>
-          </View>
-        )}
-      </View>
-    </Pressable>
-  );
-}
 
 function RemovableChip({
   label,
@@ -415,7 +352,7 @@ export function RutinasScreen() {
 
       <View style={{ flexDirection: "row", gap: 8 }}>
         <View style={{ flex: 1 }}>
-          <PillButton
+          <FilterPill
             icon={
               <SlidersHorizontal size={15} color={glass.ink2} strokeWidth={2} />
             }
@@ -425,7 +362,7 @@ export function RutinasScreen() {
           />
         </View>
         <View style={{ flex: 1 }}>
-          <PillButton
+          <FilterPill
             icon={<ArrowUpDown size={15} color={glass.ink2} strokeWidth={2} />}
             label={t(`training.routineSort.${view.sort}`)}
             onPress={() => setSheet("sort")}

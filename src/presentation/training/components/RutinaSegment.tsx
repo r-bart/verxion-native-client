@@ -7,6 +7,7 @@
  * Note: the agent note (`data.agentNote` → `AgentNoteCard`) is parked here until
  * the insights work lands — the aggregate still carries the field.
  */
+import { useMemo } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
@@ -160,6 +161,13 @@ function LiveBanner({ name }: { name: string }) {
 export function RutinaSegment() {
   const insets = useSafeAreaInsets();
   const { data, isLoading, isError, refetch } = useRoutineDashboard();
+  
+  const contentContainerStyle = useMemo(() => ({
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: insets.bottom + 64,
+    flexGrow: 1,
+  }), [insets.bottom]);
 
   let body: React.ReactNode;
   if (isLoading) body = <RoutineDashboardSkeleton />;
@@ -182,12 +190,7 @@ export function RutinaSegment() {
 
   return (
     <ScrollView
-      contentContainerStyle={{
-        paddingHorizontal: 16,
-        paddingTop: 16,
-        paddingBottom: insets.bottom + 64,
-        flexGrow: 1,
-      }}
+      contentContainerStyle={contentContainerStyle}
       showsVerticalScrollIndicator={false}
     >
       {body}

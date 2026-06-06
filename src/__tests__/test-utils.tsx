@@ -187,6 +187,10 @@ export function createMockContainer(overrides: Partial<Record<string, any>> = {}
       getStoredLanguage: jest.fn().mockResolvedValue(null),
       setStoredLanguage: jest.fn().mockResolvedValue(undefined),
     },
+    lastAuthProvider: {
+      getLastAuthProvider: jest.fn().mockResolvedValue(null),
+      setLastAuthProvider: jest.fn().mockResolvedValue(undefined),
+    },
     appInfo: { version: "0.0.0-test" },
     telemetry: { track: jest.fn(), identify: jest.fn() },
   };

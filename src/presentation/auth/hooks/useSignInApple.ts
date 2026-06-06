@@ -10,11 +10,14 @@ import { authKeys } from "./useSession";
  */
 export function useSignInApple() {
   const uc = useDI((c) => c.signInApple);
+  const rememberProvider = useDI((c) => c.lastAuthProvider.setLastAuthProvider);
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () => uc.execute(),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: authKeys.session() }),
+    onSuccess: () => {
+      void rememberProvider("apple");
+      queryClient.invalidateQueries({ queryKey: authKeys.session() });
+    },
   });
 }

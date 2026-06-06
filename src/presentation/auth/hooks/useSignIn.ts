@@ -8,10 +8,13 @@ import { authKeys } from "./useSession";
  */
 export function useSignIn() {
   const uc = useDI((c) => c.signIn);
+  const rememberProvider = useDI((c) => c.lastAuthProvider.setLastAuthProvider);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: uc.execute.bind(uc),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: authKeys.session() }),
+    onSuccess: () => {
+      void rememberProvider("reviewer");
+      queryClient.invalidateQueries({ queryKey: authKeys.session() });
+    },
   });
 }

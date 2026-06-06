@@ -141,6 +141,7 @@ export function RoutineLibraryCard({ item }: { item: RoutineLibraryItem }) {
     <Pressable
       onPress={() => router.push(`/workout/rutinas/${item.id}` as Href)}
       accessibilityRole="button"
+      accessibilityLabel={`Ver rutina ${item.name}`}
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
     >
       <GlassSurface radius={20} style={{ padding: 16, gap: 14 }}>

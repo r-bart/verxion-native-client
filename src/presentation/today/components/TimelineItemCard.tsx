@@ -66,7 +66,7 @@ function MealCard({ d }: { d: MealDetail }) {
 
       <View style={{ gap: 8 }}>
         {d.items.map((it, i) => (
-          <View key={i} style={{ gap: 2 }}>
+          <View key={`meal-item-${it.name}-${i}`} style={{ gap: 2 }}>
             <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
               <Text style={{ flex: 1, fontFamily: sans(600), fontSize: 13.5, color: glass.white }}>
                 {it.name}
@@ -104,7 +104,7 @@ function WorkoutCard({ d }: { d: WorkoutDetail }) {
       </View>
       <View style={{ gap: 7 }}>
         {d.exercises.map((ex, i) => (
-          <View key={i} style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
+          <View key={`exercise-${ex.name}-${i}`} style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
             <Text style={{ flex: 1, fontFamily: sans(600), fontSize: 13.5, color: glass.white }}>
               {ex.name}
             </Text>
@@ -126,7 +126,7 @@ function SessionCard({ d }: { d: SessionDetail }) {
   return (
     <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 16 }}>
       {stats.map(([label, value], i) => (
-        <View key={i} style={{ gap: 3, minWidth: 70 }}>
+        <View key={`stat-${label}-${i}`} style={{ gap: 3, minWidth: 70 }}>
           <Eyebrow>{label}</Eyebrow>
           <Text style={{ fontFamily: sans(700), fontSize: 16, color: glass.white }}>{value}</Text>
         </View>
@@ -139,7 +139,7 @@ function SupplementCard({ d }: { d: SupplementDetail }) {
   return (
     <View style={{ gap: 9 }}>
       {d.items.map((s, i) => (
-        <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+        <View key={`supplement-${s.name}-${i}`} style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           <View
             style={{
               width: 18,
@@ -194,7 +194,7 @@ function MetricCard({ d }: { d: MetricDetail }) {
       {d.rows.length > 0 && (
         <View style={{ gap: 6 }}>
           {d.rows.map((r, i) => (
-            <View key={i} style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <View key={`metric-${r.label}-${i}`} style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <Text style={{ fontFamily: mono(400), fontSize: 12, color: glass.ink3 }}>{r.label}</Text>
               <Text style={{ fontFamily: mono(500), fontSize: 12, color: glass.ink }}>{r.value}</Text>
             </View>

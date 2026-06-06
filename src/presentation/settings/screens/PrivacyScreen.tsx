@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import { useTranslation } from "react-i18next";
 import {
@@ -51,6 +51,48 @@ function SectionHint({ text }: { text: string }) {
   );
 }
 
+type PrivacyFormState = {
+  visibility: SectionVisibility;
+  feedSharing: FeedSharingSettings;
+  timeline: TimelineDetailLevel;
+  requireApproval: boolean;
+  showcase: ShowcaseMetric[];
+};
+
+type PrivacyFormAction =
+  | { type: 'SET_VISIBILITY'; value: SectionVisibility }
+  | { type: 'SET_FEED_SHARING'; value: FeedSharingSettings }
+  | { type: 'SET_TIMELINE'; value: TimelineDetailLevel }
+  | { type: 'SET_REQUIRE_APPROVAL'; value: boolean }
+  | { type: 'SET_SHOWCASE'; value: ShowcaseMetric[] }
+  | { type: 'REVERT_VISIBILITY'; value: SectionVisibility }
+  | { type: 'REVERT_FEED_SHARING'; value: FeedSharingSettings }
+  | { type: 'REVERT_TIMELINE'; value: TimelineDetailLevel }
+  | { type: 'REVERT_REQUIRE_APPROVAL'; value: boolean }
+  | { type: 'REVERT_SHOWCASE'; value: ShowcaseMetric[] };
+
+function privacyFormReducer(state: PrivacyFormState, action: PrivacyFormAction): PrivacyFormState {
+  switch (action.type) {
+    case 'SET_VISIBILITY':
+    case 'REVERT_VISIBILITY':
+      return { ...state, visibility: action.value };
+    case 'SET_FEED_SHARING':
+    case 'REVERT_FEED_SHARING':
+      return { ...state, feedSharing: action.value };
+    case 'SET_TIMELINE':
+    case 'REVERT_TIMELINE':
+      return { ...state, timeline: action.value };
+    case 'SET_REQUIRE_APPROVAL':
+    case 'REVERT_REQUIRE_APPROVAL':
+      return { ...state, requireApproval: action.value };
+    case 'SET_SHOWCASE':
+    case 'REVERT_SHOWCASE':
+      return { ...state, showcase: action.value };
+    default:
+      return state;
+  }
+}
+
 function PrivacyForm({ profile, feed }: { profile: AthleteProfile; feed: FeedSharingSettings }) {
   const { t } = useTranslation();
   const updateVisibility = useUpdateVisibility();
@@ -59,46 +101,50 @@ function PrivacyForm({ profile, feed }: { profile: AthleteProfile; feed: FeedSha
   const updateFollow = useUpdateFollowApproval();
   const updateFeed = useUpdateFeedSharing();
 
-  const [visibility, setVisibility] = useState<SectionVisibility>(profile.sectionVisibility);
-  const [feedSharing, setFeedSharing] = useState<FeedSharingSettings>(feed);
-  const [timeline, setTimeline] = useState<TimelineDetailLevel>(profile.timelineDetailLevel);
-  const [requireApproval, setRequireApproval] = useState(profile.requireFollowApproval);
-  const [showcase, setShowcase] = useState<ShowcaseMetric[]>(profile.showcaseMetrics);
+  const [state, dispatch] = useReducer(privacyFormReducer, {
+    visibility: profile.sectionVisibility,
+    feedSharing: feed,
+    timeline: profile.timelineDetailLevel,
+    requireApproval: profile.requireFollowApproval,
+    showcase: profile.showcaseMetrics,
+  });
 
   // Optimistic toggles: apply locally for instant feedback, then revert that
   // exact change if the write fails (and the error line below surfaces it).
   const toggleVisibility = (key: keyof SectionVisibility) => (next: boolean) => {
-    const prev = visibility;
-    setVisibility({ ...visibility, [key]: next });
-    updateVisibility.mutate({ ...visibility, [key]: next }, { onError: () => setVisibility(prev) });
+    const prev = state.visibility;
+    const newVisibility = { ...state.visibility, [key]: next };
+    dispatch({ type: 'SET_VISIBILITY', value: newVisibility });
+    updateVisibility.mutate(newVisibility, { onError: () => dispatch({ type: 'REVERT_VISIBILITY', value: prev }) });
   };
 
   const toggleFeed = (key: keyof FeedSharingSettings) => (next: boolean) => {
-    const prev = feedSharing;
-    setFeedSharing({ ...feedSharing, [key]: next });
-    updateFeed.mutate({ ...feedSharing, [key]: next }, { onError: () => setFeedSharing(prev) });
+    const prev = state.feedSharing;
+    const newFeedSharing = { ...state.feedSharing, [key]: next };
+    dispatch({ type: 'SET_FEED_SHARING', value: newFeedSharing });
+    updateFeed.mutate(newFeedSharing, { onError: () => dispatch({ type: 'REVERT_FEED_SHARING', value: prev }) });
   };
 
   const setTimelineLevel = (level: TimelineDetailLevel) => {
-    if (level === timeline) return;
-    const prev = timeline;
-    setTimeline(level);
-    updateTimeline.mutate(level, { onError: () => setTimeline(prev) });
+    if (level === state.timeline) return;
+    const prev = state.timeline;
+    dispatch({ type: 'SET_TIMELINE', value: level });
+    updateTimeline.mutate(level, { onError: () => dispatch({ type: 'REVERT_TIMELINE', value: prev }) });
   };
 
   const toggleApproval = (next: boolean) => {
-    const prev = requireApproval;
-    setRequireApproval(next);
-    updateFollow.mutate(next, { onError: () => setRequireApproval(prev) });
+    const prev = state.requireApproval;
+    dispatch({ type: 'SET_REQUIRE_APPROVAL', value: next });
+    updateFollow.mutate(next, { onError: () => dispatch({ type: 'REVERT_REQUIRE_APPROVAL', value: prev }) });
   };
 
   const toggleMetric = (metric: ShowcaseMetric) => {
-    const selected = showcase.includes(metric);
-    if (!selected && showcase.length >= SHOWCASE_MAX) return; // cap reached
-    const prev = showcase;
-    const updated = selected ? showcase.filter((m) => m !== metric) : [...showcase, metric];
-    setShowcase(updated);
-    updateShowcase.mutate(updated, { onError: () => setShowcase(prev) });
+    const selected = state.showcase.includes(metric);
+    if (!selected && state.showcase.length >= SHOWCASE_MAX) return; // cap reached
+    const prev = state.showcase;
+    const updated = selected ? state.showcase.filter((m) => m !== metric) : [...state.showcase, metric];
+    dispatch({ type: 'SET_SHOWCASE', value: updated });
+    updateShowcase.mutate(updated, { onError: () => dispatch({ type: 'REVERT_SHOWCASE', value: prev }) });
   };
 
   const hasError =
@@ -127,9 +173,10 @@ function PrivacyForm({ profile, feed }: { profile: AthleteProfile; feed: FeedSha
             label={t(`settings.screens.privacy.visibility.${key}`)}
             right={
               <Toggle
-                value={visibility[key]}
+                value={state.visibility[key]}
                 onValueChange={toggleVisibility(key)}
                 testID={`visibility-${key}`}
+                accessibilityLabel={t(`settings.screens.privacy.visibility.${key}`)}
               />
             }
           />
@@ -154,7 +201,7 @@ function PrivacyForm({ profile, feed }: { profile: AthleteProfile; feed: FeedSha
               }}
             >
               {(["summary", "detailed"] as const).map((level) => {
-                const active = timeline === level;
+                const active = state.timeline === level;
                 return (
                   <Pressable
                     key={level}
@@ -193,7 +240,12 @@ function PrivacyForm({ profile, feed }: { profile: AthleteProfile; feed: FeedSha
         <SettingsRow
           label={t("settings.screens.privacy.followApproval")}
           right={
-            <Toggle value={requireApproval} onValueChange={toggleApproval} testID="follow-approval" />
+            <Toggle 
+              value={state.requireApproval} 
+              onValueChange={toggleApproval} 
+              testID="follow-approval"
+              accessibilityLabel={t("settings.screens.privacy.followApproval")}
+            />
           }
         />
       </SettingsSection>
@@ -206,7 +258,12 @@ function PrivacyForm({ profile, feed }: { profile: AthleteProfile; feed: FeedSha
               key={key}
               label={t(`settings.screens.privacy.feed.${key}`)}
               right={
-                <Toggle value={feedSharing[key]} onValueChange={toggleFeed(key)} testID={`feed-${key}`} />
+                <Toggle 
+                  value={state.feedSharing[key]} 
+                  onValueChange={toggleFeed(key)} 
+                  testID={`feed-${key}`}
+                  accessibilityLabel={t(`settings.screens.privacy.feed.${key}`)}
+                />
               }
             />
           ))}
@@ -219,12 +276,12 @@ function PrivacyForm({ profile, feed }: { profile: AthleteProfile; feed: FeedSha
         <SettingsSection label={t("settings.screens.privacy.showcaseTitle")}>
           <View style={{ padding: 14, gap: 12 }}>
             <SectionHint
-              text={t("settings.screens.privacy.showcaseHint", { count: showcase.length, max: SHOWCASE_MAX })}
+              text={t("settings.screens.privacy.showcaseHint", { count: state.showcase.length, max: SHOWCASE_MAX })}
             />
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
               {SHOWCASE_METRICS.map((metric) => {
-                const selected = showcase.includes(metric);
-                const atCap = !selected && showcase.length >= SHOWCASE_MAX;
+                const selected = state.showcase.includes(metric);
+                const atCap = !selected && state.showcase.length >= SHOWCASE_MAX;
                 return (
                   <Pressable
                     key={metric}

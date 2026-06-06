@@ -4,10 +4,13 @@ import { authKeys } from "./useSession";
 
 export function useSignInGoogle() {
   const uc = useDI((c) => c.signInGoogle);
+  const rememberProvider = useDI((c) => c.lastAuthProvider.setLastAuthProvider);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => uc.execute(),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: authKeys.session() }),
+    onSuccess: () => {
+      void rememberProvider("google");
+      queryClient.invalidateQueries({ queryKey: authKeys.session() });
+    },
   });
 }

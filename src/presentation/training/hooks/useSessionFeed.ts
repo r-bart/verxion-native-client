@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useDI } from "@/infrastructure/di/DIContext";
 import type { SessionFeedBlock, SessionSort } from "@/domain/training/models/SessionFeed";
@@ -21,7 +20,7 @@ export function useSessionFeed(routineId: string | null, sort: SessionSort) {
     staleTime: 60_000,
   });
 
-  const blocks = useMemo<SessionFeedBlock[]>(() => {
+  const blocks: SessionFeedBlock[] = (() => {
     const merged: SessionFeedBlock[] = [];
     const byId = new Map<string, SessionFeedBlock>();
     for (const page of query.data?.pages ?? []) {
@@ -36,7 +35,7 @@ export function useSessionFeed(routineId: string | null, sort: SessionSort) {
       }
     }
     return merged;
-  }, [query.data]);
+  })();
 
   const totalCount = query.data?.pages[0]?.totalCount ?? 0;
 

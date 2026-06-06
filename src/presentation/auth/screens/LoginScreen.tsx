@@ -6,7 +6,9 @@ import { SignInCancelled } from "@/domain/auth";
 import { useSignInGoogle } from "../hooks/useSignInGoogle";
 import { useSignInApple } from "../hooks/useSignInApple";
 import { useSignIn } from "../hooks/useSignIn";
+import { useLastAuthProvider } from "../hooks/useLastAuthProvider";
 import { AppleSignInButton } from "../components/AppleSignInButton";
+import { LastUsedBadge } from "../components/LastUsedBadge";
 import { GoogleIcon } from "@/presentation/_shared/components/icons/GoogleIcon";
 import { Isotype } from "@/presentation/_shared/components/Isotype";
 import { Wordmark } from "@/presentation/_shared/components/Wordmark";
@@ -24,6 +26,7 @@ export function LoginScreen() {
   const google = useSignInGoogle();
   const apple = useSignInApple();
   const reviewer = useSignIn();
+  const { data: lastProvider } = useLastAuthProvider();
 
   const [showReviewerForm, setShowReviewerForm] = useState(false);
   const [email, setEmail] = useState("");
@@ -108,34 +111,42 @@ export function LoginScreen() {
         </Text>
 
         <View style={{ gap: 12 }}>
-          <AppleSignInButton
-            disabled={isBusy}
-            onPress={() => {
-              setLastAttempt("apple");
-              apple.mutate();
-            }}
-          />
+          <View style={{ position: "relative" }}>
+            {lastProvider === "apple" && <LastUsedBadge testID="last-used-apple" />}
+            <AppleSignInButton
+              disabled={isBusy}
+              onPress={() => {
+                setLastAttempt("apple");
+                apple.mutate();
+              }}
+            />
+          </View>
 
-          <Pressable
-            testID="google-signin-button"
-            onPress={() => {
-              if (isBusy) return;
-              setLastAttempt("google");
-              google.mutate();
-            }}
-            disabled={isBusy}
-            className="active:opacity-80"
-            style={[styles.googleButton, { opacity: isBusy ? 0.6 : 1 }]}
-          >
-            {google.isPending ? (
-              <ActivityIndicator color="#1F1F1F" />
-            ) : (
-              <>
-                <GoogleIcon size={20} />
-                <Text style={{ fontFamily: sans(600), fontSize: 15, color: "#1F1F1F" }}>Continue with Google</Text>
-              </>
-            )}
-          </Pressable>
+          <View style={{ position: "relative" }}>
+            {lastProvider === "google" && <LastUsedBadge testID="last-used-google" />}
+            <Pressable
+              testID="google-signin-button"
+              onPress={() => {
+                if (isBusy) return;
+                setLastAttempt("google");
+                google.mutate();
+              }}
+              disabled={isBusy}
+              accessibilityLabel="Continuar con Google"
+              accessibilityRole="button"
+              className="active:opacity-80"
+              style={[styles.googleButton, { opacity: isBusy ? 0.6 : 1 }]}
+            >
+              {google.isPending ? (
+                <ActivityIndicator color="#1F1F1F" />
+              ) : (
+                <>
+                  <GoogleIcon size={20} />
+                  <Text style={{ fontFamily: sans(600), fontSize: 15, color: "#1F1F1F" }}>Continue with Google</Text>
+                </>
+              )}
+            </Pressable>
+          </View>
         </View>
 
         {showReviewerForm && (
@@ -161,6 +172,7 @@ export function LoginScreen() {
               autoCapitalize="none"
               keyboardType="email-address"
               autoComplete="email"
+              accessibilityLabel="Email"
               style={inputStyle}
             />
             <TextInput
@@ -171,6 +183,7 @@ export function LoginScreen() {
               onChangeText={setPassword}
               secureTextEntry
               autoComplete="password"
+              accessibilityLabel="Password"
               style={inputStyle}
             />
             <Pressable

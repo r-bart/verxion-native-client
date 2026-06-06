@@ -4,7 +4,7 @@
  * sort run client-side over one library read (useExerciseLibraryView); filters
  * live in bottom sheets with removable active chips. Owns its own scroll.
  */
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { View, Text, Pressable, TextInput, FlatList } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
@@ -20,51 +20,11 @@ import {
 } from "../hooks/useExerciseLibraryView";
 import { ExerciseLibraryRow } from "./ExerciseLibraryRow";
 import { SheetOption } from "./SheetOption";
+import { FilterPill } from "./FilterPill";
+import { SelectSheet } from "./SelectSheet";
 import { SegmentError } from "./SegmentError";
 
 const SORTS: ExerciseSort[] = ["name", "logged"];
-
-// flex:1 lives on the row wrapper View (textbook flex), not on this Pressable —
-// a flex returned from Pressable's style callback doesn't size the row slot. A
-// plain translucent View (not GlassSurface) fills reliably and reads the same.
-function PillButton({
-  icon,
-  label,
-  onPress,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  onPress: () => void;
-}) {
-  return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 7,
-          paddingVertical: 12,
-          borderRadius: 9999,
-          backgroundColor: glass.fill2,
-          borderWidth: 1,
-          borderColor: glass.stroke,
-        }}
-      >
-        {icon}
-        <Text
-          style={{ fontFamily: sans(600), fontSize: 13, color: glass.white }}
-        >
-          {label}
-        </Text>
-      </View>
-    </Pressable>
-  );
-}
 
 function RemovableChip({
   label,
@@ -111,6 +71,18 @@ export function EjerciciosSegment() {
   const view = useExerciseLibraryView(data);
   const [sheet, setSheet] = useState<"filter" | "sort" | null>(null);
 
+  const renderExerciseItem = ({ item }: { item: any }) => (
+    <View style={{ marginBottom: 8 }}>
+      <ExerciseLibraryRow item={item} />
+    </View>
+  );
+
+  const contentContainerStyle = useMemo(() => ({
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: insets.bottom + 64,
+  }), [insets.bottom]);
+
   if (isLoading) {
     return (
       <View style={{ paddingHorizontal: 16, gap: 8, paddingTop: 8 }}>
@@ -128,7 +100,7 @@ export function EjerciciosSegment() {
     );
   }
 
-  const Header = (
+  const renderHeader = () => (
     <View style={{ gap: 12, paddingBottom: 6 }}>
       <GlassSurface
         radius={14}
@@ -157,7 +129,7 @@ export function EjerciciosSegment() {
 
       <View style={{ flexDirection: "row", gap: 8 }}>
         <View style={{ flex: 1 }}>
-          <PillButton
+          <FilterPill
             icon={
               <SlidersHorizontal size={15} color={glass.ink2} strokeWidth={2} />
             }
@@ -166,7 +138,7 @@ export function EjerciciosSegment() {
           />
         </View>
         <View style={{ flex: 1 }}>
-          <PillButton
+          <FilterPill
             icon={<ArrowUpDown size={15} color={glass.ink2} strokeWidth={2} />}
             label={t(`training.exerciseSort.${view.sort}`)}
             onPress={() => setSheet("sort")}
@@ -202,12 +174,8 @@ export function EjerciciosSegment() {
       <FlatList
         data={view.filtered}
         keyExtractor={(it) => it.id}
-        ListHeaderComponent={Header}
-        renderItem={({ item }) => (
-          <View style={{ marginBottom: 8 }}>
-            <ExerciseLibraryRow item={item} />
-          </View>
-        )}
+        ListHeaderComponent={renderHeader}
+        renderItem={renderExerciseItem}
         ListEmptyComponent={
           <Text
             style={{
@@ -221,11 +189,7 @@ export function EjerciciosSegment() {
             {t("training.exerciseLibrary.empty")}
           </Text>
         }
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingTop: 16,
-          paddingBottom: insets.bottom + 64,
-        }}
+        contentContainerStyle={contentContainerStyle}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       />
@@ -289,23 +253,17 @@ export function EjerciciosSegment() {
         ))}
       </BottomSheet>
 
-      <BottomSheet
+      <SelectSheet
         visible={sheet === "sort"}
         onClose={() => setSheet(null)}
         title={t("training.exerciseLibrary.sortTitle")}
-      >
-        {SORTS.map((s) => (
-          <SheetOption
-            key={s}
-            label={t(`training.exerciseSort.${s}`)}
-            selected={view.sort === s}
-            onPress={() => {
-              view.setSort(s);
-              setSheet(null);
-            }}
-          />
-        ))}
-      </BottomSheet>
+        options={SORTS.map((s) => ({
+          key: s,
+          label: t(`training.exerciseSort.${s}`),
+        }))}
+        selectedKey={view.sort}
+        onSelect={(key) => view.setSort(key)}
+      />
     </>
   );
 }

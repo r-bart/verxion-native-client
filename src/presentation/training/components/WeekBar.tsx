@@ -13,7 +13,10 @@ import type { ActiveRoutineSummary } from "@/domain/training/models/RoutineDashb
 
 export function WeekBar({ routine }: { routine: ActiveRoutineSummary }) {
   const { t } = useTranslation();
-  const { week, weeks, weekFraction, scoreState } = routine;
+  const { week, weekFraction, scoreState } = routine;
+  // Open-ended routines carry no fixed length; fall back to the current week so
+  // the bar renders a filled cell instead of breaking on a null length.
+  const weeks = routine.weeks ?? week;
   const partial = weekFraction != null && weekFraction > 0 && weekFraction < 1 ? weekFraction : null;
 
   return (
@@ -31,7 +34,7 @@ export function WeekBar({ routine }: { routine: ActiveRoutineSummary }) {
           const now = i === week - 1;
           return (
             <View
-              key={i}
+              key={`week-${i}`}
               style={{
                 flex: 1,
                 height: 6,

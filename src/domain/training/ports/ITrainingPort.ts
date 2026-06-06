@@ -7,6 +7,7 @@ import type { ExerciseLibrary } from "../models/ExerciseLibrary";
 import type { RoutineLibrary } from "../models/RoutineLibrary";
 import type { RoutineDetailView } from "../models/RoutineDetailView";
 import type { DayDetailView } from "../models/DayDetailView";
+import type { SessionDetailView } from "../models/SessionDetailView";
 
 export interface ITrainingPort {
   getRoutineDashboard(): Promise<RoutineDashboard>;
@@ -15,6 +16,7 @@ export interface ITrainingPort {
   getRoutineLibrary(): Promise<RoutineLibrary>;
   getRoutineDetailView(id: string): Promise<RoutineDetailView>;
   getDayDetailView(dayId: string): Promise<DayDetailView>;
+  getSessionDetailView(id: string): Promise<SessionDetailView>;
   getRoutines(): Promise<Routine[]>;
   getRoutineDetail(id: string): Promise<RoutineDetail>;
   getWorkoutDayExercises(routineId: string, dayId: string): Promise<WorkoutDayExercise[]>;

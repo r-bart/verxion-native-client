@@ -7,7 +7,7 @@
 import { Dumbbell, Rows3, Footprints, Moon, Target, type LucideIcon } from "lucide-react-native";
 import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
-import type { DayType } from "@/domain/training/models/RoutineDashboard";
+import type { DayType, DayKind } from "@/domain/training/models/RoutineDashboard";
 
 export const DAY_TYPE: Record<DayType, { color: string; bg: string; Icon: LucideIcon }> = {
   push: { color: glass.lava, bg: glass.lavaBg, Icon: Dumbbell },
@@ -16,3 +16,19 @@ export const DAY_TYPE: Record<DayType, { color: string; bg: string; Icon: Lucide
   core: { color: palette.insight.text, bg: palette.insight.background, Icon: Target },
   rest: { color: palette.insight.text, bg: palette.insight.background, Icon: Moon },
 };
+
+type ChipVisual = { color: string; bg: string; Icon: LucideIcon };
+
+/**
+ * TEMPORARY chip vocabulary for the API's {@link DayKind} taxonomy. The full
+ * per-kind icon/color system (cardio, deload, mobility, active_rest,
+ * conditioning, technique) is a deferred design follow-up; until then every
+ * active kind falls to the lava "workout" visual and the two rest kinds to the
+ * calm moon. Labels come from i18n (`training.dayType.{kind}`).
+ */
+const WORKOUT_CHIP: ChipVisual = { color: glass.lava, bg: glass.lavaBg, Icon: Dumbbell };
+const REST_CHIP: ChipVisual = { color: palette.insight.text, bg: palette.insight.background, Icon: Moon };
+
+export function dayKindChip(kind: DayKind): ChipVisual {
+  return kind === "rest" || kind === "active_rest" ? REST_CHIP : WORKOUT_CHIP;
+}

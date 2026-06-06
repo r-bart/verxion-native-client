@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>verxion — Detalle de día de entreno</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/colors_and_type.css">
+<style>
+  :root {
+    --lava: #FF6262;
+    --lava-glow: rgba(255,98,98,0.55);
+    --good: var(--vx-up);
+    --glass-fill: rgba(255,255,255,0.06);
+    --glass-stroke: rgba(255,255,255,0.12);
+    --glass-hi: inset 0 1px 0 0 rgba(255,255,255,0.20), inset 0 0 0 1px rgba(255,255,255,0.05);
+    --ease: cubic-bezier(0.2,0.8,0.2,1);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; min-height: 100vh; background: #050507; color: #fff;
+    font-family: var(--vx-font-mono); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  body::before {
+    content: ""; position: fixed; inset: -14vh -14vw; z-index: 0;
+    background:
+      radial-gradient(38vw 38vw at 16% 14%, rgba(255,98,98,0.22), transparent 60%),
+      radial-gradient(34vw 34vw at 84% 84%, rgba(0,210,255,0.12), transparent 62%),
+      radial-gradient(30vw 30vw at 60% 104%, rgba(155,89,182,0.14), transparent 60%),
+      #050507;
+    filter: blur(52px);
+  }
+
+  #root { position: relative; z-index: 1; }
+  .dd-fit { transform-origin: center center; }
+  .dd-stage { display: flex; gap: 60px; align-items: flex-start; justify-content: center; }
+  .dd-colwrap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .dd-coltag { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+  .dd-coltag__name { font: 700 16px/1.25 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
+  .dd-coltag__name b { color: var(--lava); }
+  .dd-coltag__desc { font: 400 12px/1.4 var(--vx-font-mono); color: rgba(255,255,255,0.5); max-width: 36ch; }
+
+  /* ───────── SCREEN SHELL ───────── */
+  .dd-screen { position: relative; height: 100%; overflow: hidden; color: #fff; font-family: var(--vx-font-mono); }
+  .dd-screen::before {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(74% 42% at 24% -2%, rgba(255,98,98,0.26), transparent 70%),
+      radial-gradient(58% 34% at 98% 14%, rgba(155,89,182,0.14), transparent 70%),
+      radial-gradient(96% 50% at 50% 104%, rgba(0,210,255,0.06), transparent 76%),
+      #0a0a0c;
+  }
+  .dd-scroll { position: absolute; inset: 0; z-index: 1; overflow-y: auto; scrollbar-width: none; padding: 0 0 30px; }
+  .dd-scroll--cta { padding-bottom: 126px; }
+  .dd-scroll::-webkit-scrollbar { display: none; }
+
+  /* ───────── TOP CHROME ───────── */
+  .dd-chrome { position: sticky; top: 0; z-index: 6; padding: 56px 14px 10px;
+    display: flex; align-items: center; gap: 10px;
+    background: linear-gradient(180deg, rgba(10,10,12,0.94) 58%, rgba(10,10,12,0));
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .dd-chrome__btn { width: 38px; height: 38px; border-radius: 9999px; flex-shrink: 0; border: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    background: rgba(120,120,128,0.26); border: 0.5px solid rgba(255,255,255,0.16);
+    box-shadow: inset 1.5px 1.5px 1px rgba(255,255,255,0.15), inset -1px -1px 1px rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%); }
+  .dd-chrome__btn:active { opacity: 0.8; }
+  .dd-chrome__title { flex: 1; text-align: center; font: 700 14px/1 var(--vx-font-sans); letter-spacing: -0.01em; color: rgba(255,255,255,0.86);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ───────── content ───────── */
+  .dd-pad { padding: 6px 16px 0; display: flex; flex-direction: column; gap: 14px; }
+  .dd-sec { display: flex; align-items: center; gap: 8px; padding: 8px 2px 0; }
+  .dd-sec__k { font: 700 10.5px/1 var(--vx-font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.46); white-space: nowrap; }
+  .dd-sec__count { font: 600 10.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.34); white-space: nowrap; }
+  .dd-sec__line { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+
+  .dd-eyebrow { display: inline-flex; align-items: center; gap: 6px; font: 700 10px/1 var(--vx-font-mono); letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; }
+  .dd-bubble { border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.16); flex-shrink: 0; }
+  .dd-livedot { width: 7px; height: 7px; border-radius: 9999px; background: var(--lava); box-shadow: 0 0 8px var(--lava-glow); }
+  @media (prefers-reduced-motion: no-preference) { .dd-livedot { animation: dd-blink 2s var(--ease) infinite; } }
+  @keyframes dd-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  /* ───────── HERO ───────── */
+  .dd-hero { padding: 18px; border-radius: 24px; background: var(--glass-fill);
+    backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%);
+    border: 1px solid var(--glass-stroke); box-shadow: var(--glass-hi), 0 14px 38px rgba(0,0,0,0.32); }
+  .dd-hero.is-today { background: linear-gradient(180deg, rgba(255,98,98,0.08), rgba(255,255,255,0.045)); border-color: rgba(255,98,98,0.24); }
+  .dd-hero__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .dd-hero__ctx { display: inline-flex; align-items: center; gap: 5px; font: 500 10.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.46); white-space: nowrap; }
+  .dd-hero__ctx svg { color: rgba(255,255,255,0.4); }
+  .dd-hero__row { display: flex; align-items: center; gap: 13px; margin-top: 14px; }
+  .dd-hero__name { font: 700 27px/1.05 var(--vx-font-sans); letter-spacing: -0.035em; color: #fff; }
+  .dd-hero__focus { font: 500 12.5px/1.3 var(--vx-font-mono); color: rgba(255,255,255,0.6); margin-top: 5px; }
+  .dd-hero__stats { display: flex; margin-top: 18px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.09); }
+  .dd-stat { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; }
+  .dd-stat + .dd-stat::before { content: ""; position: absolute; left: 0; top: 2px; bottom: 2px; width: 1px; background: rgba(255,255,255,0.08); }
+  .dd-stat svg { color: rgba(255,255,255,0.4); }
+  .dd-stat b { font: 700 17px/1 var(--vx-font-sans); letter-spacing: -0.03em; color: #fff; margin-top: 2px; }
+  .dd-stat span { font: 500 9px/1 var(--vx-font-mono); letter-spacing: 0.03em; text-transform: uppercase; color: rgba(255,255,255,0.46); }
+
+  /* ───────── AGENT NOTE ───────── */
+  .dd-agent { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 18px;
+    background: rgba(255,98,98,0.09); backdrop-filter: blur(20px) saturate(150%); -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255,98,98,0.2); box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.07); }
+  .dd-agent__mark { flex-shrink: 0; margin-top: 1px; }
+  .dd-agent__from { font: 700 10.5px/1 var(--vx-font-sans); color: var(--lava); margin-bottom: 5px; }
+  .dd-agent__msg { font: 400 12.5px/1.5 var(--vx-font-mono); color: rgba(255,255,255,0.9); text-wrap: pretty; }
+
+  /* ───────── EXERCISE CARDS ───────── */
+  .dd-list { display: flex; flex-direction: column; gap: 9px; }
+  .dd-ex { display: flex; gap: 12px; width: 100%; text-align: left; cursor: pointer; padding: 14px;
+    border-radius: 18px; background: var(--glass-fill); border: 1px solid var(--glass-stroke); box-shadow: var(--glass-hi);
+    transition: border-color .15s var(--ease); }
+  .dd-ex:hover { border-color: var(--vx-border-2); }
+  .dd-ex:active { opacity: 0.9; }
+  .dd-ex.is-key { background: linear-gradient(180deg, rgba(255,98,98,0.08), rgba(255,255,255,0.05)); border-color: rgba(255,98,98,0.26); }
+  .dd-ex__rail { flex-shrink: 0; padding-top: 1px; }
+  .dd-ex__n { width: 26px; height: 26px; border-radius: 9999px; display: flex; align-items: center; justify-content: center;
+    font: 700 12px/1 var(--vx-font-sans); color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); }
+  .dd-ex__body { flex: 1; min-width: 0; }
+  .dd-ex__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .dd-ex__name { font: 600 15px/1.2 var(--vx-font-sans); letter-spacing: -0.01em; color: #fff; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .dd-ex__keytag { font: 700 8px/1 var(--vx-font-mono); letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 6px; border-radius: 9999px; }
+  .dd-ex__muscle { font: 500 11px/1 var(--vx-font-mono); color: rgba(255,255,255,0.5); margin-top: 5px; }
+  .dd-ex__target { text-align: right; flex-shrink: 0; }
+  .dd-ex__target span { display: block; font: 700 15px/1 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
+  .dd-ex__target em { font-style: normal; font: 500 8.5px/1 var(--vx-font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .dd-ex__rx { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 11px; }
+  .dd-rx { display: inline-flex; align-items: center; gap: 4px; font: 600 12px/1 var(--vx-font-mono); color: #fff;
+    padding: 5px 9px; border-radius: 9999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); }
+  .dd-rx b { font-weight: 700; }
+  .dd-rx--mut { color: rgba(255,255,255,0.6); background: transparent; border-color: rgba(255,255,255,0.1); }
+  .dd-rx--mut svg { color: rgba(255,255,255,0.4); }
+  .dd-rx--up { color: var(--good); background: var(--vx-up-tint); border-color: var(--vx-up-line); font-weight: 700; }
+  .dd-ex__last { font: 500 11px/1 var(--vx-font-mono); color: rgba(255,255,255,0.42); margin-top: 9px; }
+
+  /* ───────── REST DAY ───────── */
+  .dd-rest { padding: 36px 22px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;
+    border-radius: 24px; background: var(--glass-fill); border: 1px solid var(--glass-stroke); box-shadow: var(--glass-hi); }
+  .dd-rest__t { font: 700 19px/1.15 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; margin-top: 4px; }
+  .dd-rest__d { font: 400 12.5px/1.55 var(--vx-font-mono); color: rgba(255,255,255,0.56); max-width: 30ch; text-wrap: pretty; }
+
+  /* ───────── ASK AGENT ───────── */
+  .dd-ask { width: 100%; display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-radius: 16px; cursor: pointer;
+    margin-top: 4px; background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.18); text-align: left;
+    transition: background .15s var(--ease), border-color .15s var(--ease); }
+  .dd-ask:hover { background: rgba(255,98,98,0.07); border-color: rgba(255,98,98,0.3); }
+  .dd-ask:active { opacity: 0.85; }
+  .dd-ask__iso { flex-shrink: 0; }
+  .dd-ask__body { flex: 1; min-width: 0; }
+  .dd-ask__label { font: 600 13px/1.25 var(--vx-font-sans); color: #fff; }
+  .dd-ask__hint { font: 500 10.5px/1.45 var(--vx-font-mono); color: rgba(255,255,255,0.46); margin-top: 4px; text-wrap: pretty; }
+  .dd-ask__c { font: 700 18px/1 var(--vx-font-sans); color: var(--lava); flex-shrink: 0; }
+
+  /* ───────── STICKY ACTION BAR ───────── */
+  .dd-actions { position: absolute; left: 0; right: 0; bottom: 0; z-index: 7; padding: 14px 16px 30px;
+    display: flex; flex-direction: column; gap: 9px;
+    background: linear-gradient(180deg, rgba(10,10,12,0) 0%, rgba(10,10,12,0.92) 32%); }
+  .dd-btn { width: 100%; height: 52px; border: none; border-radius: 9999px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--lava); color: #0a0a0a; font: 700 15.5px/1 var(--vx-font-sans); letter-spacing: -0.01em;
+    box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.4), 0 8px 22px rgba(255,98,98,0.32); transition: background .15s var(--ease); }
+  .dd-btn:hover { background: var(--vx-lava-hover); }
+  .dd-btn:active { opacity: 0.85; }
+  .dd-actions__sync { display: flex; align-items: center; justify-content: center; gap: 6px;
+    font: 500 10px/1 var(--vx-font-mono); color: rgba(255,255,255,0.4); }
+  .dd-actions__dot { width: 5px; height: 5px; border-radius: 9999px; background: var(--lava); box-shadow: 0 0 6px var(--lava-glow); }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="ios-frame.jsx"></script>
+  <script type="text/babel" src="icons.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="nav.jsx"></script>
+  <script type="text/babel" src="rutinas-data.jsx"></script>
+  <script type="text/babel" src="dia-detalle-core.jsx"></script>
+
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "rutina": "ppl-hipertrofia",
+      "dia": "2"
+    }/*EDITMODE-END*/;
+
+    function Phone({ tag, desc, children }) {
+      return (
+        <div className="dd-colwrap">
+          <div className="dd-coltag">
+            <div className="dd-coltag__name" dangerouslySetInnerHTML={{ __html: tag }} />
+            <div className="dd-coltag__desc">{desc}</div>
+          </div>
+          <IOSDevice dark={true}>{children}</IOSDevice>
+        </div>
+      );
+    }
+
+    // mapea el tweak "día" (push/pull/legs/rest) al índice dentro de la rutina activa
+    const DIA_IDX = { push: 0, pull: 1, legs: 2, rest: 6 };
+
+    function App() {
+      const raw = useTweaks({ ...TWEAK_DEFAULTS, ...vxReadParams(["rutina", "dia"]) });
+      const t = raw[0], setTweak = raw[1];
+      // si el tweak "diaTipo" está presente lo traducimos a índice de la rutina activa
+      const tipo = t.diaTipo;
+      const model = { ...t, dia: tipo != null ? String(DIA_IDX[tipo]) : t.dia };
+
+      return (
+        <div>
+          <div className="dd-fit" id="fit">
+            <div className="dd-stage">
+              <Phone tag="verxion · <b>Detalle de día de entreno</b>"
+                desc="Vista de solo lectura del plan de un día: metadatos + ejercicios (cada uno abre su detalle). Empezar la sesión de hoy vive en la Prescripción; cambiar el día, en el agente.">
+                <DiaDetalleScreen t={model} />
+              </Phone>
+            </div>
+          </div>
+
+          <TweaksPanel>
+            <TweakSection label="El día" />
+            <TweakRadio label="Tipo" value={t.diaTipo || "legs"}
+              options={[{ value: "push", label: "Push" }, { value: "pull", label: "Pull" }, { value: "legs", label: "Legs" }, { value: "rest", label: "Descanso" }]}
+              onChange={(v) => setTweak("diaTipo", v)} />
+          </TweaksPanel>
+        </div>
+      );
+    }
+
+    function fit() {
+      const el = document.getElementById("fit");
+      if (!el) return;
+      const stage = el.querySelector(".dd-stage");
+      const w = stage.scrollWidth, h = stage.scrollHeight;
+      const scale = Math.min(1, (window.innerWidth - 48) / w, (window.innerHeight - 40) / h);
+      el.style.transform = "scale(" + scale + ")";
+    }
+    window.addEventListener("resize", fit);
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    setTimeout(fit, 80);
+    setTimeout(fit, 400);
+  </script>
+</body>
+</html>

@@ -11,6 +11,7 @@ describe("GetSessionFeedUseCase", () => {
       getRoutineLibrary: jest.fn(),
       getRoutineDetailView: jest.fn(),
       getDayDetailView: jest.fn(),
+      getSessionDetailView: jest.fn(),
       getRoutines: jest.fn(),
       getRoutineDetail: jest.fn(),
       getWorkoutDayExercises: jest.fn(),

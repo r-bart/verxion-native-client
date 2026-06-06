@@ -157,7 +157,7 @@ export function GhostTimeline() {
       <View>
         {GHOST_ROWS.map((r, i) => (
           <GhostRow
-            key={i}
+            key={`ghost-${r.Icon.name}-${i}`}
             Icon={r.Icon}
             w={r.w}
             index={i}

@@ -32,6 +32,7 @@ export function DayExerciseCard({
         router.push(`/workout/ejercicio/${exercise.exerciseId}` as Href)
       }
       accessibilityRole="button"
+      accessibilityLabel={`Ver ejercicio ${exercise.name}`}
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
     >
       <GlassSurface
