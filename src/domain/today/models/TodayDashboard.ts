@@ -74,6 +74,35 @@ export interface RoutineProgress {
 }
 
 /**
+ * The active diet plan, for the "DIETA · {FASE}" row. Diet plans are NOT
+ * periodized by weeks — they carry a `phase`/pace instead (e.g. "Déficit",
+ * "Mantenimiento", "Superávit"), a short server-provided label rendered verbatim
+ * (uppercased by the row). `adherenceScore` is the nutrition execution score.
+ */
+export interface DietProgress {
+  name: string;
+  /** Short phase/pace label (e.g. "Déficit"). Null when not applicable. */
+  phase: string | null;
+  /** Nutrition execution score (e.g. 92). Null in cold-start → chip hides. */
+  adherenceScore: number | null;
+  adherenceMax: number;
+}
+
+/**
+ * The active program, for the "PROGRAMA · SEMANA x/y" row. Programs ARE
+ * periodized (mesocycles), so they carry week/totalWeeks like a routine. The
+ * program is the macro-plan that can sit over a routine + diet.
+ */
+export interface ProgramProgress {
+  name: string;
+  week: number;
+  totalWeeks: number;
+  /** Program adherence score. Null in cold-start → chip hides. */
+  adherenceScore: number | null;
+  adherenceMax: number;
+}
+
+/**
  * The agent's note for the day. `message` is free text already localised by the
  * platform for the user's language — it is content, not UI chrome, so the app
  * renders it verbatim.
@@ -213,7 +242,11 @@ export interface TodayDashboard {
   date: string;
   ring: DayRing;
   fronts: DayFront[];
+  /** Active plans — any combination may be present; each renders a row, the
+   * section hides when all are null. */
   routine: RoutineProgress | null;
+  diet: DietProgress | null;
+  program: ProgramProgress | null;
   agentNote: AgentNote | null;
   timeline: TimelineEvent[];
 }

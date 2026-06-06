@@ -562,8 +562,12 @@
       "rest": "Descanso",
       "missed": "Perdido"
     },
-    "routineLabel": "Rutina",
-    "routineWeek": "Semana {{week}} / {{total}}",
+    "plans": {
+      "routine": "Rutina",
+      "diet": "Dieta",
+      "program": "Programa"
+    },
+    "planWeek": "Semana {{week}} / {{total}}",
     "yourDay": "Tu día",
     "now": "Ahora",
     "pending": "Pendiente · sin hora",

@@ -21,7 +21,7 @@ import { glass } from "@/presentation/_shared/design/glass";
 import { useTodayDashboard } from "../hooks/useTodayDashboard";
 import { TodayHeader } from "../components/TodayHeader";
 import { DaySummary } from "../components/DaySummary";
-import { RoutineRow } from "../components/RoutineRow";
+import { PlansSection } from "../components/PlansSection";
 // import { AgentNoteCard } from "../components/AgentNoteCard"; // hidden for now
 import { DayTimeline } from "../components/DayTimeline";
 import { GhostTimeline } from "../components/GhostTimeline";
@@ -72,12 +72,7 @@ export function TodayScreen() {
           >
             <TodayHeader date={data.date} />
             <DaySummary ring={data.ring} fronts={data.fronts} />
-            {data.routine && (
-              <>
-                <Divider />
-                <RoutineRow routine={data.routine} />
-              </>
-            )}
+            <PlansSection routine={data.routine} diet={data.diet} program={data.program} />
             {/* Agent note hidden for now (kept wired; re-enable when ready). */}
             {/* {data.agentNote && <AgentNoteCard note={data.agentNote} />} */}
             <Divider />

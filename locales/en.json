@@ -562,8 +562,12 @@
       "rest": "Rest",
       "missed": "Missed"
     },
-    "routineLabel": "Routine",
-    "routineWeek": "Week {{week}} / {{total}}",
+    "plans": {
+      "routine": "Routine",
+      "diet": "Diet",
+      "program": "Program"
+    },
+    "planWeek": "Week {{week}} / {{total}}",
     "yourDay": "Your day",
     "now": "Now",
     "pending": "Pending · no time",
