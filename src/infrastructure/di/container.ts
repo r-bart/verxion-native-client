@@ -72,10 +72,16 @@ import { GetExerciseCatalogDetailUseCase } from "@/application/training/GetExerc
 import { GetExerciseFiltersUseCase } from "@/application/training/GetExerciseFiltersUseCase";
 import { GetProgressionPlanUseCase } from "@/application/training/GetProgressionPlanUseCase";
 
-import { GetDietPlansUseCase } from "@/application/nutrition/GetDietPlansUseCase";
-import { GetDietPlanDetailUseCase } from "@/application/nutrition/GetDietPlanDetailUseCase";
+import { GetDietDashboardUseCase } from "@/application/nutrition/GetDietDashboardUseCase";
+import { GetDietLibraryUseCase } from "@/application/nutrition/GetDietLibraryUseCase";
+import { GetDietDetailUseCase } from "@/application/nutrition/GetDietDetailUseCase";
+import { GetMealDetailUseCase } from "@/application/nutrition/GetMealDetailUseCase";
+import { GetFoodDetailUseCase } from "@/application/nutrition/GetFoodDetailUseCase";
+import { GetDietDayPlanUseCase } from "@/application/nutrition/GetDietDayPlanUseCase";
+import { GetDiaryFeedUseCase } from "@/application/nutrition/GetDiaryFeedUseCase";
+import { GetDiaryDayUseCase } from "@/application/nutrition/GetDiaryDayUseCase";
 import { GetDailyMealLogsUseCase } from "@/application/nutrition/GetDailyMealLogsUseCase";
-import { SearchFoodsUseCase } from "@/application/nutrition/SearchFoodsUseCase";
+import { GetFoodLibraryUseCase } from "@/application/nutrition/GetFoodLibraryUseCase";
 import { GetNutritionDayStateUseCase } from "@/application/nutrition/GetNutritionDayStateUseCase";
 import { GetNutritionWeeklySummaryUseCase } from "@/application/nutrition/GetNutritionWeeklySummaryUseCase";
 
@@ -222,10 +228,16 @@ export const container = {
   getExerciseFilters: new GetExerciseFiltersUseCase(exerciseCatalogRepo),
 
   // Nutrition
-  getDietPlans: new GetDietPlansUseCase(nutritionRepo),
-  getDietPlanDetail: new GetDietPlanDetailUseCase(nutritionRepo),
+  getDietDashboard: new GetDietDashboardUseCase(nutritionRepo),
+  getDietLibrary: new GetDietLibraryUseCase(nutritionRepo),
+  getDietDetail: new GetDietDetailUseCase(nutritionRepo),
+  getMealDetail: new GetMealDetailUseCase(nutritionRepo),
+  getFoodDetail: new GetFoodDetailUseCase(nutritionRepo),
+  getDietDayPlan: new GetDietDayPlanUseCase(nutritionRepo),
+  getDiaryFeed: new GetDiaryFeedUseCase(nutritionRepo),
+  getDiaryDay: new GetDiaryDayUseCase(nutritionRepo),
   getDailyMealLogs: new GetDailyMealLogsUseCase(nutritionRepo),
-  searchFoods: new SearchFoodsUseCase(nutritionRepo),
+  getFoodLibrary: new GetFoodLibraryUseCase(nutritionRepo),
   getNutritionDayState: new GetNutritionDayStateUseCase(nutritionRepo),
   getNutritionWeeklySummary: new GetNutritionWeeklySummaryUseCase(nutritionRepo),
 

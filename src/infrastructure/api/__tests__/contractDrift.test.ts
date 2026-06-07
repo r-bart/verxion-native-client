@@ -78,6 +78,26 @@ const ENDPOINTS: Record<string, [string, string][]> = {
     // "Detalle de sesión" report — live read-model behind getSessionDetailView.
     ["GET", "/api/v1/sessions/{id}/detail"],
   ],
+  nutrition: [
+    // Nutrición landing "Plan" aggregate — live read-model behind getDietDashboard.
+    ["GET", "/api/v1/nutrition/diet-dashboard"],
+    // "Dietas" library — curated read-model behind getDietLibrary.
+    ["GET", "/api/v1/nutrition/diet-library"],
+    // "Detalle de dieta" — curated read-model behind getDietDetail.
+    ["GET", "/api/v1/nutrition/diet-detail/{planId}"],
+    // "Detalle de comida" — curated read-model behind getMealDetail.
+    ["GET", "/api/v1/nutrition/meal-detail/{planId}/{mealId}"],
+    // "Detalle de alimento" — curated read-model behind getFoodDetail.
+    ["GET", "/api/v1/nutrition/food-detail/{kind}/{id}"],
+    // "Plan de comidas del día" — curated read-model behind getDietDayPlan.
+    ["GET", "/api/v1/nutrition/diet-day-plan"],
+    // "Diario" — curated read-model behind getDiaryFeed.
+    ["GET", "/api/v1/nutrition/diary-feed"],
+    // "Detalle de día del diario" — curated read-model behind getDiaryDay.
+    ["GET", "/api/v1/nutrition/diary-day/{date}"],
+    // "Alimentos" — curated read-model behind getFoodLibrary.
+    ["GET", "/api/v1/nutrition/food-library"],
+  ],
   onboarding: [
     ["GET", "/api/v1/users/me"],
     ["GET", "/api/v1/users/check-username/{username}"],
@@ -127,6 +147,21 @@ describeIfContract("contract drift — native repositories", () => {
         "200"
       ].content["application/json"].schema;
       expect(schema.properties?.data).toBeDefined();
+    });
+
+    it("DietLibrary carries diets[] + facets the screen groups/filters by", () => {
+      const lib = spec!.components.schemas.DietLibrary?.properties;
+      const diet = lib?.diets?.items?.properties;
+      // fields the card/row + client-side sort rely on
+      expect(diet?.state?.enum).toEqual(
+        expect.arrayContaining(["active", "completed"])
+      );
+      expect(diet?.targets?.properties?.kcal).toBeDefined();
+      expect(diet?.proteinGoal).toBeDefined();
+      expect(diet?.adherence).toBeDefined();
+      // facets that drive the filter sheet
+      expect(lib?.facets?.properties?.states).toBeDefined();
+      expect(lib?.facets?.properties?.goals).toBeDefined();
     });
 
     it("SessionFeedPage stays raw — block.totalVolume + session.volume are { value, unit }", () => {
