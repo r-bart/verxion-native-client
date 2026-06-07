@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>verxion — Detalle de comida</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/colors_and_type.css">
+<style>
+  :root {
+    --lava: #FF6262;
+    --good: var(--vx-up);
+    --glass-fill: rgba(255,255,255,0.06);
+    --glass-stroke: rgba(255,255,255,0.12);
+    --glass-hi: inset 0 1px 0 0 rgba(255,255,255,0.20), inset 0 0 0 1px rgba(255,255,255,0.05);
+    --ease: cubic-bezier(0.2,0.8,0.2,1);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; min-height: 100vh; background: #050507; color: #fff;
+    font-family: var(--vx-font-mono); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  body::before {
+    content: ""; position: fixed; inset: -14vh -14vw; z-index: 0;
+    background:
+      radial-gradient(38vw 38vw at 16% 14%, rgba(255,98,98,0.22), transparent 60%),
+      radial-gradient(34vw 34vw at 84% 82%, rgba(0,210,255,0.13), transparent 62%),
+      radial-gradient(30vw 30vw at 62% 104%, rgba(255,185,0,0.11), transparent 60%),
+      #050507;
+    filter: blur(52px);
+  }
+
+  #root { position: relative; z-index: 1; }
+  .cm-fit { transform-origin: center center; }
+  .cm-stage { display: flex; gap: 60px; align-items: flex-start; justify-content: center; }
+  .cm-colwrap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .cm-coltag { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+  .cm-coltag__name { font: 700 16px/1.25 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
+  .cm-coltag__name b { color: var(--lava); }
+  .cm-coltag__desc { font: 400 12px/1.4 var(--vx-font-mono); color: rgba(255,255,255,0.5); max-width: 36ch; }
+
+  /* ───────── SCREEN SHELL ───────── */
+  .cm-screen { position: relative; height: 100%; overflow: hidden; color: #fff; font-family: var(--vx-font-mono); }
+  .cm-screen::before {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(74% 42% at 24% -2%, rgba(255,98,98,0.26), transparent 70%),
+      radial-gradient(58% 34% at 98% 14%, rgba(255,185,0,0.10), transparent 70%),
+      radial-gradient(96% 50% at 50% 104%, rgba(0,210,255,0.07), transparent 76%),
+      #0a0a0c;
+  }
+  .cm-scroll { position: absolute; inset: 0; z-index: 1; overflow-y: auto; scrollbar-width: none; padding: 0 0 30px; }
+  .cm-scroll::-webkit-scrollbar { display: none; }
+
+  /* ───────── TOP CHROME ───────── */
+  .cm-chrome { position: sticky; top: 0; z-index: 6; padding: 56px 14px 10px;
+    display: flex; align-items: center; gap: 10px;
+    background: linear-gradient(180deg, rgba(10,10,12,0.94) 58%, rgba(10,10,12,0));
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .cm-chrome__btn { width: 38px; height: 38px; border-radius: 9999px; flex-shrink: 0; border: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    background: rgba(120,120,128,0.26); border: 0.5px solid rgba(255,255,255,0.16);
+    box-shadow: inset 1.5px 1.5px 1px rgba(255,255,255,0.15), inset -1px -1px 1px rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%); }
+  .cm-chrome__btn:active { opacity: 0.8; }
+  .cm-chrome__title { flex: 1; text-align: center; font: 700 14px/1 var(--vx-font-sans); letter-spacing: -0.01em; color: rgba(255,255,255,0.86); }
+
+  /* ───────── content ───────── */
+  .cm-pad { padding: 6px 16px 0; display: flex; flex-direction: column; gap: 14px; }
+  .cm-sec { display: flex; align-items: center; gap: 8px; padding: 8px 2px 0; }
+  .cm-sec__k { font: 700 10.5px/1 var(--vx-font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.56); white-space: nowrap; }
+  .cm-sec__count { font: 500 10px/1 var(--vx-font-mono); color: rgba(255,255,255,0.4); white-space: nowrap; }
+  .cm-sec__line { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+
+  .cm-eyebrow { font: 700 9.5px/1 var(--vx-font-mono); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+  .cm-bubble { border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.16); flex-shrink: 0; }
+
+  /* ───────── HERO ───────── */
+  .cm-hero { padding: 18px; border-radius: 24px;
+    background: linear-gradient(180deg, rgba(255,98,98,0.10), rgba(255,255,255,0.045));
+    border: 1px solid rgba(255,98,98,0.24); box-shadow: var(--glass-hi), 0 14px 38px rgba(0,0,0,0.32); }
+  .cm-hero__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .cm-hero__ctx { display: inline-flex; align-items: center; gap: 5px; font: 500 10.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.46); white-space: nowrap; }
+  .cm-hero__ctx svg { color: rgba(255,255,255,0.4); }
+  .cm-hero__row { display: flex; align-items: center; gap: 13px; margin-top: 13px; }
+  .cm-hero__name { font: 700 22px/1.1 var(--vx-font-sans); letter-spacing: -0.03em; color: #fff; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .cm-hero__keytag { font: 700 8px/1 var(--vx-font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--vx-lava);
+    padding: 3px 6px; border-radius: 9999px; background: var(--vx-lava-bg); border: 1px solid rgba(255,98,98,0.3); }
+  .cm-hero__time { display: inline-flex; align-items: center; gap: 5px; font: 500 11.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.55); margin-top: 6px; }
+  .cm-hero__time svg { color: rgba(255,255,255,0.4); }
+  .cm-hero__intake { display: flex; align-items: center; gap: 16px; margin-top: 16px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .cm-hero__ring { position: relative; flex-shrink: 0; }
+  .cm-hero__ringc { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .cm-hero__ringc b { font: 700 18px/1 var(--vx-font-sans); letter-spacing: -0.04em; color: #fff; }
+  .cm-hero__ringc em { font: 600 9px/1 var(--vx-font-mono); font-style: normal; color: rgba(255,255,255,0.45); margin-top: 2px; }
+  .cm-hero__macros { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 9px; }
+  .cm-macro__head { display: flex; justify-content: space-between; font: 600 11.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.82); margin-bottom: 6px; }
+  .cm-macro__head em { font-style: normal; color: rgba(255,255,255,0.42); font-weight: 500; white-space: nowrap; }
+  .cm-bar { height: 5px; border-radius: 9999px; background: rgba(255,255,255,0.1); overflow: hidden; }
+  .cm-bar__fill { height: 100%; border-radius: 9999px; box-shadow: 0 0 8px currentColor; }
+  .cm-hero__swap { display: flex; align-items: center; gap: 7px; margin-top: 14px; padding: 9px 11px; border-radius: 11px;
+    font: 500 11px/1.4 var(--vx-font-mono); color: var(--vx-body); background: rgba(0,210,255,0.08); border: 1px solid rgba(0,210,255,0.18); text-wrap: pretty; }
+  .cm-hero__swap svg { flex-shrink: 0; }
+  .cm-hero__swap b { color: rgba(255,255,255,0.78); font-weight: 600; }
+
+  /* ───────── FOOD LIST ───────── */
+  .cm-list { display: flex; flex-direction: column; gap: 9px; }
+  .cm-food { display: flex; align-items: center; gap: 11px; width: 100%; text-align: left; cursor: pointer;
+    padding: 12px 14px; border-radius: 16px; background: var(--glass-fill); border: 1px solid var(--glass-stroke);
+    box-shadow: var(--glass-hi); transition: border-color .15s var(--ease); }
+  .cm-food:hover { border-color: var(--vx-border-2); }
+  .cm-food:active { opacity: 0.9; }
+  .cm-food:disabled { cursor: default; }
+  .cm-food__n { width: 22px; height: 22px; border-radius: 9999px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font: 700 11px/1 var(--vx-font-sans); color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
+  .cm-food__dot { width: 8px; height: 8px; border-radius: 9999px; flex-shrink: 0; box-shadow: 0 0 7px currentColor; }
+  .cm-food__body { flex: 1; min-width: 0; }
+  .cm-food__name { font: 600 14px/1.2 var(--vx-font-sans); letter-spacing: -0.01em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cm-food__macros { display: flex; gap: 10px; margin-top: 6px; font: 600 10.5px/1 var(--vx-font-mono); }
+  .cm-food__right { flex-shrink: 0; text-align: right; display: flex; flex-direction: column; gap: 4px; }
+  .cm-food__qty { font: 500 10.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.5); }
+  .cm-food__kcal { font: 700 13px/1 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; }
+
+  /* recipe link */
+  .cm-recipe { width: 100%; display: flex; align-items: center; gap: 10px; cursor: pointer; margin-top: 2px;
+    padding: 13px 15px; border-radius: 15px; background: var(--vx-lava-bg); border: 1px solid rgba(255,98,98,0.28);
+    font: 600 13px/1 var(--vx-font-sans); letter-spacing: -0.01em; color: #fff; transition: border-color .15s var(--ease); }
+  .cm-recipe:hover { border-color: rgba(255,98,98,0.5); }
+  .cm-recipe svg { color: var(--lava); flex-shrink: 0; }
+  .cm-recipe span:first-of-type { flex: 1; }
+  .cm-recipe__c { color: var(--lava); font-size: 17px; font-weight: 700; }
+
+  /* archived note */
+  .cm-archived { padding: 26px 22px; border-radius: 18px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;
+    background: var(--glass-fill); border: 1px dashed rgba(255,255,255,0.16); color: rgba(255,255,255,0.5); }
+  .cm-archived svg { color: rgba(255,255,255,0.4); }
+  .cm-archived__t { font: 700 15px/1 var(--vx-font-sans); color: #fff; margin-top: 2px; }
+  .cm-archived__d { font: 400 12px/1.5 var(--vx-font-mono); color: rgba(255,255,255,0.52); max-width: 30ch; text-wrap: pretty; }
+
+  /* ask agent */
+  .cm-ask { width: 100%; display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-radius: 16px; cursor: pointer;
+    margin-top: 6px; background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.18); text-align: left;
+    transition: background .15s var(--ease), border-color .15s var(--ease); }
+  .cm-ask:hover { background: rgba(255,98,98,0.07); border-color: rgba(255,98,98,0.3); }
+  .cm-ask:active { opacity: 0.85; }
+  .cm-ask__iso { flex-shrink: 0; }
+  .cm-ask__body { flex: 1; min-width: 0; }
+  .cm-ask__label { font: 600 13px/1.25 var(--vx-font-sans); color: #fff; }
+  .cm-ask__hint { font: 500 10.5px/1.45 var(--vx-font-mono); color: rgba(255,255,255,0.46); margin-top: 4px; text-wrap: pretty; }
+  .cm-ask__c { font: 700 18px/1 var(--vx-font-sans); color: var(--lava); flex-shrink: 0; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="ios-frame.jsx"></script>
+  <script type="text/babel" src="icons.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="nav.jsx"></script>
+  <script type="text/babel" src="comidas-data.jsx"></script>
+  <script type="text/babel" src="dietas-data.jsx"></script>
+  <script type="text/babel" src="comida-detalle-core.jsx"></script>
+
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "dieta": "definicion-2250",
+      "comida": "comida"
+    }/*EDITMODE-END*/;
+
+    function Phone({ tag, desc, children }) {
+      return (
+        <div className="cm-colwrap">
+          <div className="cm-coltag">
+            <div className="cm-coltag__name" dangerouslySetInnerHTML={{ __html: tag }} />
+            <div className="cm-coltag__desc">{desc}</div>
+          </div>
+          <IOSDevice dark={true}>{children}</IOSDevice>
+        </div>
+      );
+    }
+
+    function App() {
+      const [t, setTweak] = useTweaks({ ...TWEAK_DEFAULTS, ...vxReadParams(["dieta", "comida"]) });
+      return (
+        <div>
+          <div className="cm-fit" id="fit">
+            <div className="cm-stage">
+              <Phone tag="verxion · <b>Detalle de comida</b>"
+                desc="Una comida del plan al detalle: sus macros y la lista de alimentos, cada uno con su ficha. Solo lectura — los cambios los hace el agente.">
+                <ComidaDetalleScreen t={t} key={t.dieta + t.comida} />
+              </Phone>
+            </div>
+          </div>
+
+          <TweaksPanel>
+            <TweakSection label="Comida" />
+            <TweakSelect label="Cuál" value={t.comida}
+              options={[
+                { value: "desayuno", label: "Desayuno" },
+                { value: "snack-am", label: "Media mañana" },
+                { value: "comida", label: "Comida · principal" },
+                { value: "pre", label: "Pre-entreno · cambio" },
+                { value: "cena", label: "Cena" },
+              ]}
+              onChange={(v) => setTweak("comida", v)} />
+            <TweakSelect label="Dieta" value={t.dieta}
+              options={[
+                { value: "definicion-2250", label: "Definición (activa)" },
+                { value: "volumen-2900", label: "Volumen (archivo)" },
+              ]}
+              onChange={(v) => setTweak("dieta", v)} />
+          </TweaksPanel>
+        </div>
+      );
+    }
+
+    function fit() {
+      const el = document.getElementById("fit");
+      if (!el) return;
+      const stage = el.querySelector(".cm-stage");
+      const w = stage.scrollWidth, h = stage.scrollHeight;
+      const scale = Math.min(1, (window.innerWidth - 48) / w, (window.innerHeight - 40) / h);
+      el.style.transform = "scale(" + scale + ")";
+    }
+    window.addEventListener("resize", fit);
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    setTimeout(fit, 80);
+    setTimeout(fit, 400);
+  </script>
+</body>
+</html>

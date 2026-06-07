@@ -24,7 +24,12 @@
     "saveError": "Couldn't save. Please try again.",
     "delete": "Delete",
     "edit": "Edit",
-    "never": "Never"
+    "never": "Never",
+    "score": {
+      "ahead": "Ahead of plan",
+      "on": "On target",
+      "behind": "Falling behind"
+    }
   },
   "navigation": {
     "today": "Today",
@@ -72,12 +77,7 @@
     "routine": {
       "activeEyebrow": "Active routine",
       "week": "Week {{week}} of {{weeks}}",
-      "sessions": "{{done}} of {{planned}} sessions",
-      "score": {
-        "ahead": "Ahead of plan",
-        "on": "On target",
-        "behind": "Falling behind"
-      }
+      "sessions": "{{done}} of {{planned}} sessions"
     },
     "next": {
       "today": "Up today",
@@ -676,5 +676,218 @@
     "completed": "Completed",
     "skipped": "Skipped",
     "planned": "Planned"
+  },
+  "nutrition": {
+    "title": "Nutrition",
+    "library": "Diets",
+    "segments": {
+      "plan": "Plan",
+      "diario": "Diary",
+      "alimentos": "Foods"
+    },
+    "plan": {
+      "activeEyebrow": "Active diet",
+      "byVerxion": "by verxion",
+      "week": "Week {{week}} of {{weeks}}",
+      "mealsChip": "{{count}} meal",
+      "mealsChip_other": "{{count}} meals",
+      "proteinChip": "{{grams}} g protein",
+      "now": "now",
+      "daySpine": "The day · your meals",
+      "supplements": "Supplements"
+    },
+    "goal": {
+      "fat_loss": "Fat loss",
+      "muscle_gain": "Muscle gain",
+      "maintenance": "Maintenance",
+      "recomp": "Recomp",
+      "health": "Health"
+    },
+    "supplementTiming": {
+      "morning": "Morning",
+      "pre_workout": "Pre-workout",
+      "post_workout": "Post-workout",
+      "evening": "Evening",
+      "with_meal": "With a meal"
+    },
+    "macros": {
+      "protein": "Protein",
+      "carbs": "Carbs",
+      "fat": "Fat"
+    },
+    "intake": {
+      "consumedToday": "Consumed today",
+      "ofGoal": "of {{goal}} kcal",
+      "remaining": "{{kcal}} kcal left",
+      "over": "{{kcal}} kcal over",
+      "meals": "{{done}} of {{total}} meals",
+      "nowEat": "Up now",
+      "startWith": "Start with"
+    },
+    "hydration": {
+      "title": "Hydration"
+    },
+    "invite": {
+      "empty": {
+        "title": "No active diet yet",
+        "body": "Ask verxion to design a diet and it will appear here, meal by meal, ready to follow each day."
+      },
+      "fresh": {
+        "title": "Your diet is ready",
+        "body": "verxion has prepared your plan. Start with the first meal — I'll keep track of the macros."
+      },
+      "prompt": "Build a 2,250 kcal cutting diet, 5 meals"
+    },
+    "error": {
+      "title": "We couldn't load your plan",
+      "body": "Check your connection and try again."
+    },
+    "dietas": {
+      "title": "Diets",
+      "lead": "{{count}} diets",
+      "subtitle": "Your active diet and the archive of plans you have already finished.",
+      "search": "Search diet or goal",
+      "filterTitle": "Filters",
+      "sortTitle": "Sort by",
+      "stateSection": "State",
+      "goalSection": "Goal",
+      "clearAll": "Clear all",
+      "apply": "View {{count}} diets",
+      "applyOne": "View {{count}} diet",
+      "results": "{{count}} results",
+      "resultsOne": "{{count}} result",
+      "noResults": "No results",
+      "noResultsBody": "Try removing a filter or changing your search.",
+      "kcalProtein": "{{kcal}} kcal · {{protein}} g P",
+      "viewPlan": "View plan",
+      "completedWeeks": "Completed · {{weeks}} wk",
+      "adherence": "{{pct}}% adh.",
+      "archiveUntil": "{{goal}} · until {{date}}",
+      "openDiet": "View diet {{name}}",
+      "empty": {
+        "title": "No diets yet",
+        "body": "Ask verxion to design a diet and it will appear here, ready to follow each day."
+      },
+      "sections": {
+        "active": "In progress",
+        "completed": "Archive · completed"
+      },
+      "stateEyebrow": {
+        "active": "Active diet",
+        "draft": "Draft · verxion",
+        "paused": "Paused",
+        "completed": "Completed"
+      },
+      "stateLabel": {
+        "active": "Active",
+        "draft": "Draft",
+        "paused": "Paused",
+        "completed": "Completed"
+      },
+      "sort": {
+        "recent": "Recent",
+        "name": "Alphabetical",
+        "adherence": "Adherence",
+        "kcal": "Calories"
+      },
+      "sortHint": {
+        "recent": "Active first, then by date",
+        "name": "A to Z",
+        "adherence": "Best adherence first",
+        "kcal": "Most to fewest kcal/day"
+      },
+      "ask": {
+        "title": "Ask verxion for a new diet",
+        "body": "Diets are built and activated by the agent — describe your goal and it will appear here."
+      }
+    },
+    "dietDetail": {
+      "statMeals": "meals",
+      "statKcal": "kcal/day",
+      "statProtein": "g protein",
+      "statWater": "L water",
+      "daySpine": "The day · meals",
+      "daysLogged": "{{count}} day logged",
+      "daysLogged_other": "{{count}} days logged",
+      "kcal": "{{kcal}} kcal",
+      "keyMeal": "key",
+      "openMeal": "View meal {{name}}",
+      "ask": {
+        "title": "Adjust this diet with the agent",
+        "body": "The diet is read-only. Changes are made by verxion via chat."
+      }
+    },
+    "mealDetail": {
+      "title": "Meal",
+      "items": "Foods",
+      "supplements": "Supplements",
+      "alternatives": "Swaps: {{alts}}",
+      "ask": {
+        "title": "Change this meal with the agent",
+        "body": "The meal is read-only. Ask verxion to adjust foods or amounts."
+      }
+    },
+    "foodDetail": {
+      "title": "Food",
+      "per100": "Per 100 g",
+      "perServing": "Per serving",
+      "fiber": "Fiber · {{grams}} g",
+      "ingredients": "Ingredients",
+      "servings": "{{count}} serving",
+      "servings_other": "{{count}} servings",
+      "prepTime": "{{minutes}} min",
+      "custom": "Custom",
+      "kind": {
+        "food": "Food",
+        "recipe": "Recipe"
+      },
+      "ask": {
+        "title": "Ask verxion about this food",
+        "body": "Ask for alternatives or to add it to a meal — changes are made by the agent."
+      }
+    },
+    "dayPlan": {
+      "title": "Day plan",
+      "logged": "Logged",
+      "total": "Day total",
+      "targetKcal": "of {{kcal}} kcal target",
+      "ask": {
+        "title": "Adjust today’s plan with the agent",
+        "body": "The plan is read-only. Ask verxion to change meals or amounts."
+      }
+    },
+    "diary": {
+      "summaryTitle": "Last {{days}} days",
+      "avgAdherence": "avg adherence",
+      "avgKcal": "kcal/day",
+      "avgProtein": "g protein",
+      "dayMeta": "{{kcal}} kcal · {{protein}} g P",
+      "empty": {
+        "title": "No logged days yet",
+        "body": "Once you log meals, your days will appear here grouped by diet."
+      }
+    },
+    "diaryDay": {
+      "title": "Day",
+      "ofTarget": "of {{kcal}} kcal target",
+      "water": "{{value}} / {{goal}} L water",
+      "mealsLogged": "{{count}} meal logged",
+      "mealsLogged_other": "{{count}} meals logged",
+      "dayClass": {
+        "clavado": "Nailed it",
+        "objetivo": "On target",
+        "correcto": "Good",
+        "bajo": "Low"
+      }
+    },
+    "foods": {
+      "search": "Search food or recipe",
+      "allGroups": "All",
+      "count": "{{count}} food",
+      "count_other": "{{count}} foods",
+      "noResults": "No results",
+      "noResultsBody": "Try changing your search or the group.",
+      "more": "+{{count}} more · refine the search to see them"
+    }
   }
 }

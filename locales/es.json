@@ -8,23 +8,28 @@
     "save": "Guardar",
     "saving": "Guardando...",
     "close": "Cerrar",
-    "back": "Atr\u00e1s",
+    "back": "Atrás",
     "done": "Listo",
     "kg": "kg",
     "ml": "ml",
     "steps": "pasos",
-    "noData": "Sin datos a\u00fan",
-    "somethingWentWrong": "Algo sali\u00f3 mal",
+    "noData": "Sin datos aún",
+    "somethingWentWrong": "Algo salió mal",
     "tapToRetry": "Toca para reintentar",
-    "success": "\u00c9xito",
+    "success": "Éxito",
     "refresh": "Actualizar",
     "confirm": "Confirmar",
     "discard": "Descartar",
     "saved": "Guardado",
-    "saveError": "No se pudo guardar. Int\u00e9ntalo de nuevo.",
+    "saveError": "No se pudo guardar. Inténtalo de nuevo.",
     "delete": "Eliminar",
     "edit": "Editar",
-    "never": "Nunca"
+    "never": "Nunca",
+    "score": {
+      "ahead": "Vas adelantado",
+      "on": "En objetivo",
+      "behind": "Vas justo"
+    }
   },
   "navigation": {
     "today": "Hoy",
@@ -72,12 +77,7 @@
     "routine": {
       "activeEyebrow": "Rutina activa",
       "week": "Semana {{week}} de {{weeks}}",
-      "sessions": "{{done}} de {{planned}} sesiones",
-      "score": {
-        "ahead": "Vas adelantado",
-        "on": "En objetivo",
-        "behind": "Vas justo"
-      }
+      "sessions": "{{done}} de {{planned}} sesiones"
     },
     "next": {
       "today": "Hoy toca",
@@ -517,29 +517,29 @@
     }
   },
   "auth": {
-    "login": "Iniciar sesi\u00f3n",
+    "login": "Iniciar sesión",
     "register": "Registrarse",
-    "signOut": "Cerrar sesi\u00f3n",
-    "email": "Correo electr\u00f3nico",
-    "password": "Contrase\u00f1a",
+    "signOut": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
     "name": "Nombre",
-    "signingIn": "Iniciando sesi\u00f3n...",
+    "signingIn": "Iniciando sesión...",
     "signingUp": "Registrando...",
-    "signIn": "Iniciar sesi\u00f3n",
+    "signIn": "Iniciar sesión",
     "createAccount": "Crear cuenta",
-    "noAccountSignup": "\u00bfNo tienes cuenta? Reg\u00edstrate aqu\u00ed",
-    "haveAccountLogin": "\u00bfYa tienes cuenta? Inicia sesi\u00f3n aqu\u00ed",
-    "loginTagline": "Sigue convirti\u00e9ndote en tu mejor versi\u00f3n",
-    "signupTagline": "Comienza tu transformaci\u00f3n"
+    "noAccountSignup": "¿No tienes cuenta? Regístrate aquí",
+    "haveAccountLogin": "¿Ya tienes cuenta? Inicia sesión aquí",
+    "loginTagline": "Sigue convirtiéndote en tu mejor versión",
+    "signupTagline": "Comienza tu transformación"
   },
   "today": {
     "greeting": {
-      "morning": "Buenos d\u00edas",
+      "morning": "Buenos días",
       "afternoon": "Buenas tardes",
       "evening": "Buenas noches"
     },
-    "streak": "d\u00edas seguidos",
-    "restDay": "D\u00eda de descanso",
+    "streak": "días seguidos",
+    "restDay": "Día de descanso",
     "weeklyConsistency": "Esta semana",
     "steps": "Pasos",
     "water": "Agua",
@@ -626,26 +626,26 @@
   },
   "progress": {
     "overview": "Resumen",
-    "bodyComposition": "Composici\u00f3n",
+    "bodyComposition": "Composición",
     "exercises": "Ejercicios",
     "trends": "Tendencias",
-    "records": "R\u00e9cords",
-    "timeline": "L\u00ednea de tiempo",
+    "records": "Récords",
+    "timeline": "Línea de tiempo",
     "weeks": "Semanas",
     "months": "Meses",
-    "sessionReport": "Reporte de sesi\u00f3n",
+    "sessionReport": "Reporte de sesión",
     "totalSessions": "Total sesiones",
     "totalVolume": "Volumen total",
     "totalSets": "Total series",
     "totalReps": "Total reps",
-    "trainingDays": "D\u00edas de entreno",
-    "uniqueExercises": "Ejercicios \u00fanicos",
+    "trainingDays": "Días de entreno",
+    "uniqueExercises": "Ejercicios únicos",
     "currentWeight": "Peso actual",
     "weightChange": "Cambio de peso",
-    "personalRecords": "R\u00e9cords personales",
-    "noRecordsYet": "Completa entrenamientos para establecer r\u00e9cords",
-    "noHistoryYet": "Tu historial de entrenamientos aparecer\u00e1 aqu\u00ed",
-    "noTimelineYet": "Entrena unas semanas para ver tu l\u00ednea de tiempo",
+    "personalRecords": "Récords personales",
+    "noRecordsYet": "Completa entrenamientos para establecer récords",
+    "noHistoryYet": "Tu historial de entrenamientos aparecerá aquí",
+    "noTimelineYet": "Entrena unas semanas para ver tu línea de tiempo",
     "startFirstWorkout": "Comienza tu primer entrenamiento para ver tu progreso",
     "summaryGenerating": "Generando resumen..."
   },
@@ -655,10 +655,10 @@
     "logSteps": "Registrar pasos",
     "saveWeight": "Guardar peso",
     "saveSteps": "Guardar pasos",
-    "addWater": "A\u00f1adir",
+    "addWater": "Añadir",
     "todayIntake": "Consumo de hoy",
     "todaySteps": "Pasos de hoy",
-    "lastWeight": "\u00daltimo",
+    "lastWeight": "Último",
     "goal": "Meta"
   },
   "session": {
@@ -667,14 +667,227 @@
     "volume": "Volumen",
     "sets": "Series",
     "reps": "Reps",
-    "peakWeight": "Peso m\u00e1ximo",
+    "peakWeight": "Peso máximo",
     "updatesEvery": "Se actualiza cada 10s",
-    "lastUpdated": "\u00daltima actualizaci\u00f3n",
-    "sessionCompleted": "Sesi\u00f3n completada",
+    "lastUpdated": "Última actualización",
+    "sessionCompleted": "Sesión completada",
     "notStarted": "No iniciado",
     "inProgress": "En progreso",
     "completed": "Completado",
     "skipped": "Saltado",
     "planned": "Planificado"
+  },
+  "nutrition": {
+    "title": "Nutrición",
+    "library": "Dietas",
+    "segments": {
+      "plan": "Plan",
+      "diario": "Diario",
+      "alimentos": "Alimentos"
+    },
+    "plan": {
+      "activeEyebrow": "Dieta activa",
+      "byVerxion": "por verxion",
+      "week": "Semana {{week}} de {{weeks}}",
+      "mealsChip": "{{count}} comida",
+      "mealsChip_other": "{{count}} comidas",
+      "proteinChip": "{{grams}} g proteína",
+      "now": "ahora",
+      "daySpine": "El día · tus comidas",
+      "supplements": "Suplementos"
+    },
+    "goal": {
+      "fat_loss": "Perder grasa",
+      "muscle_gain": "Ganar músculo",
+      "maintenance": "Mantenimiento",
+      "recomp": "Recomposición",
+      "health": "Salud"
+    },
+    "supplementTiming": {
+      "morning": "Mañana",
+      "pre_workout": "Pre-entreno",
+      "post_workout": "Post-entreno",
+      "evening": "Noche",
+      "with_meal": "Con comida"
+    },
+    "macros": {
+      "protein": "Proteína",
+      "carbs": "Carbos",
+      "fat": "Grasa"
+    },
+    "intake": {
+      "consumedToday": "Consumido hoy",
+      "ofGoal": "de {{goal}} kcal",
+      "remaining": "{{kcal}} kcal restantes",
+      "over": "{{kcal}} kcal de más",
+      "meals": "{{done}} de {{total}} comidas",
+      "nowEat": "Ahora toca",
+      "startWith": "Empieza por"
+    },
+    "hydration": {
+      "title": "Hidratación"
+    },
+    "invite": {
+      "empty": {
+        "title": "Aún no tienes dieta activa",
+        "body": "Pídele a verxion que te diseñe una dieta y aparecerá aquí, comida a comida, lista para seguir cada día."
+      },
+      "fresh": {
+        "title": "Tu dieta está lista",
+        "body": "verxion ha preparado tu plan. Empieza por la primera comida — yo voy llevando los macros."
+      },
+      "prompt": "Arma una dieta de definición de 2.250 kcal, 5 comidas"
+    },
+    "error": {
+      "title": "No pudimos cargar tu plan",
+      "body": "Comprueba tu conexión e inténtalo de nuevo."
+    },
+    "dietas": {
+      "title": "Dietas",
+      "lead": "{{count}} dietas",
+      "subtitle": "Tu dieta activa y el archivo de planes que ya has completado.",
+      "search": "Buscar dieta u objetivo",
+      "filterTitle": "Filtros",
+      "sortTitle": "Ordenar por",
+      "stateSection": "Estado",
+      "goalSection": "Objetivo",
+      "clearAll": "Limpiar todo",
+      "apply": "Ver {{count}} dietas",
+      "applyOne": "Ver {{count}} dieta",
+      "results": "{{count}} resultados",
+      "resultsOne": "{{count}} resultado",
+      "noResults": "Sin resultados",
+      "noResultsBody": "Prueba a quitar algún filtro o cambiar la búsqueda.",
+      "kcalProtein": "{{kcal}} kcal · {{protein}} g P",
+      "viewPlan": "Ver plan",
+      "completedWeeks": "Completada · {{weeks}} sem",
+      "adherence": "{{pct}}% adh.",
+      "archiveUntil": "{{goal}} · hasta {{date}}",
+      "openDiet": "Ver dieta {{name}}",
+      "empty": {
+        "title": "Aún no tienes dietas",
+        "body": "Pídele a verxion que te diseñe una dieta y aparecerá aquí, lista para seguir cada día."
+      },
+      "sections": {
+        "active": "En curso",
+        "completed": "Archivo · completadas"
+      },
+      "stateEyebrow": {
+        "active": "Dieta activa",
+        "draft": "Borrador · verxion",
+        "paused": "En pausa",
+        "completed": "Completada"
+      },
+      "stateLabel": {
+        "active": "Activa",
+        "draft": "Borrador",
+        "paused": "En pausa",
+        "completed": "Completada"
+      },
+      "sort": {
+        "recent": "Recientes",
+        "name": "Alfabético",
+        "adherence": "Adherencia",
+        "kcal": "Calorías"
+      },
+      "sortHint": {
+        "recent": "La activa primero, luego por fecha",
+        "name": "De la A a la Z",
+        "adherence": "Mejor cumplimiento primero",
+        "kcal": "De más a menos kcal/día"
+      },
+      "ask": {
+        "title": "Pídele a verxion una dieta nueva",
+        "body": "Las dietas las arma y activa el agente — descríbele tu objetivo y aparecerá aquí."
+      }
+    },
+    "dietDetail": {
+      "statMeals": "comidas",
+      "statKcal": "kcal/día",
+      "statProtein": "g proteína",
+      "statWater": "L agua",
+      "daySpine": "El día · comidas",
+      "daysLogged": "{{count}} día registrado",
+      "daysLogged_other": "{{count}} días registrados",
+      "kcal": "{{kcal}} kcal",
+      "keyMeal": "principal",
+      "openMeal": "Ver comida {{name}}",
+      "ask": {
+        "title": "Ajusta esta dieta con el agente",
+        "body": "La dieta es de solo lectura. Los cambios los hace verxion vía chat."
+      }
+    },
+    "mealDetail": {
+      "title": "Comida",
+      "items": "Alimentos",
+      "supplements": "Suplementos",
+      "alternatives": "Cambios: {{alts}}",
+      "ask": {
+        "title": "Cambia esta comida con el agente",
+        "body": "La comida es de solo lectura. Pídele a verxion que ajuste alimentos o cantidades."
+      }
+    },
+    "foodDetail": {
+      "title": "Alimento",
+      "per100": "Por 100 g",
+      "perServing": "Por ración",
+      "fiber": "Fibra · {{grams}} g",
+      "ingredients": "Ingredientes",
+      "servings": "{{count}} ración",
+      "servings_other": "{{count}} raciones",
+      "prepTime": "{{minutes}} min",
+      "custom": "Personalizado",
+      "kind": {
+        "food": "Alimento",
+        "recipe": "Receta"
+      },
+      "ask": {
+        "title": "Pregunta a verxion por este alimento",
+        "body": "Pídele alternativas o que lo añada a una comida — los cambios los hace el agente."
+      }
+    },
+    "dayPlan": {
+      "title": "Plan del día",
+      "logged": "Registrada",
+      "total": "Total del día",
+      "targetKcal": "de {{kcal}} kcal objetivo",
+      "ask": {
+        "title": "Ajusta el plan de hoy con el agente",
+        "body": "El plan es de solo lectura. Pídele a verxion que cambie comidas o cantidades."
+      }
+    },
+    "diary": {
+      "summaryTitle": "Últimos {{days}} días",
+      "avgAdherence": "adherencia media",
+      "avgKcal": "kcal/día",
+      "avgProtein": "g proteína",
+      "dayMeta": "{{kcal}} kcal · {{protein}} g P",
+      "empty": {
+        "title": "Aún no hay días registrados",
+        "body": "Cuando registres comidas, tus días aparecerán aquí agrupados por dieta."
+      }
+    },
+    "diaryDay": {
+      "title": "Día",
+      "ofTarget": "de {{kcal}} kcal objetivo",
+      "water": "{{value}} / {{goal}} L agua",
+      "mealsLogged": "{{count}} comida registrada",
+      "mealsLogged_other": "{{count}} comidas registradas",
+      "dayClass": {
+        "clavado": "Clavado",
+        "objetivo": "En objetivo",
+        "correcto": "Correcto",
+        "bajo": "Bajo"
+      }
+    },
+    "foods": {
+      "search": "Buscar alimento o receta",
+      "allGroups": "Todos",
+      "count": "{{count}} alimento",
+      "count_other": "{{count}} alimentos",
+      "noResults": "Sin resultados",
+      "noResultsBody": "Prueba a cambiar la búsqueda o el grupo.",
+      "more": "+{{count}} más · afina la búsqueda para verlos"
+    }
   }
 }

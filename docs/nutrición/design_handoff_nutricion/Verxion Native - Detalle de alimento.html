@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>verxion — Detalle de alimento</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/colors_and_type.css">
+<style>
+  :root {
+    --lava: #FF6262;
+    --lava-glow: rgba(255,98,98,0.55);
+    --good: var(--vx-up);
+    --glass-fill: rgba(255,255,255,0.06);
+    --glass-stroke: rgba(255,255,255,0.12);
+    --glass-hi: inset 0 1px 0 0 rgba(255,255,255,0.20), inset 0 0 0 1px rgba(255,255,255,0.05);
+    --ease: cubic-bezier(0.2,0.8,0.2,1);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; min-height: 100vh; background: #050507; color: #fff;
+    font-family: var(--vx-font-mono); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  body::before {
+    content: ""; position: fixed; inset: -14vh -14vw; z-index: 0;
+    background:
+      radial-gradient(38vw 38vw at 16% 14%, rgba(255,98,98,0.22), transparent 60%),
+      radial-gradient(34vw 34vw at 84% 84%, rgba(0,210,255,0.12), transparent 62%),
+      radial-gradient(30vw 30vw at 60% 104%, rgba(255,185,0,0.13), transparent 60%),
+      #050507;
+    filter: blur(52px);
+  }
+
+  /* stage / scaling */
+  #root { position: relative; z-index: 1; }
+  .a-fit { transform-origin: center center; }
+  .a-stage { display: flex; gap: 60px; align-items: flex-start; justify-content: center; }
+  .a-col { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .a-coltag { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+  .a-coltag__name { font: 700 16px/1.25 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
+  .a-coltag__name b { color: var(--lava); }
+  .a-coltag__desc { font: 400 12px/1.4 var(--vx-font-mono); color: rgba(255,255,255,0.5); max-width: 36ch; }
+
+  /* ───────── SCREEN SHELL ───────── */
+  .a-screen { position: relative; height: 100%; overflow: hidden; color: #fff; font-family: var(--vx-font-mono); }
+  .a-screen::before {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(74% 42% at 24% -2%, rgba(255,98,98,0.26), transparent 70%),
+      radial-gradient(58% 34% at 98% 14%, rgba(255,185,0,0.12), transparent 70%),
+      radial-gradient(96% 50% at 50% 104%, rgba(0,210,255,0.06), transparent 76%),
+      #0a0a0c;
+  }
+  .a-scroll { position: absolute; inset: 0; z-index: 1; overflow-y: auto; scrollbar-width: none; padding: 0 0 40px; }
+  .a-scroll::-webkit-scrollbar { display: none; }
+
+  /* ───────── TOP CHROME ───────── */
+  .a-chrome { position: sticky; top: 0; z-index: 6; padding: 56px 14px 10px; display: flex; align-items: center; gap: 10px;
+    background: linear-gradient(180deg, rgba(10,10,12,0.94) 58%, rgba(10,10,12,0)); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .a-chrome__btn { width: 38px; height: 38px; border-radius: 9999px; flex-shrink: 0; border: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    background: rgba(120,120,128,0.26); border: 0.5px solid rgba(255,255,255,0.16);
+    box-shadow: inset 1.5px 1.5px 1px rgba(255,255,255,0.15), inset -1px -1px 1px rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%); }
+  .a-chrome__btn:active { opacity: 0.8; }
+  .a-chrome__title { flex: 1; text-align: center; font: 700 13px/1 var(--vx-font-sans); letter-spacing: -0.01em; color: rgba(255,255,255,0.82);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .a-pad { padding: 6px 16px 0; display: flex; flex-direction: column; gap: 14px; }
+  .a-section { display: flex; align-items: center; gap: 8px; padding: 8px 2px 0; }
+  .a-section__k { font: 700 10.5px/1 var(--vx-font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.46); }
+  .a-section__count { font: 600 10.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.34); }
+  .a-section__line { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+
+  /* ───────── HERO ───────── */
+  .a-bubble { border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.16); flex-shrink: 0; }
+  .a-hero__lead { font: 800 22px/1 var(--vx-font-sans); letter-spacing: -0.04em; }
+  .a-hero { display: flex; align-items: center; gap: 14px; padding: 4px 2px 2px; }
+  .a-hero__name { font: 700 24px/1.08 var(--vx-font-sans); letter-spacing: -0.035em; color: #fff; }
+  .a-hero__tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .a-tag { font: 600 10.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.7); padding: 5px 9px; border-radius: 9999px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); display: inline-flex; align-items: center; gap: 4px; }
+  .a-tag--fav { color: var(--vx-neutral); background: var(--vx-neutral-bg); border-color: rgba(255,185,0,0.3); }
+  .a-hero__src { display: inline-flex; align-items: center; gap: 5px; font: 600 10.5px/1 var(--vx-font-mono); margin-top: 9px; }
+
+  /* ───────── TABS ───────── */
+  .a-tabs { position: relative; display: flex; padding: 3px; border-radius: 13px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+  .a-tabs__thumb { position: absolute; top: 3px; bottom: 3px; width: calc((100% - 6px) / 2); border-radius: 10px;
+    background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.14), 0 2px 8px rgba(0,0,0,0.3); transition: left .22s var(--ease); }
+  .a-tabs__b { position: relative; z-index: 1; flex: 1; border: 0; background: transparent; cursor: pointer;
+    padding: 9px 4px; font: 600 13px/1 var(--vx-font-sans); letter-spacing: -0.01em; color: rgba(255,255,255,0.5); transition: color .2s var(--ease); }
+  .a-tabs__b.is-on { color: var(--lava); }
+
+  /* ───────── MACRO CARD ───────── */
+  .a-macrocard { padding: 16px; border-radius: 22px; background: var(--glass-fill);
+    backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%);
+    border: 1px solid var(--glass-stroke); box-shadow: var(--glass-hi), 0 12px 34px rgba(0,0,0,0.3); }
+  .a-macrocard__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .a-macrocard__lbl { font: 600 11px/1 var(--vx-font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .a-mseg { display: flex; padding: 3px; border-radius: 11px; flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); }
+  .a-mseg__b { border: 0; background: transparent; cursor: pointer; padding: 6px 11px; border-radius: 8px;
+    font: 600 11px/1 var(--vx-font-sans); letter-spacing: -0.01em; color: rgba(255,255,255,0.5); transition: all .18s var(--ease); }
+  .a-mseg__b.is-on { color: #fff; background: rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.14); }
+  .a-macrocard__body { display: flex; align-items: center; gap: 18px; margin-top: 8px; }
+  .a-donut { position: relative; flex-shrink: 0; }
+  .a-donut__c { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
+  .a-donut__k { font: 700 26px/1 var(--vx-font-sans); letter-spacing: -0.04em; color: #fff; }
+  .a-donut__l { font: 600 9px/1 var(--vx-font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+  .a-legend { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 11px; }
+  .a-legrow { display: flex; align-items: center; gap: 9px; }
+  .a-legdot { width: 9px; height: 9px; border-radius: 9999px; flex-shrink: 0; box-shadow: 0 0 7px currentColor; }
+  .a-legname { font: 600 12.5px/1 var(--vx-font-sans); color: rgba(255,255,255,0.86); white-space: nowrap; }
+  .a-leggr { font: 700 13px/1 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; margin-left: auto; white-space: nowrap; }
+  .a-legpct { font: 500 10.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.45); width: 38px; text-align: right; white-space: nowrap; flex-shrink: 0; }
+
+  /* ───────── CARD base ───────── */
+  .a-card { padding: 16px; border-radius: 18px; background: var(--glass-fill); border: 1px solid var(--glass-stroke); box-shadow: var(--glass-hi); }
+
+  /* ───────── MICROS ───────── */
+  .a-micros__grid { display: flex; }
+  .a-micro { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 0 4px; position: relative; }
+  .a-micro + .a-micro::before { content: ""; position: absolute; left: 0; top: 2px; bottom: 2px; width: 1px; background: rgba(255,255,255,0.08); }
+  .a-micro__v { font: 700 16px/1 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
+  .a-micro__l { font: 500 9.5px/1 var(--vx-font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255,255,255,0.46); white-space: nowrap; }
+  .a-micros__hl { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-top: 14px; padding-top: 13px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .a-micros__hlk { font: 600 10px/1 var(--vx-font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .a-hlchip { font: 600 11px/1 var(--vx-font-mono); color: var(--good); padding: 5px 9px; border-radius: 9999px;
+    background: var(--vx-up-tint); border: 1px solid var(--vx-up-line); }
+
+  /* ───────── USAGE ───────── */
+  .a-usage { display: flex; flex-direction: column; gap: 8px; }
+  .a-urow { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 15px;
+    background: var(--glass-fill); border: 1px solid var(--glass-stroke); box-shadow: var(--glass-hi); }
+  .a-urow__time { font: 600 11px/1 var(--vx-font-mono); color: rgba(255,255,255,0.5); width: 42px; flex-shrink: 0; }
+  .a-urow__meal { font: 600 13.5px/1.2 var(--vx-font-sans); color: #fff; }
+  .a-urow__qty { font: 500 11px/1 var(--vx-font-mono); color: rgba(255,255,255,0.55); margin-left: auto; }
+  .a-urow__kcal { font: 600 12px/1 var(--vx-font-sans); color: rgba(255,255,255,0.72); flex-shrink: 0; }
+
+  /* ───────── HISTORY ───────── */
+  .a-hist { display: flex; flex-direction: column; gap: 8px; }
+  .a-hrow { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 15px;
+    background: var(--glass-fill); border: 1px solid var(--glass-stroke); box-shadow: var(--glass-hi); }
+  .a-hrow__date { width: 58px; flex-shrink: 0; font: 600 11px/1.3 var(--vx-font-mono); color: rgba(255,255,255,0.5); }
+  .a-hrow__qty { flex: 1; font: 600 13.5px/1.2 var(--vx-font-sans); color: #fff; display: flex; align-items: center; gap: 6px; }
+  .a-hrow__star { color: var(--vx-neutral); display: inline-flex; }
+  .a-hrow__kcal { font: 700 14px/1 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; flex-shrink: 0; }
+  .a-hrow__kcal em { font-style: normal; font: 500 10px/1 var(--vx-font-mono); color: rgba(255,255,255,0.5); }
+
+  /* ───────── FICHA ───────── */
+  .a-ficha__chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .a-chip2 { font: 600 10.5px/1 var(--vx-font-mono); color: rgba(255,255,255,0.72); padding: 5px 9px; border-radius: 9999px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
+  .a-chip2--cust { color: var(--vx-insight); background: var(--vx-insight-bg); border-color: rgba(155,89,182,0.3); }
+  .a-ficha__p { margin: 0; font: 400 13px/1.6 var(--vx-font-mono); color: rgba(255,255,255,0.82); text-wrap: pretty; }
+  .a-ficha__p b { font-weight: 600; }
+
+  /* ───────── RECIPE ───────── */
+  .a-recipe__meta { display: flex; padding: 14px 4px; border-radius: 18px; background: var(--glass-fill); border: 1px solid var(--glass-stroke); box-shadow: var(--glass-hi); }
+  .a-rmeta { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; }
+  .a-rmeta + .a-rmeta::before { content: ""; position: absolute; left: 0; top: 2px; bottom: 2px; width: 1px; background: rgba(255,255,255,0.08); }
+  .a-rmeta svg { color: rgba(255,255,255,0.4); }
+  .a-rmeta b { font: 700 16px/1 var(--vx-font-sans); letter-spacing: -0.02em; color: #fff; margin-top: 2px; }
+  .a-rmeta span { font: 500 9px/1 var(--vx-font-mono); letter-spacing: 0.03em; text-transform: uppercase; color: rgba(255,255,255,0.46); }
+  .a-ingr { padding: 6px 16px; }
+  .a-ing { display: flex; align-items: center; gap: 10px; padding: 11px 0; }
+  .a-ing + .a-ing { border-top: 1px solid rgba(255,255,255,0.07); }
+  .a-ing__dot { width: 8px; height: 8px; border-radius: 9999px; flex-shrink: 0; box-shadow: 0 0 6px currentColor; }
+  .a-ing__name { flex: 1; font: 500 13px/1.2 var(--vx-font-sans); color: rgba(255,255,255,0.9); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .a-ing__qty { font: 500 11px/1 var(--vx-font-mono); color: rgba(255,255,255,0.5); flex-shrink: 0; }
+  .a-ing__kcal { font: 500 11px/1 var(--vx-font-mono); color: rgba(255,255,255,0.42); flex-shrink: 0; }
+  .a-steps { display: flex; flex-direction: column; padding: 6px 16px; }
+  .a-step { display: flex; gap: 13px; align-items: flex-start; padding: 12px 0; }
+  .a-step + .a-step { border-top: 1px solid rgba(255,255,255,0.07); }
+  .a-step__n { flex-shrink: 0; width: 24px; height: 24px; border-radius: 9999px; display: flex; align-items: center; justify-content: center;
+    font: 700 12px/1 var(--vx-font-sans); color: var(--lava); background: rgba(255,255,255,0.04); border: 1px solid var(--lava); margin-top: 1px; }
+  .a-step__t { font: 400 13px/1.5 var(--vx-font-mono); color: rgba(255,255,255,0.85); text-wrap: pretty; }
+
+  /* ───────── AGENT ───────── */
+  .a-agent { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 18px;
+    background: rgba(255,98,98,0.09); backdrop-filter: blur(20px) saturate(150%); -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255,98,98,0.2); box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.07); }
+  .a-agent__mark { flex-shrink: 0; margin-top: 1px; }
+  .a-agent__from { font: 700 10.5px/1 var(--vx-font-sans); color: var(--lava); margin-bottom: 5px; }
+  .a-agent__msg { font: 400 12.5px/1.5 var(--vx-font-mono); color: rgba(255,255,255,0.9); text-wrap: pretty; }
+  .a-edit { width: 100%; display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-radius: 16px; cursor: pointer;
+    background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.18); text-align: left; transition: background .15s var(--ease), border-color .15s var(--ease); }
+  .a-edit:hover { background: rgba(255,98,98,0.07); border-color: rgba(255,98,98,0.3); }
+  .a-edit:active { opacity: 0.85; }
+  .a-edit__iso { flex-shrink: 0; }
+  .a-edit__body { flex: 1; min-width: 0; }
+  .a-edit__label { font: 600 13px/1.2 var(--vx-font-sans); color: #fff; }
+  .a-edit__hint { font: 500 10.5px/1.3 var(--vx-font-mono); color: rgba(255,255,255,0.46); margin-top: 4px; }
+  .a-edit__c { font: 700 18px/1 var(--vx-font-sans); color: var(--lava); flex-shrink: 0; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="ios-frame.jsx"></script>
+  <script type="text/babel" src="icons.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="nav.jsx"></script>
+  <script type="text/babel" src="comidas-data.jsx"></script>
+  <script type="text/babel" src="alimento-core.jsx"></script>
+
+  <script type="text/babel">
+    function AlimentoScreen({ t, onTab, onBasis }) {
+      const model = buildAlimento(t);
+      const { item, isRecipe, tab, usage, hist } = model;
+
+      return (
+        <div className="a-screen">
+          <div className="a-scroll">
+            <div className="a-chrome">
+              <button className="a-chrome__btn" aria-label="Volver" onClick={() => vxNav(VX.NUTRICION, { segment: "alimentos" })}><Icon.chevronLeft size={20} /></button>
+              <div className="a-chrome__title">{item.name}</div>
+              <button className="a-chrome__btn" aria-label="Más"><AIcon.more size={20} /></button>
+            </div>
+
+            <div className="a-pad">
+              <AHero model={model} />
+              <ATabs tab={tab} onTab={onTab} isRecipe={isRecipe} />
+
+              {tab === "nutricion" ? (
+                <>
+                  <MacroCard model={model} onBasis={onBasis} />
+
+                  {!isRecipe && usage.length > 0 && (
+                    <>
+                      <div className="a-section"><span className="a-section__k">En tu plan · hoy</span>
+                        <span className="a-section__count">{usage.length} {usage.length === 1 ? "comida" : "comidas"}</span><span className="a-section__line" /></div>
+                      <AUsage usage={usage} />
+                    </>
+                  )}
+
+                  {!isRecipe && item.micros && (
+                    <>
+                      <div className="a-section"><span className="a-section__k">Micronutrientes</span>
+                        <span className="a-section__count">por {item.serv}</span><span className="a-section__line" /></div>
+                      <AMicros item={item} />
+                    </>
+                  )}
+
+                  {hist.length > 0 && (
+                    <>
+                      <div className="a-section"><span className="a-section__k">Historial de consumo</span>
+                        <span className="a-section__count">últimas {hist.length}</span><span className="a-section__line" /></div>
+                      <AHistory hist={hist} />
+                    </>
+                  )}
+                </>
+              ) : (
+                isRecipe ? <ARecipe item={item} /> : (
+                  <>
+                    <div className="a-section"><span className="a-section__k">Ficha</span><span className="a-section__line" /></div>
+                    <AFicha item={item} />
+                    <div className="a-section"><span className="a-section__k">Micronutrientes</span>
+                      <span className="a-section__count">por {item.serv}</span><span className="a-section__line" /></div>
+                    <AMicros item={item} />
+                  </>
+                )
+              )}
+
+              <AAgentEdit isRecipe={isRecipe} />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "item": "pechuga-de-pollo",
+      "tab": "nutricion",
+      "basis": "racion"
+    }/*EDITMODE-END*/;
+
+    function Phone({ tag, desc, children }) {
+      return (
+        <div className="a-col">
+          <div className="a-coltag">
+            <div className="a-coltag__name" dangerouslySetInnerHTML={{ __html: tag }} />
+            <div className="a-coltag__desc">{desc}</div>
+          </div>
+          <IOSDevice dark={true}>{children}</IOSDevice>
+        </div>
+      );
+    }
+
+    function App() {
+      const [t, setTweak] = useTweaks({ ...TWEAK_DEFAULTS, ...vxReadParams(["item", "tab", "basis"]) });
+      const opts = (typeof VX_LIBRARY !== "undefined" ? VX_LIBRARY : []).map((x) => ({
+        value: x.slug, label: (x.kind === "recipe" ? "🍲 " : "") + x.name }));
+      return (
+        <div>
+          <div className="a-fit" id="fit">
+            <div className="a-stage">
+              <Phone tag="verxion · <b>Detalle de alimento</b>"
+                desc="La ficha de un alimento o receta: macros, micronutrientes, de dónde sale el dato y dónde lo usas.">
+                <AlimentoScreen t={t} onTab={(v) => setTweak("tab", v)} onBasis={(v) => setTweak("basis", v)} />
+              </Phone>
+            </div>
+          </div>
+
+          <TweaksPanel>
+            <TweakSection label="Ítem" />
+            <TweakSelect label="Cuál" value={t.item}
+              options={(typeof VX_LIBRARY !== "undefined" ? VX_LIBRARY : []).map((x) => ({ value: x.slug, label: x.name + (x.kind === "recipe" ? " · receta" : "") }))}
+              onChange={(v) => setTweak("item", v)} />
+            <TweakSection label="Vista" />
+            <TweakRadio label="Pestaña" value={t.tab}
+              options={[{ value: "nutricion", label: "Nutrición" }, { value: "ficha", label: "Ficha / Receta" }]}
+              onChange={(v) => setTweak("tab", v)} />
+            <TweakRadio label="Base (alimentos)" value={t.basis}
+              options={[{ value: "racion", label: "Ración" }, { value: "g100", label: "100 g" }]}
+              onChange={(v) => setTweak("basis", v)} />
+          </TweaksPanel>
+        </div>
+      );
+    }
+
+    function fit() {
+      const el = document.getElementById("fit");
+      if (!el) return;
+      const stage = el.querySelector(".a-stage");
+      const w = stage.scrollWidth, h = stage.scrollHeight;
+      const scale = Math.min(1, (window.innerWidth - 48) / w, (window.innerHeight - 40) / h);
+      el.style.transform = "scale(" + scale + ")";
+    }
+    window.addEventListener("resize", fit);
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    setTimeout(fit, 80);
+    setTimeout(fit, 400);
+  </script>
+</body>
+</html>
