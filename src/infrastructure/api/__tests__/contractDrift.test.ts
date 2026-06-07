@@ -103,6 +103,16 @@ const ENDPOINTS: Record<string, [string, string][]> = {
     ["GET", "/api/v1/users/check-username/{username}"],
     ["POST", "/api/v1/users/onboard"],
   ],
+  program: [
+    // "Programas" library — composed ProgramOverview read-model behind listPrograms.
+    ["GET", "/api/v1/programs"],
+    // Active program (Hoy slot target) — behind getActiveProgram.
+    ["GET", "/api/v1/programs/active"],
+    // "Detalle de programa" overview — behind getProgram.
+    ["GET", "/api/v1/programs/{id}"],
+    // Unified adherence (ring + sub-bars) — behind getProgramAdherence.
+    ["GET", "/api/v1/programs/{id}/adherence"],
+  ],
 };
 
 const ROWS: [string, string, string][] = Object.entries(ENDPOINTS).flatMap(

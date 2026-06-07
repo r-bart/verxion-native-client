@@ -3,11 +3,13 @@
  * on the left, and the glass avatar (the Settings entry) on the right. It's the
  * "Hoy" tab, so the date is the headline; the avatar keeps Settings reachable.
  */
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useRouter, type Href } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { Layers } from "lucide-react-native";
 import { useCurrentUser } from "@/presentation/_shared/hooks/useCurrentUser";
 import { GlassAvatarButton } from "@/presentation/_shared/components/GlassAvatarButton";
+import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { initials } from "@/presentation/_shared/lib/initials";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans } from "@/presentation/_shared/design/fonts";
@@ -40,11 +42,24 @@ export function TodayHeader({ date }: { date: string }) {
         </Text>
       </View>
 
-      <GlassAvatarButton
-        initials={initials(user?.name, user?.username, user?.email)}
-        accessibilityLabel={t("settings.title")}
-        onPress={() => router.push("/settings" as Href)}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+        <Pressable
+          onPress={() => router.push("/programas" as Href)}
+          accessibilityRole="button"
+          accessibilityLabel={t("program.title")}
+          style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
+        >
+          <GlassSurface radius={19} style={{ width: 38, height: 38, alignItems: "center", justifyContent: "center" }}>
+            <Layers size={18} color={glass.white} strokeWidth={2} />
+          </GlassSurface>
+        </Pressable>
+
+        <GlassAvatarButton
+          initials={initials(user?.name, user?.username, user?.email)}
+          accessibilityLabel={t("settings.title")}
+          onPress={() => router.push("/settings" as Href)}
+        />
+      </View>
     </View>
   );
 }

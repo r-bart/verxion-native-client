@@ -565,7 +565,11 @@
     "plans": {
       "routine": "Routine",
       "diet": "Diet",
-      "program": "Program"
+      "program": "Program",
+      "programActive": "Active program",
+      "yourPlan": "Your plan",
+      "looseHint": "Not bundled into a program · ask verxion",
+      "none": "No active plan yet · ask verxion"
     },
     "planWeek": "Week {{week}} / {{total}}",
     "yourDay": "Your day",
@@ -888,6 +892,168 @@
       "noResults": "No results",
       "noResultsBody": "Try changing your search or the group.",
       "more": "+{{count}} more · refine the search to see them"
+    }
+  },
+  "program": {
+    "title": "Programs",
+    "lead": "{{count}} programs",
+    "subtitle": "Each program unites a routine and a diet under one goal. Your active program and the archive of the ones you've closed.",
+    "search": "Search program or goal",
+    "sortTitle": "Sort by",
+    "sort": {
+      "recent": "Recent",
+      "name": "Alphabetical",
+      "adherence": "Adherence"
+    },
+    "sortHint": {
+      "recent": "Active first, then by date",
+      "name": "From A to Z",
+      "adherence": "Best adherence first"
+    },
+    "sections": {
+      "active": "In progress",
+      "paused": "Paused",
+      "draft": "Drafts · verxion is building them",
+      "completed": "Archive · completed"
+    },
+    "results": "{{count}} results",
+    "resultsOne": "{{count}} result",
+    "noResults": "No results",
+    "noResultsBody": "Try changing the search or the sort.",
+    "empty": {
+      "title": "No programs yet",
+      "body": "A program unites a routine and a diet under one goal. Ask verxion to build yours."
+    },
+    "error": {
+      "title": "We couldn't load your programs",
+      "body": "Pull to retry."
+    },
+    "ask": {
+      "title": "Ask verxion for a new program",
+      "body": "A program unites a routine and a diet under one goal. The agent builds and activates it — tell it where you want to get to."
+    },
+    "status": {
+      "active": "Active program",
+      "draft": "Draft · verxion",
+      "paused": "Paused",
+      "completed": "Completed"
+    },
+    "goals": {
+      "muscle_gain": "Build muscle",
+      "fat_loss": "Lose fat",
+      "strength": "Strength",
+      "endurance": "Endurance",
+      "maintenance": "Maintenance",
+      "recomp": "Recomposition",
+      "general_fitness": "General fitness",
+      "athletic_performance": "Performance",
+      "rehabilitation": "Rehabilitation",
+      "health": "Health"
+    },
+    "windowShort": "{{weeks}} wk",
+    "windowIndefinite": "Open-ended",
+    "weekOf": "Week {{week}} of {{total}}",
+    "weekN": "Week {{week}}",
+    "pace": {
+      "ahead": "Ahead of pace",
+      "on": "On track",
+      "behind": "Just behind"
+    },
+    "draftNotStarted": "Not started · {{weeks}} weeks planned",
+    "viewPlan": "View plan ›",
+    "metaTrain": "Training {{pct}}%",
+    "metaDiet": "Diet {{pct}}%",
+    "metaUnified": "{{score}} unified",
+    "archiveUntil": "{{goal}} · until {{date}}",
+    "couple": {
+      "noRoutine": "No routine",
+      "noDiet": "No diet"
+    },
+    "detail": {
+      "adherenceTitle": "Unified adherence",
+      "phase": {
+        "cold_start": "Cold start",
+        "baseline_building": "Building baseline",
+        "active_tracking": "Active tracking"
+      },
+      "phaseHint": {
+        "cold_start": "Still little data — the reading is provisional.",
+        "baseline_building": "Collecting your adherence baseline.",
+        "active_tracking": "Enough data for a reliable reading."
+      },
+      "confidence": {
+        "none": "No confidence",
+        "low": "Low confidence",
+        "medium": "Medium confidence",
+        "high": "High confidence"
+      },
+      "train": "Training",
+      "diet": "Diet",
+      "sessions": "{{done}}/{{total}} sessions",
+      "days": "{{done}}/{{total}} days",
+      "noDietBar": "No diet coupled · training only counts",
+      "dow": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat",
+        "sun": "Sun"
+      },
+      "dayKind": {
+        "training": "Training",
+        "rest": "Rest",
+        "refeed": "Refeed",
+        "custom": "Custom"
+      },
+      "weekTitle": "The week",
+      "weekTrainingDays": "{{count}} training days",
+      "couplesTitle": "What it couples",
+      "couplesHint": "Tap to see the detail",
+      "routineK": "Routine",
+      "dietK": "Diet",
+      "weekShort": "wk {{week}}/{{total}}",
+      "adhShort": "{{pct}}% adh.",
+      "emptyRoutine": "No routine coupled",
+      "emptyDiet": "No diet coupled",
+      "emptyCoupleHint": "Ask verxion to couple one and it'll show up here.",
+      "perWeek": "days/wk",
+      "window": "window",
+      "duration": "duration",
+      "coupled": "coupled",
+      "ctxCreated": "Created {{date}}",
+      "ctxFinished": "Finished · {{date}}",
+      "ctxPaused": "Paused",
+      "ctxUpdated": "Updated · {{date}}",
+      "noteAbout": "verxion · about your program",
+      "noteWhy": "verxion · why this program",
+      "ask": {
+        "adjust": {
+          "title": "Adjust this program with the agent",
+          "body": "The program is read-only. Activating, pausing or adjusting is done by verxion via chat."
+        },
+        "activate": {
+          "title": "Ask verxion to activate this program",
+          "body": "It's a draft — the agent starts it when you ask."
+        },
+        "activateIncomplete": {
+          "title": "Couple a routine or diet to activate it",
+          "body": "A program needs at least a routine or a diet before it can start."
+        },
+        "resume": {
+          "title": "Ask verxion to resume it",
+          "body": "The program is read-only. Resuming is done by verxion via chat."
+        },
+        "repeat": {
+          "title": "Ask verxion to repeat or adjust it",
+          "body": "The program is read-only. Repeating or adjusting is done by verxion via chat."
+        }
+      },
+      "error": {
+        "title": "We couldn't load the program",
+        "body": "Pull to retry."
+      }
     }
   }
 }

@@ -565,7 +565,11 @@
     "plans": {
       "routine": "Rutina",
       "diet": "Dieta",
-      "program": "Programa"
+      "program": "Programa",
+      "programActive": "Programa activo",
+      "yourPlan": "Tu plan",
+      "looseHint": "Sin unir en un programa · pídeselo a verxion",
+      "none": "Aún sin plan activo · pídeselo a verxion"
     },
     "planWeek": "Semana {{week}} / {{total}}",
     "yourDay": "Tu día",
@@ -888,6 +892,168 @@
       "noResults": "Sin resultados",
       "noResultsBody": "Prueba a cambiar la búsqueda o el grupo.",
       "more": "+{{count}} más · afina la búsqueda para verlos"
+    }
+  },
+  "program": {
+    "title": "Programas",
+    "lead": "{{count}} programas",
+    "subtitle": "Cada programa une una rutina y una dieta bajo un objetivo. Tu programa activo y el archivo de los que ya cerraste.",
+    "search": "Buscar programa u objetivo",
+    "sortTitle": "Ordenar por",
+    "sort": {
+      "recent": "Recientes",
+      "name": "Alfabético",
+      "adherence": "Adherencia"
+    },
+    "sortHint": {
+      "recent": "El activo primero, luego por fecha",
+      "name": "De la A a la Z",
+      "adherence": "Mejor cumplimiento primero"
+    },
+    "sections": {
+      "active": "En curso",
+      "paused": "En pausa",
+      "draft": "Borradores · verxion los está armando",
+      "completed": "Archivo · completados"
+    },
+    "results": "{{count}} resultados",
+    "resultsOne": "{{count}} resultado",
+    "noResults": "Sin resultados",
+    "noResultsBody": "Prueba a cambiar la búsqueda o el orden.",
+    "empty": {
+      "title": "Aún no hay programas",
+      "body": "Un programa une una rutina y una dieta bajo un objetivo. Pídele a verxion que arme el tuyo."
+    },
+    "error": {
+      "title": "No pudimos cargar tus programas",
+      "body": "Desliza para reintentar."
+    },
+    "ask": {
+      "title": "Pídele a verxion un programa nuevo",
+      "body": "Un programa une una rutina y una dieta bajo un objetivo. El agente lo arma y lo activa — descríbele a dónde quieres llegar."
+    },
+    "status": {
+      "active": "Programa activo",
+      "draft": "Borrador · verxion",
+      "paused": "En pausa",
+      "completed": "Completado"
+    },
+    "goals": {
+      "muscle_gain": "Ganar músculo",
+      "fat_loss": "Perder grasa",
+      "strength": "Fuerza",
+      "endurance": "Resistencia",
+      "maintenance": "Mantenimiento",
+      "recomp": "Recomposición",
+      "general_fitness": "Forma general",
+      "athletic_performance": "Rendimiento",
+      "rehabilitation": "Rehabilitación",
+      "health": "Salud"
+    },
+    "windowShort": "{{weeks}} sem",
+    "windowIndefinite": "Indefinido",
+    "weekOf": "Semana {{week}} de {{total}}",
+    "weekN": "Semana {{week}}",
+    "pace": {
+      "ahead": "Vas adelantado",
+      "on": "En objetivo",
+      "behind": "Vas justo"
+    },
+    "draftNotStarted": "Sin empezar · {{weeks}} semanas planeadas",
+    "viewPlan": "Ver plan ›",
+    "metaTrain": "Entreno {{pct}}%",
+    "metaDiet": "Dieta {{pct}}%",
+    "metaUnified": "{{score}} unificado",
+    "archiveUntil": "{{goal}} · hasta {{date}}",
+    "couple": {
+      "noRoutine": "Sin rutina",
+      "noDiet": "Sin dieta"
+    },
+    "detail": {
+      "adherenceTitle": "Adherencia unificada",
+      "phase": {
+        "cold_start": "Arranque en frío",
+        "baseline_building": "Construyendo base",
+        "active_tracking": "Seguimiento activo"
+      },
+      "phaseHint": {
+        "cold_start": "Aún pocos datos — la lectura es provisional.",
+        "baseline_building": "Recogiendo tu línea base de adherencia.",
+        "active_tracking": "Datos suficientes para una lectura fiable."
+      },
+      "confidence": {
+        "none": "Sin confianza",
+        "low": "Confianza baja",
+        "medium": "Confianza media",
+        "high": "Confianza alta"
+      },
+      "train": "Entreno",
+      "diet": "Dieta",
+      "sessions": "{{done}}/{{total}} sesiones",
+      "days": "{{done}}/{{total}} días",
+      "noDietBar": "Sin dieta acoplada · solo cuenta el entreno",
+      "dow": {
+        "mon": "Lun",
+        "tue": "Mar",
+        "wed": "Mié",
+        "thu": "Jue",
+        "fri": "Vie",
+        "sat": "Sáb",
+        "sun": "Dom"
+      },
+      "dayKind": {
+        "training": "Entreno",
+        "rest": "Descanso",
+        "refeed": "Recarga",
+        "custom": "A medida"
+      },
+      "weekTitle": "La semana",
+      "weekTrainingDays": "{{count}} días de entreno",
+      "couplesTitle": "Lo que acopla",
+      "couplesHint": "Toca para ver el detalle",
+      "routineK": "Rutina",
+      "dietK": "Dieta",
+      "weekShort": "sem {{week}}/{{total}}",
+      "adhShort": "{{pct}}% adh.",
+      "emptyRoutine": "Sin rutina acoplada",
+      "emptyDiet": "Sin dieta acoplada",
+      "emptyCoupleHint": "Pídele a verxion que acople una y aparecerá aquí.",
+      "perWeek": "días/sem",
+      "window": "ventana",
+      "duration": "duración",
+      "coupled": "acoplado",
+      "ctxCreated": "Creado {{date}}",
+      "ctxFinished": "Finalizado · {{date}}",
+      "ctxPaused": "En pausa",
+      "ctxUpdated": "Actualizado · {{date}}",
+      "noteAbout": "verxion · sobre tu programa",
+      "noteWhy": "verxion · por qué este programa",
+      "ask": {
+        "adjust": {
+          "title": "Ajusta este programa con el agente",
+          "body": "El programa es de solo lectura. Activar, pausar o reajustar lo hace verxion vía chat."
+        },
+        "activate": {
+          "title": "Pídele a verxion que active este programa",
+          "body": "Es un borrador — el agente lo pone en marcha cuando se lo dices."
+        },
+        "activateIncomplete": {
+          "title": "Acopla una rutina o dieta para activarlo",
+          "body": "Un programa necesita al menos una rutina o una dieta antes de ponerse en marcha."
+        },
+        "resume": {
+          "title": "Pídele a verxion que lo reanude",
+          "body": "El programa es de solo lectura. Reanudarlo lo hace verxion vía chat."
+        },
+        "repeat": {
+          "title": "Pídele a verxion que lo repita o lo ajuste",
+          "body": "El programa es de solo lectura. Repetir o ajustar lo hace verxion vía chat."
+        }
+      },
+      "error": {
+        "title": "No pudimos cargar el programa",
+        "body": "Desliza para reintentar."
+      }
     }
   }
 }

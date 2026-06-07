@@ -13,6 +13,7 @@ import { HttpExerciseCatalogRepository } from "../repositories/HttpExerciseCatal
 import { HttpSettingsRepository } from "../repositories/HttpSettingsRepository";
 import { HealthKitRepository } from "../repositories/HealthKitRepository";
 import { HttpTodayRepository } from "../repositories/HttpTodayRepository";
+import { HttpProgramRepository } from "../repositories/HttpProgramRepository";
 
 import { SignInUseCase } from "@/application/auth/SignInUseCase";
 import { SignInWithGoogleUseCase } from "@/application/auth/SignInWithGoogleUseCase";
@@ -115,6 +116,10 @@ import { RequestHealthAuthorizationUseCase } from "@/application/health/RequestH
 import { SetHealthMetricUseCase } from "@/application/health/SetHealthMetricUseCase";
 
 import { GetTodayDashboardUseCase } from "@/application/today/GetTodayDashboardUseCase";
+import { ListProgramsUseCase } from "@/application/program/ListProgramsUseCase";
+import { GetActiveProgramUseCase } from "@/application/program/GetActiveProgramUseCase";
+import { GetProgramUseCase } from "@/application/program/GetProgramUseCase";
+import { GetProgramAdherenceUseCase } from "@/application/program/GetProgramAdherenceUseCase";
 import { GetTimelineItemDetailUseCase } from "@/application/today/GetTimelineItemDetailUseCase";
 
 import { track, identify } from "../analytics/analytics";
@@ -143,6 +148,7 @@ const exerciseCatalogRepo = new HttpExerciseCatalogRepository();
 const settingsRepo = new HttpSettingsRepository();
 const healthRepo = new HealthKitRepository();
 const todayRepo = new HttpTodayRepository();
+const programRepo = new HttpProgramRepository();
 
 export const container = {
   // Auth
@@ -276,6 +282,12 @@ export const container = {
   // Today ("Hoy" aggregate — GET /today eager + lazy timeline detail)
   getTodayDashboard: new GetTodayDashboardUseCase(todayRepo),
   getTimelineItemDetail: new GetTimelineItemDetailUseCase(todayRepo),
+
+  // Programs (umbrella — library + detail + unified adherence; read-only)
+  listPrograms: new ListProgramsUseCase(programRepo),
+  getActiveProgram: new GetActiveProgramUseCase(programRepo),
+  getProgram: new GetProgramUseCase(programRepo),
+  getProgramAdherence: new GetProgramAdherenceUseCase(programRepo),
 } as const;
 
 export type Container = typeof container;

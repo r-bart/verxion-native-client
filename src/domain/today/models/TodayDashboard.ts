@@ -103,6 +103,21 @@ export interface ProgramProgress {
 }
 
 /**
+ * Whether a plan *type* is set up for the user, independent of today's activity.
+ * `active` = an engagement is currently running; `inactive_only` = the user has
+ * plans of this kind but none active; `none` = never set up. Server-computed
+ * (`SetupStatusService`); drives the Hoy "qué sigo" slot's polymorphic state.
+ */
+export type SetupStatus = "active" | "inactive_only" | "none";
+
+/** Setup status per plan type — the discriminator behind the `ActivePlan` slot. */
+export interface TodaySetup {
+  routine: SetupStatus;
+  dietPlan: SetupStatus;
+  program: SetupStatus;
+}
+
+/**
  * The agent's note for the day. `message` is free text already localised by the
  * platform for the user's language — it is content, not UI chrome, so the app
  * renders it verbatim.
@@ -247,6 +262,13 @@ export interface TodayDashboard {
   routine: RoutineProgress | null;
   diet: DietProgress | null;
   program: ProgramProgress | null;
+  /**
+   * Setup status per plan type (server-computed). The Hoy "qué sigo" slot
+   * (`ActivePlan`) derives its polymorphic state from this: an active program
+   * collapses the routine/diet into a single program row; otherwise routine
+   * and/or diet show on their own. See `ActivePlan`.
+   */
+  setup: TodaySetup;
   agentNote: AgentNote | null;
   timeline: TimelineEvent[];
 }

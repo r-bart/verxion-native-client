@@ -24,7 +24,7 @@ import { sans } from "@/presentation/_shared/design/fonts";
 import { useTodayDashboard } from "../hooks/useTodayDashboard";
 import { TodayHeader } from "../components/TodayHeader";
 import { DaySummary } from "../components/DaySummary";
-import { PlansSection } from "../components/PlansSection";
+import { ActivePlan } from "../components/ActivePlan";
 // import { AgentNoteCard } from "../components/AgentNoteCard"; // hidden for now
 import { DayTimeline } from "../components/DayTimeline";
 import { GhostTimeline } from "../components/GhostTimeline";
@@ -103,7 +103,12 @@ export function TodayScreen() {
           >
             <TodayHeader date={data.date} />
             <DaySummary ring={data.ring} fronts={data.fronts} />
-            <PlansSection routine={data.routine} diet={data.diet} program={data.program} />
+            <ActivePlan
+              setup={data.setup}
+              routine={data.routine}
+              diet={data.diet}
+              program={data.program}
+            />
             {/* Agent note hidden for now (kept wired; re-enable when ready). */}
             {/* {data.agentNote && <AgentNoteCard note={data.agentNote} />} */}
             <Divider />
