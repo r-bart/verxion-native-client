@@ -10,7 +10,6 @@
  */
 
 export type DietState = "active" | "fresh" | "empty";
-export type DietScoreState = "ahead" | "on" | "behind";
 export type MealStatus = "done" | "now" | "up";
 
 /** kcal + the three macros (grams), shared by targets and consumed totals. */
@@ -36,7 +35,6 @@ export interface ActiveDietSummary {
   week: number;
   weeks: number | null;
   weekFraction: number | null;
-  scoreState: DietScoreState;
   score: number | null;
   adherence: number | null;
   targets: MacroSet;

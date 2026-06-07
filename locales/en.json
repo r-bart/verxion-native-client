@@ -24,12 +24,7 @@
     "saveError": "Couldn't save. Please try again.",
     "delete": "Delete",
     "edit": "Edit",
-    "never": "Never",
-    "score": {
-      "ahead": "Ahead of plan",
-      "on": "On target",
-      "behind": "Falling behind"
-    }
+    "never": "Never"
   },
   "navigation": {
     "today": "Today",
@@ -721,7 +716,6 @@
     },
     "intake": {
       "consumedToday": "Consumed today",
-      "ofGoal": "of {{goal}} kcal",
       "remaining": "{{kcal}} kcal left",
       "over": "{{kcal}} kcal over",
       "meals": "{{done}} of {{total}} meals",
@@ -891,7 +885,21 @@
       "count_other": "{{count}} foods",
       "noResults": "No results",
       "noResultsBody": "Try changing your search or the group.",
-      "more": "+{{count}} more · refine the search to see them"
+      "more": "+{{count}} more · refine the search to see them",
+      "groups": {
+        "protein": "Protein",
+        "dairy": "Dairy",
+        "grains": "Grains",
+        "vegetables": "Vegetables",
+        "fruits": "Fruits",
+        "fats": "Fats",
+        "beverages": "Beverages",
+        "snacks": "Snacks",
+        "supplements": "Supplements",
+        "prepared": "Prepared",
+        "condiments": "Condiments",
+        "other": "Other"
+      }
     }
   },
   "program": {
@@ -954,11 +962,6 @@
     "windowIndefinite": "Open-ended",
     "weekOf": "Week {{week}} of {{total}}",
     "weekN": "Week {{week}}",
-    "pace": {
-      "ahead": "Ahead of pace",
-      "on": "On track",
-      "behind": "Just behind"
-    },
     "draftNotStarted": "Not started · {{weeks}} weeks planned",
     "viewPlan": "View plan ›",
     "metaTrain": "Training {{pct}}%",

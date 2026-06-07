@@ -67,8 +67,9 @@ function Hero({ program }: { program: ProgramOverview }) {
   const statusColor = programStatusColor(program.status);
   const goalLabel = program.goal ? t(`program.goals.${program.goal}`) : null;
   const coupled = (program.routine ? 1 : 0) + (program.dietPlan ? 1 : 0);
+  const hasWeeks = typeof program.totalWeeks === "number" && program.totalWeeks > 0;
   const windowShort =
-    program.durationType === "indefinite" || program.totalWeeks <= 0
+    program.durationType === "indefinite" || !hasWeeks
       ? t("program.windowIndefinite")
       : t("program.windowShort", { weeks: program.totalWeeks });
 
@@ -163,18 +164,20 @@ function AskAgent({ program }: { program: ProgramOverview }) {
           ? "repeat"
           : "adjust";
   return (
-    <Pressable onPress={() => router.push("/agent" as Href)} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1, marginTop: 32 })}>
-      <GlassSurface radius={18} style={{ padding: 16, flexDirection: "row", alignItems: "center", gap: 13 }}>
-        <View style={{ width: 38, height: 38, borderRadius: 12, backgroundColor: glass.lavaBg, borderWidth: 1, borderColor: glass.lavaBorder, alignItems: "center", justifyContent: "center" }}>
-          <Sparkles size={18} color={glass.lava} strokeWidth={2} />
-        </View>
-        <View style={{ flex: 1, gap: 3 }}>
-          <Text style={{ fontFamily: sans(600), fontSize: 14, color: glass.white }}>{t(`program.detail.ask.${key}.title`)}</Text>
-          <Text style={{ fontFamily: mono(400), fontSize: 11.5, color: glass.ink2, lineHeight: 16 }}>{t(`program.detail.ask.${key}.body`)}</Text>
-        </View>
-        <ChevronRight size={18} color="rgba(255,255,255,0.28)" strokeWidth={2} />
-      </GlassSurface>
-    </Pressable>
+    <View style={{ marginTop: 32 }}>
+      <Pressable onPress={() => router.push("/agent" as Href)} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}>
+        <GlassSurface radius={18} style={{ padding: 16, flexDirection: "row", alignItems: "center", gap: 13 }}>
+          <View style={{ width: 38, height: 38, borderRadius: 12, backgroundColor: glass.lavaBg, borderWidth: 1, borderColor: glass.lavaBorder, alignItems: "center", justifyContent: "center" }}>
+            <Sparkles size={18} color={glass.lava} strokeWidth={2} />
+          </View>
+          <View style={{ flex: 1, gap: 3 }}>
+            <Text style={{ fontFamily: sans(600), fontSize: 14, color: glass.white }}>{t(`program.detail.ask.${key}.title`)}</Text>
+            <Text style={{ fontFamily: mono(400), fontSize: 11.5, color: glass.ink2, lineHeight: 16 }}>{t(`program.detail.ask.${key}.body`)}</Text>
+          </View>
+          <ChevronRight size={18} color="rgba(255,255,255,0.28)" strokeWidth={2} />
+        </GlassSurface>
+      </Pressable>
+    </View>
   );
 }
 
@@ -222,7 +225,7 @@ export function ProgramDetailScreen() {
         <Hero program={program} />
         {showAdherence && adherence.data && (
           <View style={{ marginTop: 14 }}>
-            <ProgramAdherenceCard adherence={adherence.data} paceState={program.adherenceState} />
+            <ProgramAdherenceCard adherence={adherence.data} />
           </View>
         )}
         <AgentNote program={program} />

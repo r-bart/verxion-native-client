@@ -48,9 +48,15 @@ GET /api/v1/training/routine-dashboard        → 200  { data: RoutineDashboard 
 > `src/domain/training/models/RoutineDashboard.ts`. Example payload =
 > `src/domain/training/__fixtures__/routineDashboardFixture.ts`.
 
+> **Update (2026-06-07):** the backend evolutivo **removed `scoreState`** (the
+> "Vas adelantado / En objetivo / Vas justo" pace chip) from every read-model.
+> The native client dropped the field, the `ScoreState` type and the `ScoreChip`
+> component accordingly. The pace classifier (§5) is **no longer shipped**.
+> `volumeTrendPct` / `sessionsDone` / `sessionsPlanned` stay as the progress
+> signal. Lines below that still mention `scoreState`/pace are historical.
+
 ```ts
 type DayType = "push" | "pull" | "legs" | "core" | "rest";
-type ScoreState = "ahead" | "on" | "behind";
 type RoutineDashboardState = "active" | "fresh" | "empty";
 type SpineStatus = "done" | "now" | "live" | "up";
 
@@ -62,7 +68,6 @@ interface ActiveRoutineSummary {
   week: number;                    // 3
   weeks: number;                   // 6
   weekFraction: number | null;     // 0..1 — fill of the CURRENT week cell (§5)
-  scoreState: ScoreState;          // pace vs plan (§5 — NEW)
   sessionsDone: number;            // 14
   sessionsPlanned: number;         // 36
   volumeTotal: string;             // "32,1 t"  ⚠️ display-ready (§3)

@@ -42,6 +42,11 @@ GET /api/v1/training/routine-library        → 200  { data: RoutineLibrary }
 > `src/domain/training/__fixtures__/routineLibraryFixture.ts`. `DayType` / `ScoreState`
 > are shared with `RoutineDashboard`.
 
+> **Update (2026-06-07):** the backend evolutivo **removed `scoreState`** (the
+> pace chip) from every read-model; the native client dropped the field, the
+> `ScoreState` type and the `ScoreChip`. Lines below mentioning `scoreState`/pace
+> are historical.
+
 ```ts
 type RoutineLibraryState = "active" | "draft" | "paused" | "completed";
 
@@ -56,7 +61,6 @@ interface RoutineLibraryItem {
   week: number;                     // 3   (current block week; completed → totalWeeks)
   weeks: number;                    // 6
   weekFraction: number | null;      // 0..1 active only; null otherwise
-  scoreState: ScoreState;           // pace vs plan (§5 — NEW)
   sessionsDone: number;             // 14
   sessionsPlanned: number;          // 36
   volumeTrendPct: number;           // 8

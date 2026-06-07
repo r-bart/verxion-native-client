@@ -1,6 +1,6 @@
 /**
- * WeekBar — the block's week progress: "Semana 3 de 6" + a ScoreChip, over a
- * row of week cells. Completed weeks fill lava; the CURRENT week fills partially
+ * WeekBar — the block's week progress: "Semana 3 de 6" over a row of week
+ * cells. Completed weeks fill lava; the CURRENT week fills partially
  * by `weekFraction` (e.g. Wed ≈ 43%) with a soft glow. Mirrors the handoff's
  * `WeekBlock` (bar variant).
  */
@@ -8,12 +8,11 @@ import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { glass } from "@/presentation/_shared/design/glass";
 import { mono } from "@/presentation/_shared/design/fonts";
-import { ScoreChip } from "@/presentation/_shared/components/ScoreChip";
 import type { ActiveRoutineSummary } from "@/domain/training/models/RoutineDashboard";
 
 export function WeekBar({ routine }: { routine: ActiveRoutineSummary }) {
   const { t } = useTranslation();
-  const { week, weekFraction, scoreState } = routine;
+  const { week, weekFraction } = routine;
   // Open-ended routines carry no fixed length; fall back to the current week so
   // the bar renders a filled cell instead of breaking on a null length.
   const weeks = routine.weeks ?? week;
@@ -21,12 +20,9 @@ export function WeekBar({ routine }: { routine: ActiveRoutineSummary }) {
 
   return (
     <View style={{ gap: 10 }}>
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-        <Text style={{ fontFamily: mono(500), fontSize: 12.5, color: glass.ink2 }}>
-          {t("training.routine.week", { week, weeks })}
-        </Text>
-        <ScoreChip state={scoreState} />
-      </View>
+      <Text style={{ fontFamily: mono(500), fontSize: 12.5, color: glass.ink2 }}>
+        {t("training.routine.week", { week, weeks })}
+      </Text>
 
       <View style={{ flexDirection: "row", gap: 5 }}>
         {Array.from({ length: weeks }).map((_, i) => {

@@ -5,11 +5,7 @@
  * API schema. Read-only: adjusting a diet is the agent's job. Nutrition analogue of
  * Entreno's routine detail.
  */
-import type {
-  DietScoreState,
-  MacroSet,
-  WaterAmount,
-} from "./NutritionDashboard";
+import type { MacroSet, WaterAmount } from "./NutritionDashboard";
 import type { DietLibraryState } from "./DietLibrary";
 
 /** One meal in the diet's day spine. `targets` is null when the plan sets none. */
@@ -35,7 +31,6 @@ export interface DietDetail {
   week: number | null;
   weeks: number | null;
   weekFraction: number | null;
-  scoreState: DietScoreState;
   score: number | null;
   adherence: number | null;
   daysLogged: number;

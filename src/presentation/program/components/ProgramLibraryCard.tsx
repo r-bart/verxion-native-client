@@ -2,8 +2,8 @@
  * ProgramLibraryCard — the big card for an active / paused / draft program in the
  * library. Shows the status eyebrow + window, the goal bubble + name + goal chip,
  * the coupling row (its signature trait), and a footer: drafts show "sin empezar",
- * the rest show week progress + pace chip + week cells + the unified-adherence
- * meta. Taps through to the detail. Mirrors the handoff `ProgramCard`.
+ * the rest show week progress + week cells + the unified-adherence meta. Taps
+ * through to the detail. Mirrors the handoff `ProgramCard`.
  */
 import { View, Text, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -11,12 +11,11 @@ import { useRouter, type Href } from "expo-router";
 import { CalendarRange, Target, TrendingUp, Pause, Sparkles } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
-import { Chip } from "@/presentation/_shared/components/Chip";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import type { ProgramOverview } from "@/domain/program/models/Program";
 import { programGoalVisual } from "../lib/programGoalVisual";
-import { programStatusColor, paceChipTone } from "../lib/programStatus";
+import { programStatusColor } from "../lib/programStatus";
 import { ProgramWeekCells } from "./ProgramWeekCells";
 import { ProgramCouplingRow } from "./ProgramCouplingRow";
 
@@ -27,8 +26,11 @@ export function ProgramLibraryCard({ program }: { program: ProgramOverview }) {
   const statusColor = programStatusColor(program.status);
   const isDraft = program.status === "draft";
   const goalLabel = program.goal ? t(`program.goals.${program.goal}`) : null;
+  // Falsy totalWeeks (0 / missing) reads as open-ended — never a dangling "wk".
+  const hasWeeks = typeof program.totalWeeks === "number" && program.totalWeeks > 0;
+  const hasWeek = typeof program.week === "number" && program.week > 0;
   const windowShort =
-    program.durationType === "indefinite" || program.totalWeeks <= 0
+    program.durationType === "indefinite" || !hasWeeks
       ? t("program.windowIndefinite")
       : t("program.windowShort", { weeks: program.totalWeeks });
 
@@ -102,49 +104,50 @@ export function ProgramLibraryCard({ program }: { program: ProgramOverview }) {
             </Text>
           </View>
         ) : (
-          <View style={{ gap: 9 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-              <Text style={{ fontFamily: mono(400), fontSize: 11.5, color: glass.ink2 }}>
-                {program.totalWeeks > 0
-                  ? t("program.weekOf", { week: program.week, total: program.totalWeeks })
-                  : t("program.weekN", { week: program.week })}
-              </Text>
-              {program.adherenceState && (
-                <Chip
-                  tone={paceChipTone(program.adherenceState)}
-                  icon={program.adherenceState === "ahead" ? <TrendingUp size={11} color={glass.up} strokeWidth={2.5} /> : undefined}
-                  label={t(`program.pace.${program.adherenceState}`)}
-                />
-              )}
-            </View>
-            <ProgramWeekCells program={program} />
-            {(program.routine?.adherenceScore != null ||
-              program.dietPlan != null ||
-              program.unifiedExecutionScore != null) && (
-              <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                <Text style={{ fontFamily: mono(400), fontSize: 11, color: glass.ink3 }} numberOfLines={1}>
-                  {[
-                    program.routine?.adherenceScore != null
-                      ? t("program.metaTrain", { pct: program.routine.adherenceScore })
-                      : null,
-                    program.dietPlan?.adherenceScore != null
-                      ? t("program.metaDiet", { pct: program.dietPlan.adherenceScore })
-                      : null,
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </Text>
-                {program.unifiedExecutionScore != null && (
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-                    <TrendingUp size={11} color={glass.up} strokeWidth={2.5} />
-                    <Text style={{ fontFamily: mono(500), fontSize: 11, color: glass.up }}>
-                      {t("program.metaUnified", { score: program.unifiedExecutionScore })}
+          (() => {
+            const hasMeta =
+              program.routine?.adherenceScore != null ||
+              program.dietPlan?.adherenceScore != null ||
+              program.unifiedExecutionScore != null;
+            // Nothing to show (overview without weeks/adherence) → skip the footer.
+            if (!hasWeek && !hasWeeks && !hasMeta) return null;
+            return (
+              <View style={{ gap: 9 }}>
+                {hasWeek && (
+                  <Text style={{ fontFamily: mono(400), fontSize: 11.5, color: glass.ink2 }}>
+                    {hasWeeks
+                      ? t("program.weekOf", { week: program.week, total: program.totalWeeks })
+                      : t("program.weekN", { week: program.week })}
+                  </Text>
+                )}
+                <ProgramWeekCells program={program} />
+                {hasMeta && (
+                  <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                    <Text style={{ fontFamily: mono(400), fontSize: 11, color: glass.ink3 }} numberOfLines={1}>
+                      {[
+                        program.routine?.adherenceScore != null
+                          ? t("program.metaTrain", { pct: program.routine.adherenceScore })
+                          : null,
+                        program.dietPlan?.adherenceScore != null
+                          ? t("program.metaDiet", { pct: program.dietPlan.adherenceScore })
+                          : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </Text>
+                    {program.unifiedExecutionScore != null && (
+                      <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+                        <TrendingUp size={11} color={glass.up} strokeWidth={2.5} />
+                        <Text style={{ fontFamily: mono(500), fontSize: 11, color: glass.up }}>
+                          {t("program.metaUnified", { score: program.unifiedExecutionScore })}
+                        </Text>
+                      </View>
+                    )}
                   </View>
                 )}
               </View>
-            )}
-          </View>
+            );
+          })()
         )}
       </GlassSurface>
     </Pressable>

@@ -1,11 +1,11 @@
 /**
- * Status + pace visual vocabulary for Programas. Status colour mirrors the
- * handoff `PG_STATE` (active=lava, draft=insight, paused=neutral, completed=up);
- * labels come from i18n (`program.status.<status>`, `program.pace.<state>`).
+ * Status visual vocabulary for Programas. Status colour mirrors the handoff
+ * `PG_STATE` (active=lava, draft=insight, paused=neutral, completed=up); labels
+ * come from i18n (`program.status.<status>`).
  */
 import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
-import type { ProgramStatus, PaceState } from "@/domain/program/models/Program";
+import type { ProgramStatus } from "@/domain/program/models/Program";
 
 export function programStatusColor(status: ProgramStatus): string {
   switch (status) {
@@ -20,9 +20,4 @@ export function programStatusColor(status: ProgramStatus): string {
     default:
       return glass.ink3;
   }
-}
-
-/** Pace chip tone for the `Chip` component ("Vas adelantado" etc.). */
-export function paceChipTone(state: PaceState): "up" | "neutral" | "lava" {
-  return state === "ahead" ? "up" : state === "behind" ? "lava" : "neutral";
 }

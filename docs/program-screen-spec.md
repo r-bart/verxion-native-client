@@ -127,7 +127,10 @@ interface ProgramSummary {
   dietPlan: { id: string; name: string } | null;
   // headline adherence numbers for the card footer (null for drafts)
   unifiedExecutionScore: number | null;
-  adherenceState: ProgramAdherenceState | null;  // GAP §7.3
+  // NOTE (2026-06-07): the proposed `adherenceState` (pace chip, §7.3) was
+  // settled by the backend evolutivo as NOT shipping — the pace concept is gone
+  // from every read-model. The native client dropped the field + the chip; the
+  // adherence ring now tints by `unifiedExecutionScore` band. §7.3 is closed.
 }
 
 interface ProgramListResponse {

@@ -47,7 +47,6 @@ export const programOverviewsFixture: ProgramOverview[] = [
       adherenceScore: 92,
     },
     unifiedExecutionScore: 84,
-    adherenceState: "ahead",
     agentNote:
       "Tu mejor recomp hasta ahora: semana 3 y vas adelantado en los dos frentes. El entreno sostiene volumen al alza y la dieta cierra al 92 % de adherencia. Mantenemos el déficit ligero dos semanas más y reevaluamos cargas.",
   },
@@ -86,7 +85,6 @@ export const programOverviewsFixture: ProgramOverview[] = [
       adherenceScore: 90,
     },
     unifiedExecutionScore: 90,
-    adherenceState: "ahead",
     agentNote:
       "Ocho semanas de volumen limpio que te dejaron listo para definir. Subiste fuerza en todos los básicos y la adherencia se mantuvo al 90 % en entreno y dieta. La base de músculo que ahora estás puliendo.",
   },
@@ -125,7 +123,6 @@ export const programOverviewsFixture: ProgramOverview[] = [
       adherenceScore: 86,
     },
     unifiedExecutionScore: 87,
-    adherenceState: "ahead",
     agentNote:
       "Tu punto de partida. Cuatro semanas de full-body y mantenimiento para fijar técnica y hábitos sin prisa. Misión cumplida: base sólida para todo lo que vino después.",
   },
@@ -149,7 +146,6 @@ export const programOverviewsFixture: ProgramOverview[] = [
     routine: null,
     dietPlan: null,
     unifiedExecutionScore: null,
-    adherenceState: null,
     agentNote:
       "Estoy armando un bloque de fuerza de 4 días a la semana con progresión por dobles sobre sentadilla, banca, peso muerto y press. Antes de activarlo conviene acoplar una rutina y una dieta de mantenimiento — dímelo y lo dejo listo.",
   },

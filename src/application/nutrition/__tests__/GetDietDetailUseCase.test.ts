@@ -14,7 +14,6 @@ const detail: DietDetail = {
   week: 3,
   weeks: 6,
   weekFraction: 0.45,
-  scoreState: "on",
   score: 78,
   adherence: 92,
   daysLogged: 21,

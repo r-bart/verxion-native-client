@@ -22,7 +22,6 @@ import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { DAY_TYPE } from "../lib/dayType";
-import { ScoreChip } from "@/presentation/_shared/components/ScoreChip";
 import type { RoutineDetailHeader } from "@/domain/training/models/RoutineDetailView";
 import type { RoutineLibraryState } from "@/domain/training/models/RoutineLibrary";
 
@@ -185,27 +184,18 @@ export function RoutineDetailHero({ header }: { header: RoutineDetailHeader }) {
             paddingTop: 14,
           }}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
+          <Text
+            style={{ fontFamily: mono(500), fontSize: 12, color: glass.ink2 }}
           >
-            <Text
-              style={{ fontFamily: mono(500), fontSize: 12, color: glass.ink2 }}
-            >
-              {isCompleted
-                ? t("training.routineLibrary.completedWeeks", {
-                    weeks: header.weeks,
-                  })
-                : t("training.routine.week", {
-                    week: header.week,
-                    weeks: header.weeks,
-                  })}
-            </Text>
-            {!isCompleted && <ScoreChip state={header.scoreState} />}
-          </View>
+            {isCompleted
+              ? t("training.routineLibrary.completedWeeks", {
+                  weeks: header.weeks,
+                })
+              : t("training.routine.week", {
+                  week: header.week,
+                  weeks: header.weeks,
+                })}
+          </Text>
 
           <View style={{ flexDirection: "row", gap: 4 }}>
             {Array.from({ length: header.weeks }).map((_, i) => {

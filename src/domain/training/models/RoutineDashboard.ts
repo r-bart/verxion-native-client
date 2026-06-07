@@ -34,9 +34,6 @@ export type DayKind =
   | "conditioning"
   | "technique";
 
-/** How the user is tracking against the block's plan. No number — a word. */
-export type ScoreState = "ahead" | "on" | "behind";
-
 /** Landing state: a live block, a just-created block, or no routine at all. */
 export type RoutineDashboardState = "active" | "fresh" | "empty";
 
@@ -57,7 +54,6 @@ export interface ActiveRoutineSummary {
    * partial fill of the active week cell. Null when not partway (fresh week).
    */
   weekFraction: number | null;
-  scoreState: ScoreState;
   sessionsDone: number;
   /** Planned sessions for the block; null for open-ended routines. */
   sessionsPlanned: number | null;

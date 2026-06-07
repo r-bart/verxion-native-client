@@ -8,7 +8,7 @@
  * Read-only: creating, activating or editing a routine is the agent's job; the UI
  * frames it as a request ("pídeselo a verxion"), never as a write.
  */
-import type { DayType, ScoreState } from "./RoutineDashboard";
+import type { DayType } from "./RoutineDashboard";
 
 export type RoutineLibraryState = "active" | "draft" | "paused" | "completed";
 
@@ -25,7 +25,6 @@ export interface RoutineLibraryItem {
   weeks: number;
   /** Fill of the current week's cell (0–1); null when the block isn't active. */
   weekFraction: number | null;
-  scoreState: ScoreState;
   sessionsDone: number;
   sessionsPlanned: number;
   volumeTrendPct: number;

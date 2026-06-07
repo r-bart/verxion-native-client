@@ -32,9 +32,6 @@ export type ProgramDurationType = "indefinite" | "date_range";
 /** Per-day kind for the weekly calendar heatmap. */
 export type ProgramDayKind = "training" | "rest" | "refeed" | "custom";
 
-/** Pace classification (server `PaceClassifier`) → the "Vas adelantado" chip. */
-export type PaceState = "ahead" | "on" | "behind";
-
 /** Embedded summary of the coupled routine (enough for the coupling card). */
 export interface ProgramCoupledRoutine {
   id: string;
@@ -64,8 +61,8 @@ export interface ProgramCoupledDiet {
 
 /**
  * The composed program read-model. Used by the library (one per card) and the
- * detail hero. Adherence numbers here are the *headline* (`unifiedExecutionScore`
- * + `adherenceState`); the full breakdown is the separate `ProgramAdherence` read.
+ * detail hero. Adherence numbers here are the *headline* (`unifiedExecutionScore`);
+ * the full breakdown is the separate `ProgramAdherence` read.
  */
 export interface ProgramOverview {
   id: string;
@@ -96,8 +93,6 @@ export interface ProgramOverview {
   dietPlan: ProgramCoupledDiet | null;
   /** Headline unified adherence (e.g. 84). Null for drafts / cold-start. */
   unifiedExecutionScore: number | null;
-  /** Pace chip state. Null for drafts / cold-start (or if the platform omits it). */
-  adherenceState: PaceState | null;
   /** Agent note ("sobre tu programa" / "por qué este programa"). Server free text. */
   agentNote: string | null;
 }

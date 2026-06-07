@@ -22,7 +22,6 @@ export const routineDashboardFixture: RoutineDashboard = {
     week: 3,
     weeks: 6,
     weekFraction: 3 / 7,
-    scoreState: "ahead",
     sessionsDone: 14,
     sessionsPlanned: 36,
     volume: { value: 32.1, unit: "t" },

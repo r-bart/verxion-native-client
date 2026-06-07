@@ -22,7 +22,6 @@ import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { DAY_TYPE } from "../lib/dayType";
-import { ScoreChip } from "@/presentation/_shared/components/ScoreChip";
 import type {
   RoutineLibraryItem,
   RoutineLibraryState,
@@ -224,31 +223,22 @@ export function RoutineLibraryCard({ item }: { item: RoutineLibraryItem }) {
           </View>
         ) : (
           <View style={{ gap: 10 }}>
-            <View
+            <Text
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
+                fontFamily: mono(500),
+                fontSize: 12,
+                color: glass.ink2,
               }}
             >
-              <Text
-                style={{
-                  fontFamily: mono(500),
-                  fontSize: 12,
-                  color: glass.ink2,
-                }}
-              >
-                {isCompleted
-                  ? t("training.routineLibrary.completedWeeks", {
-                      weeks: item.weeks,
-                    })
-                  : t("training.routine.week", {
-                      week: item.week,
-                      weeks: item.weeks,
-                    })}
-              </Text>
-              {!isCompleted && <ScoreChip state={item.scoreState} />}
-            </View>
+              {isCompleted
+                ? t("training.routineLibrary.completedWeeks", {
+                    weeks: item.weeks,
+                  })
+                : t("training.routine.week", {
+                    week: item.week,
+                    weeks: item.weeks,
+                  })}
+            </Text>
 
             <WeekCells
               week={item.week}

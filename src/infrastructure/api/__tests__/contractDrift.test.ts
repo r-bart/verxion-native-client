@@ -184,5 +184,28 @@ describeIfContract("contract drift — native repositories", () => {
       expect(session?.properties?.completedAt).toBeDefined();
       expect(session?.properties?.durationSeconds).toBeDefined();
     });
+
+    // Tripwire for the 2026-06 evolutivo that REMOVED the "pace" concept
+    // (`scoreState` / `adherenceState`, the "Vas adelantado" chip) from every
+    // read-model. The client dropped the field + `ScoreChip`. If develop ever
+    // re-adds these, this fails so we revisit whether to bring the chip back —
+    // the rest of the suite only catches fields that *vanish*, not ones that
+    // *reappear*. Staging still carries them, so only assert on develop.
+    it("pace fields stay removed on develop (scoreState / adherenceState)", () => {
+      if (!CONTRACT_FILE?.endsWith("develop.openapi.json")) {
+        console.warn(
+          "[contract-drift] not on develop — skipping pace-removal tripwire"
+        );
+        return;
+      }
+      const props = (name: string) =>
+        spec!.components.schemas[name]?.properties ?? {};
+      expect(props("ActiveRoutineSummary").scoreState).toBeUndefined();
+      expect(props("RoutineLibraryItem").scoreState).toBeUndefined();
+      expect(props("ActiveDietSummary").scoreState).toBeUndefined();
+      expect(props("DietDetail").scoreState).toBeUndefined();
+      expect(props("DietLibraryItem").scoreState).toBeUndefined();
+      expect(props("ProgramOverview").adherenceState).toBeUndefined();
+    });
   });
 });

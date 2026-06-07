@@ -18,7 +18,6 @@ export const dietDashboardFixture: NutritionDashboard = {
     week: 3,
     weeks: 6,
     weekFraction: 0.43,
-    scoreState: "on",
     score: 78,
     adherence: 78,
     targets: { kcal: 2250, protein: 180, carbs: 240, fat: 70 },

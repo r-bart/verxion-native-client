@@ -1,27 +1,26 @@
 /**
  * ProgramAdherenceCard — the unified-adherence block on the program detail: the
- * Skia ring with the unified score, a pace chip, the phase + confidence pills,
- * a phase hint, and the two sub-bars (training lava · diet cyan). A program with
+ * Skia ring with the unified score, the phase + confidence pills, a phase hint,
+ * and the two sub-bars (training lava · diet cyan). A program with
  * no diet shows the diet bar as "—". Hidden entirely when there's no adherence
  * data (drafts). Mirrors the handoff `PgdAdherence`.
  */
 import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Dumbbell, Utensils, TrendingUp, ShieldCheck } from "lucide-react-native";
+import { Dumbbell, Utensils, ShieldCheck } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { Ring } from "@/presentation/_shared/components/Ring";
-import { Chip } from "@/presentation/_shared/components/Chip";
 import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import type { ProgramAdherence } from "@/domain/program/models/ProgramAdherence";
-import type { PaceState } from "@/domain/program/models/Program";
-import { paceChipTone } from "../lib/programStatus";
 
-function ringColor(state: PaceState | null): string {
-  if (state === "ahead") return glass.up;
-  if (state === "behind") return palette.health.text;
-  return palette.neutral.text;
+/** Ring tint by unified-score band (was driven by the now-removed pace state). */
+function ringColor(score: number | null): string {
+  if (score == null) return palette.neutral.text;
+  if (score >= 85) return glass.up;
+  if (score >= 60) return palette.neutral.text;
+  return palette.health.text;
 }
 
 function SubBar({
@@ -58,19 +57,12 @@ function SubBar({
 
 export function ProgramAdherenceCard({
   adherence,
-  paceState = null,
 }: {
   adherence: ProgramAdherence;
-  /** Pace state from the program overview (`PaceClassifier`); the adherence read
-   *  itself carries phase + confidence, not pace. Falls back to a score band. */
-  paceState?: PaceState | null;
 }) {
   const { t } = useTranslation();
   const score = adherence.unifiedExecutionScore;
-  const inferred: PaceState | null =
-    score == null ? null : score >= 85 ? "ahead" : score >= 60 ? "on" : "behind";
-  const state = paceState ?? inferred;
-  const color = ringColor(state);
+  const color = ringColor(score);
   const phase = adherence.programContext?.phase;
   const hasDiet = adherence.diet?.available ?? false;
 
@@ -90,15 +82,6 @@ export function ProgramAdherenceCard({
           <Text style={{ fontFamily: mono(600), fontSize: 10, letterSpacing: 0.8, color: glass.ink3, textTransform: "uppercase" }}>
             {t("program.detail.adherenceTitle")}
           </Text>
-          {state && (
-            <View style={{ flexDirection: "row" }}>
-              <Chip
-                tone={paceChipTone(state)}
-                icon={state === "ahead" ? <TrendingUp size={11} color={glass.up} strokeWidth={2.5} /> : undefined}
-                label={t(`program.pace.${state}`)}
-              />
-            </View>
-          )}
           <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
             {phase && (
               <View style={{ paddingHorizontal: 8, paddingVertical: 4, borderRadius: 9999, backgroundColor: glass.fill2, borderWidth: 1, borderColor: glass.stroke }}>

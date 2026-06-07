@@ -9,7 +9,7 @@
  * frames it as a request ("pídeselo a verxion"), never as a write. Nutrition
  * mirror of Entreno's `RoutineLibrary`.
  */
-import type { DietScoreState, MacroSet } from "./NutritionDashboard";
+import type { MacroSet } from "./NutritionDashboard";
 
 export type DietLibraryState = "active" | "draft" | "paused" | "completed";
 
@@ -27,7 +27,6 @@ export interface DietLibraryItem {
   weeks: number | null;
   /** Fill of the current week's cell (0–1); null when the block isn't active. */
   weekFraction: number | null;
-  scoreState: DietScoreState;
   score: number | null;
   adherence: number | null;
   /** Raw end date for the archive row; null when ongoing. Formatted in presentation. */

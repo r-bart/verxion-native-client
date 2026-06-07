@@ -4,7 +4,7 @@
  * detail. Read-only: adjusting a routine is a request to the agent, never an edit.
  * Doubles as the contract proposal for `GET /training/routines/{id}/detail`.
  */
-import type { DayType, ScoreState } from "./RoutineDashboard";
+import type { DayType } from "./RoutineDashboard";
 import type { RoutineLibraryState } from "./RoutineLibrary";
 
 export type RoutineDayStatus = "done" | "now" | "up" | "rest";
@@ -24,7 +24,6 @@ export interface RoutineDetailHeader {
   volumeTotal: string; // "32,1 t" — display-ready
   week: number;
   weekFraction: number | null;
-  scoreState: ScoreState;
   sessionsDone: number;
   sessionsPlanned: number;
   volumeTrendPct: number;

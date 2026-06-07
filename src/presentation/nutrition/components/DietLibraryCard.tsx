@@ -18,7 +18,6 @@ import {
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
 import { Chip } from "@/presentation/_shared/components/Chip";
-import { ScoreChip } from "@/presentation/_shared/components/ScoreChip";
 import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
@@ -151,23 +150,14 @@ export function DietLibraryCard({ item }: { item: DietLibraryItem }) {
           </View>
         ) : (
           <View style={{ gap: 10 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ fontFamily: mono(500), fontSize: 12, color: glass.ink2 }}>
-                {isCompleted
-                  ? t("nutrition.dietas.completedWeeks", { weeks: item.weeks ?? 0 })
-                  : t("nutrition.plan.week", {
-                      week: item.week ?? 1,
-                      weeks: item.weeks ?? item.week ?? 1,
-                    })}
-              </Text>
-              {!isCompleted && <ScoreChip state={item.scoreState} />}
-            </View>
+            <Text style={{ fontFamily: mono(500), fontSize: 12, color: glass.ink2 }}>
+              {isCompleted
+                ? t("nutrition.dietas.completedWeeks", { weeks: item.weeks ?? 0 })
+                : t("nutrition.plan.week", {
+                    week: item.week ?? 1,
+                    weeks: item.weeks ?? item.week ?? 1,
+                  })}
+            </Text>
 
             {hasWeeks && (
               <DietWeekCells

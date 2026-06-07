@@ -15,7 +15,6 @@ const library: DietLibrary = {
       week: 3,
       weeks: 6,
       weekFraction: 0.5,
-      scoreState: "on",
       score: 78,
       adherence: 92,
       endDate: null,
