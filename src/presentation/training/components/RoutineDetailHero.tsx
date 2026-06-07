@@ -22,7 +22,7 @@ import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { DAY_TYPE } from "../lib/dayType";
-import { ScoreChip } from "./ScoreChip";
+import { ScoreChip } from "@/presentation/_shared/components/ScoreChip";
 import type { RoutineDetailHeader } from "@/domain/training/models/RoutineDetailView";
 import type { RoutineLibraryState } from "@/domain/training/models/RoutineLibrary";
 

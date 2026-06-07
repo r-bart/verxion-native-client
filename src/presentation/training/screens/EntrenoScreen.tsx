@@ -14,7 +14,7 @@ import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans } from "@/presentation/_shared/design/fonts";
-import { SegmentedControl } from "../components/SegmentedControl";
+import { SegmentedControl } from "@/presentation/_shared/components/SegmentedControl";
 import { useEntrenoSegment } from "../hooks/useEntrenoSegment";
 import { RutinaSegment } from "../components/RutinaSegment";
 import { SesionesSegment } from "../components/SesionesSegment";

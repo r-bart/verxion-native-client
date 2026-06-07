@@ -1,7 +1,7 @@
 /**
- * ScoreChip — how the user tracks against the block's plan, as a WORD not a
- * number: "Vas adelantado" (green ↗), "En objetivo" (amber), "Vas justo" (red).
- * Mirrors the handoff's `ScoreChip`.
+ * ScoreChip — how the user tracks against a plan, as a WORD not a number: "Vas
+ * adelantado" (green ↗), "En objetivo" (amber), "Vas justo" (red). App-wide:
+ * used by both Entreno (routine score) and Nutrición (diet score).
  */
 import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,11 @@ import { TrendingUp } from "lucide-react-native";
 import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans } from "@/presentation/_shared/design/fonts";
-import type { ScoreState } from "@/domain/training/models/RoutineDashboard";
+
+/** How the user tracks against a plan. Kept local so this app-wide chip depends
+ *  on no single feature's domain; matches training `ScoreState` and nutrition
+ *  `DietScoreState` structurally. */
+export type ScoreState = "ahead" | "on" | "behind";
 
 const TONE: Record<ScoreState, { color: string; bg: string; border: string }> = {
   ahead: { color: glass.up, bg: glass.upBg, border: "rgba(95,227,154,0.3)" },
@@ -37,7 +41,7 @@ export function ScoreChip({ state }: { state: ScoreState }) {
     >
       {state === "ahead" && <TrendingUp size={12} color={tone.color} strokeWidth={2.4} />}
       <Text style={{ fontFamily: sans(600), fontSize: 12, color: tone.color }}>
-        {t(`training.routine.score.${state}`)}
+        {t(`common.score.${state}`)}
       </Text>
     </View>
   );

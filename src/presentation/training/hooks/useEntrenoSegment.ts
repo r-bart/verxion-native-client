@@ -6,7 +6,7 @@
  */
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { SegmentOption } from "../components/SegmentedControl";
+import type { SegmentOption } from "@/presentation/_shared/components/SegmentedControl";
 
 export type EntrenoSegment = "routine" | "sessions" | "exercises";
 

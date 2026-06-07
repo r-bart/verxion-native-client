@@ -8,7 +8,7 @@ import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { glass } from "@/presentation/_shared/design/glass";
 import { mono } from "@/presentation/_shared/design/fonts";
-import { ScoreChip } from "./ScoreChip";
+import { ScoreChip } from "@/presentation/_shared/components/ScoreChip";
 import type { ActiveRoutineSummary } from "@/domain/training/models/RoutineDashboard";
 
 export function WeekBar({ routine }: { routine: ActiveRoutineSummary }) {
