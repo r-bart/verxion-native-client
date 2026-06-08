@@ -36,7 +36,15 @@
       "expo-status-bar",
       "expo-web-browser",
       "expo-apple-authentication",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "Verxion reads your weight, workouts and steps from Apple Health to keep your training and progress in sync.",
+          "NSHealthUpdateUsageDescription": "Verxion writes your logged metrics back to Apple Health.",
+          "background": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

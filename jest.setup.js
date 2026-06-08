@@ -33,6 +33,32 @@ jest.mock("expo-image-picker", () => ({
   MediaTypeOptions: { Images: "Images", Videos: "Videos", All: "All" },
 }));
 
+// @kingstinct/react-native-healthkit — native nitro module, absent in jsdom.
+// Stub the reads HealthKitRepository uses so the DI container loads and the
+// sync use case stays an inert no-op under test (real behavior is device-only).
+jest.mock("@kingstinct/react-native-healthkit", () => ({
+  __esModule: true,
+  default: {},
+  isHealthDataAvailable: jest.fn(() => false),
+  requestAuthorization: jest.fn().mockResolvedValue(true),
+  queryQuantitySamplesWithAnchor: jest
+    .fn()
+    .mockResolvedValue({ samples: [], deletedSamples: [], newAnchor: "" }),
+  queryWorkoutSamplesWithAnchor: jest
+    .fn()
+    .mockResolvedValue({ workouts: [], deletedSamples: [], newAnchor: "" }),
+  queryStatisticsCollectionForQuantity: jest.fn().mockResolvedValue([]),
+  WorkoutActivityType: {
+    running: 37,
+    cycling: 13,
+    swimming: 46,
+    rowing: 35,
+    elliptical: 16,
+    walking: 52,
+    hiking: 24,
+  },
+}));
+
 // @gorhom/bottom-sheet — the official mock renders sheet content inline as
 // plain Views (no gestures/reanimated needed in jsdom).
 jest.mock("@gorhom/bottom-sheet", () => require("@gorhom/bottom-sheet/mock"));
