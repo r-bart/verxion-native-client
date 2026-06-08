@@ -37,6 +37,11 @@
     "title": "Próximamente",
     "body": "Estamos construyendo esta sección en público, pantalla a pantalla."
   },
+  "notFound": {
+    "title": "Página no encontrada",
+    "body": "Esta pantalla no existe o se ha movido.",
+    "action": "Volver a Hoy"
+  },
   "training": {
     "title": "Entreno",
     "library": "Biblioteca",

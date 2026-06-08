@@ -37,6 +37,11 @@
     "title": "Coming soon",
     "body": "We're building this section in public, screen by screen."
   },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This screen doesn't exist or has moved.",
+    "action": "Back to Today"
+  },
   "training": {
     "title": "Training",
     "library": "Library",
