@@ -14,7 +14,10 @@
       "bundleIdentifier": "app.verxion.native",
       "supportsTablet": false,
       "usesAppleSignIn": true,
-      "appleTeamId": "YJ37Y4TMK5"
+      "appleTeamId": "YJ37Y4TMK5",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "plugins": [
       [
@@ -53,7 +56,17 @@
     "extra": {
       "router": {
         "root": "./app"
+      },
+      "eas": {
+        "projectId": "b9133391-2a6e-41fc-a8f7-03358c71114a"
       }
-    }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b9133391-2a6e-41fc-a8f7-03358c71114a"
+    },
+    "android": {}
   }
 }
