@@ -12,6 +12,12 @@ node_modules/
 dist/
 web-build/
 
+# Local build artifacts (eas build --local)
+*.ipa
+*.apk
+*.aab
+build-*.tar.gz
+
 # Native
 .kotlin/
 *.orig.*
