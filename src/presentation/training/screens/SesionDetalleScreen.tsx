@@ -10,9 +10,11 @@ import { useLocalSearchParams, useRouter, type Href } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ChevronRight, Layers, Star, Activity } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { Isotype } from "@/presentation/_shared/components/Isotype";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
+import { SectionEmptyNotice } from "@/presentation/_shared/components/SectionEmptyNotice";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { DetailScaffold } from "../components/DetailScaffold";
@@ -185,8 +187,8 @@ export function SesionDetalleScreen() {
     return (
       <DetailScaffold title={t("training.screens.sessionDetail")}>
         <View style={{ gap: 12, paddingTop: 4 }}>
-          <GlassSurface radius={24} style={{ height: 200 }} />
-          <GlassSurface radius={18} style={{ height: 96 }} />
+          <SkeletonBlock radius={24} height={200} />
+          <SkeletonBlock radius={18} height={96} />
           <View style={{ flexDirection: "row", gap: 8 }}>
             {Array.from({ length: 3 }).map((_, i) => (
               <GlassSurface
@@ -197,7 +199,7 @@ export function SesionDetalleScreen() {
             ))}
           </View>
           {Array.from({ length: 3 }).map((_, i) => (
-            <GlassSurface key={i} radius={16} style={{ height: 96 }} />
+            <SkeletonBlock key={i} radius={16} height={96} />
           ))}
         </View>
       </DetailScaffold>
@@ -220,19 +222,30 @@ export function SesionDetalleScreen() {
         {data.recap ? <RecapCard message={data.recap} /> : null}
         <SessionTiles tiles={data.tiles} />
 
-        <Section icon={<Layers size={15} color={glass.ink2} strokeWidth={2} />}>
-          {t("training.sessionDetail.exercises", {
-            count: data.exercises.length,
-          })}
-        </Section>
-        <View style={{ gap: 8 }}>
-          {data.exercises.map((exercise) => (
-            <SessionExerciseCard
-              key={exercise.exerciseId}
-              exercise={exercise}
-            />
-          ))}
-        </View>
+        {data.exercises.length === 0 ? (
+          <SectionEmptyNotice
+            icon={<Layers size={16} color={glass.ink3} strokeWidth={2} />}
+            text={t("training.sessionDetail.noExercises")}
+          />
+        ) : (
+          <>
+            <Section
+              icon={<Layers size={15} color={glass.ink2} strokeWidth={2} />}
+            >
+              {t("training.sessionDetail.exercises", {
+                count: data.exercises.length,
+              })}
+            </Section>
+            <View style={{ gap: 8 }}>
+              {data.exercises.map((exercise) => (
+                <SessionExerciseCard
+                  key={exercise.exerciseId}
+                  exercise={exercise}
+                />
+              ))}
+            </View>
+          </>
+        )}
 
         {data.assessment && (
           <>

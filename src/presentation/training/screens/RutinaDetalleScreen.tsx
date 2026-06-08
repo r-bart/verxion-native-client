@@ -9,8 +9,10 @@ import { useLocalSearchParams, useRouter, type Href } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Layers, ChevronRight, Sparkles } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
+import { SectionEmptyNotice } from "@/presentation/_shared/components/SectionEmptyNotice";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { DetailScaffold } from "../components/DetailScaffold";
@@ -146,9 +148,9 @@ export function RutinaDetalleScreen() {
     return (
       <DetailScaffold title={t("training.screens.routineDetail")}>
         <View style={{ gap: 12, paddingTop: 4 }}>
-          <GlassSurface radius={24} style={{ height: 230 }} />
+          <SkeletonBlock radius={24} height={230} />
           {Array.from({ length: 5 }).map((_, i) => (
-            <GlassSurface key={i} radius={16} style={{ height: 72 }} />
+            <SkeletonBlock key={i} radius={16} height={72} />
           ))}
         </View>
       </DetailScaffold>
@@ -200,9 +202,16 @@ export function RutinaDetalleScreen() {
           </View>
 
           <View style={{ gap: 8 }}>
-            {data.days.map((day, i) => (
-              <RoutineDayCard key={day.dayId ?? `rest-${i}`} day={day} />
-            ))}
+            {data.days.length === 0 ? (
+              <SectionEmptyNotice
+                icon={<Layers size={16} color={glass.ink3} strokeWidth={2} />}
+                text={t("training.routineDetail.noDays")}
+              />
+            ) : (
+              data.days.map((day, i) => (
+                <RoutineDayCard key={day.dayId ?? `rest-${i}`} day={day} />
+              ))
+            )}
           </View>
         </View>
 

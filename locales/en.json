@@ -136,6 +136,8 @@
       "resultsOne": "{{count}} result",
       "noResults": "No results",
       "noResultsBody": "Try removing a filter or changing your search.",
+      "emptyLibrary": "No routines yet",
+      "emptyLibraryBody": "When verxion builds your first routine it'll show up here.",
       "perWeek": "{{count}} days/wk",
       "weeksPlanned": "Not started · {{weeks}} weeks planned",
       "viewPlan": "View plan",
@@ -186,6 +188,7 @@
       "rotation": "The rotation",
       "rotationCount": "{{days}} training days · {{rest}} rest",
       "rotationCountNoRest": "{{days}} training days",
+      "noDays": "This routine has no days configured yet.",
       "today": "today",
       "dayMeta": "{{ex}} exercises · {{sets}} sets · {{est}}",
       "sessionsLink": "Sessions in this block",
@@ -219,6 +222,7 @@
       "last": "last · {{result}}",
       "plan": "The plan",
       "planCount": "{{count}} exercises · in order",
+      "noExercises": "No exercises scheduled for this day.",
       "restTitle": "Rest day",
       "restBody": "{{focus}}. No exercises scheduled — recover and come back tomorrow.",
       "ask": {
@@ -237,6 +241,7 @@
       "recapFrom": "verxion · report",
       "pr": "PR",
       "exercises": "Exercises · {{count}}",
+      "noExercises": "No exercises were logged in this session.",
       "yourRating": "Your rating",
       "muscleGroups": "Muscle groups",
       "yourNote": "Your close-out note",
@@ -657,6 +662,7 @@
       "goal": "Goal",
       "average": "Average",
       "records": "Records",
+      "noRecords": "No records for this period yet.",
       "goalLine": "goal {{goal}}",
       "readOnly": "Read-only. verxion logs your measurements — ask the agent to record a new one.",
       "period": {
@@ -890,6 +896,7 @@
       "kcal": "{{kcal}} kcal",
       "keyMeal": "key",
       "openMeal": "View meal {{name}}",
+      "noMeals": "This diet has no meals yet.",
       "ask": {
         "title": "Adjust this diet with the agent",
         "body": "The diet is read-only. Changes are made by verxion via chat."
@@ -900,6 +907,7 @@
       "items": "Foods",
       "supplements": "Supplements",
       "alternatives": "Swaps: {{alts}}",
+      "noItems": "This meal has no foods yet.",
       "ask": {
         "title": "Change this meal with the agent",
         "body": "The meal is read-only. Ask verxion to adjust foods or amounts."
@@ -951,6 +959,7 @@
       "water": "{{value}} / {{goal}} L water",
       "mealsLogged": "{{count}} meal logged",
       "mealsLogged_other": "{{count}} meals logged",
+      "noMeals": "No meals logged this day.",
       "dayClass": {
         "clavado": "Nailed it",
         "objetivo": "On target",

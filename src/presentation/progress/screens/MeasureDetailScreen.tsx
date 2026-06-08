@@ -10,7 +10,7 @@ import { View, Text, Pressable, ScrollView, useWindowDimensions } from "react-na
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ChevronLeft, Lock } from "lucide-react-native";
+import { ChevronLeft, Lock, Inbox } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
@@ -18,6 +18,7 @@ import { Chip } from "@/presentation/_shared/components/Chip";
 import { SegmentedControl } from "@/presentation/_shared/components/SegmentedControl";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
+import { SectionEmptyNotice } from "@/presentation/_shared/components/SectionEmptyNotice";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import type { MeasurePeriod } from "@/domain/progress/models/Progress";
@@ -26,8 +27,8 @@ import { metricVisual, metricLabelKey, TONE_COLOR } from "../lib/metricVisual";
 import { formatValue, formatDelta } from "../lib/format";
 import { MeasureChart } from "../components/MeasureChart";
 import { MeasureRecordRow } from "../components/MeasureRecordRow";
-
 import { MeasureDetailSkeleton } from "../components/MeasureDetailSkeleton";
+
 const PERIODS: MeasurePeriod[] = ["mes", "trim", "ano"];
 
 function KpiCell({ label, value }: { label: string; value: string }) {
@@ -156,7 +157,12 @@ export function MeasureDetailScreen() {
                     <KpiCell label={fourth.label} value={fourth.value} />
                   </GlassSurface>
 
-                  {data.records.length > 0 && (
+                  {data.records.length === 0 ? (
+                    <SectionEmptyNotice
+                      icon={<Inbox size={16} color={glass.ink3} strokeWidth={2} />}
+                      text={t("progress.measure.noRecords")}
+                    />
+                  ) : (
                     <GlassSurface radius={18} style={{ padding: 16, paddingVertical: 8 }}>
                       {data.records.map((r, i) => (
                         <MeasureRecordRow

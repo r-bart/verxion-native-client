@@ -41,4 +41,19 @@ describe("RutinasScreen", () => {
 
     await waitFor(() => expect(getByText("common.retry")).toBeTruthy());
   });
+
+  it("shows the cold-start empty state when the library has no routines", async () => {
+    const execute = jest.fn().mockResolvedValue({
+      ...routineLibraryFixture,
+      routines: [],
+      facets: { states: [], goals: [] },
+    });
+    const container = createMockContainer({ getRoutineLibrary: { execute } });
+
+    const { getByText } = renderWithProviders(<RutinasScreen />, { container });
+
+    await waitFor(() =>
+      expect(getByText("training.routineLibrary.emptyLibrary")).toBeTruthy()
+    );
+  });
 });

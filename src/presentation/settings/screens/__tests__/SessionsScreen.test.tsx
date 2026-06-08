@@ -43,4 +43,13 @@ describe("SessionsScreen", () => {
     fireEvent.press(getByTestId("confirm-accept"));
     await waitFor(() => expect(c.revokeAllSessions.execute).toHaveBeenCalledWith(true));
   });
+
+  it("shows the empty state when there are no sessions", async () => {
+    const container = createMockContainer({
+      listAuthSessions: { execute: jest.fn().mockResolvedValue({ items: [], total: 0 }) },
+    });
+    const { findByText } = renderWithProviders(<SessionsScreen />, { container });
+
+    expect(await findByText("settings.screens.sessions.empty")).toBeTruthy();
+  });
 });

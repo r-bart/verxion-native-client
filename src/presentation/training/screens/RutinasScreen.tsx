@@ -19,6 +19,7 @@ import {
   ChevronRight,
 } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { BottomSheet } from "@/presentation/_shared/components/BottomSheet";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
@@ -267,9 +268,9 @@ export function RutinasScreen() {
     return (
       <DetailScaffold title={t("training.screens.routines")}>
         <View style={{ gap: 12, paddingTop: 8 }}>
-          <GlassSurface radius={14} style={{ height: 44 }} />
+          <SkeletonBlock radius={14} height={44} />
           {Array.from({ length: 3 }).map((_, i) => (
-            <GlassSurface key={i} radius={20} style={{ height: 150 }} />
+            <SkeletonBlock key={i} radius={20} height={150} />
           ))}
         </View>
       </DetailScaffold>
@@ -447,6 +448,28 @@ export function RutinasScreen() {
               </View>
             )}
           </>
+        ) : data.routines.length === 0 ? (
+          <GlassSurface
+            radius={18}
+            style={{ padding: 26, alignItems: "center", gap: 8 }}
+          >
+            <Sparkles size={24} color="rgba(255,255,255,0.3)" strokeWidth={1.8} />
+            <Text
+              style={{ fontFamily: sans(700), fontSize: 15, color: glass.white }}
+            >
+              {t("training.routineLibrary.emptyLibrary")}
+            </Text>
+            <Text
+              style={{
+                fontFamily: mono(400),
+                fontSize: 12,
+                color: glass.ink2,
+                textAlign: "center",
+              }}
+            >
+              {t("training.routineLibrary.emptyLibraryBody")}
+            </Text>
+          </GlassSurface>
         ) : (
           <>
             {sections.map(

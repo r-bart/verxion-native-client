@@ -45,4 +45,15 @@ describe("MealDetailScreen", () => {
 
     await waitFor(() => expect(getByText("nutrition.error.title")).toBeTruthy());
   });
+
+  it("shows an empty notice when the meal has no items or supplements", async () => {
+    const execute = jest
+      .fn()
+      .mockResolvedValue({ ...mealDetailFixture, items: [], supplements: [] });
+    const container = createMockContainer({ getMealDetail: { execute } });
+
+    const { findByText } = renderWithProviders(<MealDetailScreen />, { container });
+
+    expect(await findByText("nutrition.mealDetail.noItems")).toBeTruthy();
+  });
 });

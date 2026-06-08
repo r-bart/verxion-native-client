@@ -53,4 +53,17 @@ describe("DietDetailScreen", () => {
       expect(getByText("nutrition.error.title")).toBeTruthy()
     );
   });
+
+  it("shows an empty notice when the diet has no meals", async () => {
+    const execute = jest
+      .fn()
+      .mockResolvedValue({ ...dietDetailFixture, meals: [] });
+    const container = createMockContainer({ getDietDetail: { execute } });
+
+    const { findByText } = renderWithProviders(<DietDetailScreen />, {
+      container,
+    });
+
+    expect(await findByText("nutrition.dietDetail.noMeals")).toBeTruthy();
+  });
 });

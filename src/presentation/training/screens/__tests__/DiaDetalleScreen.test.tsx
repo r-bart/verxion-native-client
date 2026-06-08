@@ -51,4 +51,21 @@ describe("DiaDetalleScreen", () => {
 
     await waitFor(() => expect(getByText("common.retry")).toBeTruthy());
   });
+
+  it("shows an empty notice when a training day has no exercises", async () => {
+    const execute = jest.fn((id: string) =>
+      Promise.resolve({
+        ...dayDetailFixtureFor(id),
+        isRest: false,
+        exercises: [],
+      })
+    );
+    const container = createMockContainer({ getDayDetailView: { execute } });
+
+    const { findByText } = renderWithProviders(<DiaDetalleScreen />, {
+      container,
+    });
+
+    expect(await findByText("training.dayDetail.noExercises")).toBeTruthy();
+  });
 });

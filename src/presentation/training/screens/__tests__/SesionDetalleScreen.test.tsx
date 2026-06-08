@@ -57,4 +57,19 @@ describe("SesionDetalleScreen", () => {
 
     await waitFor(() => expect(getByText("common.retry")).toBeTruthy());
   });
+
+  it("shows an empty notice when the session has no exercises", async () => {
+    const execute = jest.fn((id: string) =>
+      Promise.resolve({ ...sessionDetailFixtureFor(id), exercises: [] })
+    );
+    const container = createMockContainer({
+      getSessionDetailView: { execute },
+    });
+
+    const { findByText } = renderWithProviders(<SesionDetalleScreen />, {
+      container,
+    });
+
+    expect(await findByText("training.sessionDetail.noExercises")).toBeTruthy();
+  });
 });

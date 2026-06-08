@@ -42,4 +42,15 @@ describe("DiaryDayScreen", () => {
 
     await waitFor(() => expect(getByText("nutrition.error.title")).toBeTruthy());
   });
+
+  it("shows an empty notice when no meals were logged that day", async () => {
+    const execute = jest
+      .fn()
+      .mockResolvedValue({ ...diaryDayFixture, meals: [], mealsLogged: 0 });
+    const container = createMockContainer({ getDiaryDay: { execute } });
+
+    const { findByText } = renderWithProviders(<DiaryDayScreen />, { container });
+
+    expect(await findByText("nutrition.diaryDay.noMeals")).toBeTruthy();
+  });
 });

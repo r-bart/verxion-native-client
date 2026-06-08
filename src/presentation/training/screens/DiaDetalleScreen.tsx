@@ -7,11 +7,13 @@
 import { View, Text, Pressable } from "react-native";
 import { useLocalSearchParams, useRouter, type Href } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { ChevronRight, Sparkles, Moon } from "lucide-react-native";
+import { ChevronRight, Sparkles, Moon, Dumbbell } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
+import { SectionEmptyNotice } from "@/presentation/_shared/components/SectionEmptyNotice";
 import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
@@ -90,9 +92,9 @@ export function DiaDetalleScreen() {
     return (
       <DetailScaffold title={t("training.screens.dayDetail")}>
         <View style={{ gap: 12, paddingTop: 4 }}>
-          <GlassSurface radius={24} style={{ height: 190 }} />
+          <SkeletonBlock radius={24} height={190} />
           {Array.from({ length: 5 }).map((_, i) => (
-            <GlassSurface key={i} radius={16} style={{ height: 96 }} />
+            <SkeletonBlock key={i} radius={16} height={96} />
           ))}
         </View>
       </DetailScaffold>
@@ -179,13 +181,20 @@ export function DiaDetalleScreen() {
           </View>
 
           <View style={{ gap: 8 }}>
-            {data.exercises.map((ex) => (
-              <DayExerciseCard
-                key={ex.exerciseId}
-                exercise={ex}
-                type={data.header.type}
+            {data.exercises.length === 0 ? (
+              <SectionEmptyNotice
+                icon={<Dumbbell size={16} color={glass.ink3} strokeWidth={2} />}
+                text={t("training.dayDetail.noExercises")}
               />
-            ))}
+            ) : (
+              data.exercises.map((ex) => (
+                <DayExerciseCard
+                  key={ex.exerciseId}
+                  exercise={ex}
+                  type={data.header.type}
+                />
+              ))
+            )}
           </View>
         </View>
 

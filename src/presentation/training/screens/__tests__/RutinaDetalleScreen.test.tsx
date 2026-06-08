@@ -57,4 +57,19 @@ describe("RutinaDetalleScreen", () => {
 
     await waitFor(() => expect(getByText("common.retry")).toBeTruthy());
   });
+
+  it("shows an empty notice when the routine has no days", async () => {
+    const execute = jest.fn((id: string) =>
+      Promise.resolve({ ...routineDetailFixtureFor(id), days: [] })
+    );
+    const container = createMockContainer({
+      getRoutineDetailView: { execute },
+    });
+
+    const { findByText } = renderWithProviders(<RutinaDetalleScreen />, {
+      container,
+    });
+
+    expect(await findByText("training.routineDetail.noDays")).toBeTruthy();
+  });
 });

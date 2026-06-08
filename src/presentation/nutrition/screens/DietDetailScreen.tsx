@@ -19,6 +19,7 @@ import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
+import { SectionEmptyNotice } from "@/presentation/_shared/components/SectionEmptyNotice";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { useDietDetail } from "../hooks/useDietDetail";
@@ -172,7 +173,12 @@ export function DietDetailScreen() {
       <View style={{ gap: 18 }}>
         <DietDetailHero diet={data} />
 
-        {meals.length > 0 && (
+        {meals.length === 0 ? (
+          <SectionEmptyNotice
+            icon={<UtensilsCrossed size={16} color={glass.ink3} strokeWidth={2} />}
+            text={t("nutrition.dietDetail.noMeals")}
+          />
+        ) : (
           <View>
             <SectionLabel>{t("nutrition.dietDetail.daySpine")}</SectionLabel>
             <View style={{ gap: 8 }}>

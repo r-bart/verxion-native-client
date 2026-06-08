@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
+import { MonitorSmartphone } from "lucide-react-native";
 import type { AuthSessionItem } from "@/domain/settings";
 import { useSignOut } from "@/presentation/auth/hooks/useSignOut";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { EmptyState } from "@/presentation/_shared/components/EmptyState";
 import { OnboardingButton } from "@/presentation/_shared/components/OnboardingButton";
 import { formatRelativeTime } from "@/presentation/_shared/lib/relativeTime";
 import { formatSessionLabel } from "@/presentation/_shared/lib/sessionLabel";
 import { SettingsScaffold } from "../components/SettingsScaffold";
+import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { SettingsSection } from "../components/SettingsSection";
 import { ConfirmDialog } from "../components/ConfirmDialog";
-import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { useAuthSessions } from "../hooks/useAuthSessions";
 import { useRevokeSession } from "../hooks/useRevokeSession";
 import { useRevokeAllSessions } from "../hooks/useRevokeAllSessions";
@@ -108,9 +110,12 @@ export function SessionsScreen() {
       subtitle={t("settings.screens.sessions.subtitle")}
     >
       {items.length === 0 ? (
-        <Text style={{ fontFamily: mono(400), fontSize: 13, color: glass.ink2 }}>
-          {t("settings.screens.sessions.empty")}
-        </Text>
+        <View style={{ paddingTop: 48 }}>
+          <EmptyState
+            icon={<MonitorSmartphone size={30} color={glass.ink2} strokeWidth={1.6} />}
+            title={t("settings.screens.sessions.empty")}
+          />
+        </View>
       ) : (
         <>
           <Text style={{ fontFamily: mono(500), fontSize: 12, color: glass.ink3, marginTop: -8 }}>

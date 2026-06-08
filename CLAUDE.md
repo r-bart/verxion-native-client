@@ -86,6 +86,16 @@ Every operation (read or write) flows through a Use Case. No shortcuts.
 ### UI components
 - react-native-reusables (shadcn for RN): Card, Badge, Button, Skeleton, Tabs,
   Progress, Separator. Dark theme, hsl colors via NativeWind CSS variables.
+- **Empty states — two primitives, two layouts.** `EmptyState` is the centered,
+  `flex:1` full-screen blank-slate (icon sphere + title + body + optional action)
+  — use it for a whole screen/tab with no data, or a not-found/error body.
+  `SectionEmptyNotice` is the compact inline glass row (icon + one line) for a
+  *mid-scroll* gap inside an otherwise-populated screen (a detail hero is already
+  painted above). Do NOT drop the centered `EmptyState` into a populated
+  `ScrollView` — it mis-sizes; reach for `SectionEmptyNotice` there. When a
+  collection can be empty, render the notice in the empty branch instead of
+  hiding the section silently, and drop any "· {count}" header when the count is
+  zero. (See the detail screens in `training`/`nutrition`/`progress`.)
 - **Equal-width controls in a flex row** (e.g. filter pills): put `flex:1` on a
   plain wrapper `View` around each item — NOT on a `Pressable`'s style-callback
   (a flex returned from `({pressed}) => …` doesn't size the row slot) and NOT on

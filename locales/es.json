@@ -136,6 +136,8 @@
       "resultsOne": "{{count}} resultado",
       "noResults": "Sin resultados",
       "noResultsBody": "Prueba a quitar algún filtro o cambiar la búsqueda.",
+      "emptyLibrary": "Aún no hay rutinas",
+      "emptyLibraryBody": "Cuando verxion arme tu primera rutina aparecerá aquí.",
       "perWeek": "{{count}} días/sem",
       "weeksPlanned": "Sin empezar · {{weeks}} semanas planeadas",
       "viewPlan": "Ver plan",
@@ -186,6 +188,7 @@
       "rotation": "La rotación",
       "rotationCount": "{{days}} días de entreno · {{rest}} descanso",
       "rotationCountNoRest": "{{days}} días de entreno",
+      "noDays": "Esta rutina aún no tiene días configurados.",
       "today": "hoy",
       "dayMeta": "{{ex}} ejercicios · {{sets}} series · {{est}}",
       "sessionsLink": "Sesiones de este bloque",
@@ -219,6 +222,7 @@
       "last": "última · {{result}}",
       "plan": "El plan",
       "planCount": "{{count}} ejercicios · en orden",
+      "noExercises": "Sin ejercicios en este día.",
       "restTitle": "Día de descanso",
       "restBody": "{{focus}}. Sin ejercicios programados — recupera y vuelve mañana.",
       "ask": {
@@ -237,6 +241,7 @@
       "recapFrom": "verxion · informe",
       "pr": "PR",
       "exercises": "Ejercicios · {{count}}",
+      "noExercises": "No se registraron ejercicios en esta sesión.",
       "yourRating": "Tu valoración",
       "muscleGroups": "Grupos musculares",
       "yourNote": "Tu nota al cerrar",
@@ -657,6 +662,7 @@
       "goal": "Objetivo",
       "average": "Media",
       "records": "Registros",
+      "noRecords": "Aún no hay registros para este periodo.",
       "goalLine": "obj {{goal}}",
       "readOnly": "Solo lectura. Tus medidas las registra verxion — pídeselo al agente para anotar una nueva.",
       "period": {
@@ -890,6 +896,7 @@
       "kcal": "{{kcal}} kcal",
       "keyMeal": "principal",
       "openMeal": "Ver comida {{name}}",
+      "noMeals": "Esta dieta aún no tiene comidas.",
       "ask": {
         "title": "Ajusta esta dieta con el agente",
         "body": "La dieta es de solo lectura. Los cambios los hace verxion vía chat."
@@ -900,6 +907,7 @@
       "items": "Alimentos",
       "supplements": "Suplementos",
       "alternatives": "Cambios: {{alts}}",
+      "noItems": "Esta comida aún no tiene alimentos.",
       "ask": {
         "title": "Cambia esta comida con el agente",
         "body": "La comida es de solo lectura. Pídele a verxion que ajuste alimentos o cantidades."
@@ -951,6 +959,7 @@
       "water": "{{value}} / {{goal}} L agua",
       "mealsLogged": "{{count}} comida registrada",
       "mealsLogged_other": "{{count}} comidas registradas",
+      "noMeals": "No registraste comidas este día.",
       "dayClass": {
         "clavado": "Clavado",
         "objetivo": "En objetivo",

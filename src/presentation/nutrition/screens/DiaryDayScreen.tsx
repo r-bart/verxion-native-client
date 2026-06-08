@@ -21,6 +21,7 @@ import { Chip } from "@/presentation/_shared/components/Chip";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
+import { SectionEmptyNotice } from "@/presentation/_shared/components/SectionEmptyNotice";
 import { glass } from "@/presentation/_shared/design/glass";
 import { palette } from "@/presentation/_shared/design/tokens";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
@@ -183,7 +184,12 @@ export function DiaryDayScreen() {
           </View>
         </GlassSurface>
 
-        {meals.length > 0 && (
+        {meals.length === 0 ? (
+          <SectionEmptyNotice
+            icon={<UtensilsCrossed size={16} color={glass.ink3} strokeWidth={2} />}
+            text={t("nutrition.diaryDay.noMeals")}
+          />
+        ) : (
           <View>
             <SectionLabel>
               {t("nutrition.diaryDay.mealsLogged", { count: data.mealsLogged })}

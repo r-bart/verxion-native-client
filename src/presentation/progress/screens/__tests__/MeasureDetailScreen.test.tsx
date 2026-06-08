@@ -41,4 +41,17 @@ describe("MeasureDetailScreen", () => {
 
     await waitFor(() => expect(getByText("common.retry")).toBeTruthy());
   });
+
+  it("shows an empty notice when the period has no records", async () => {
+    const execute = jest
+      .fn()
+      .mockResolvedValue({ ...progressMeasureDetailFixture, records: [] });
+    const container = createMockContainer({ getProgressMeasure: { execute } });
+
+    const { findByText } = renderWithProviders(<MeasureDetailScreen />, {
+      container,
+    });
+
+    expect(await findByText("progress.measure.noRecords")).toBeTruthy();
+  });
 });
