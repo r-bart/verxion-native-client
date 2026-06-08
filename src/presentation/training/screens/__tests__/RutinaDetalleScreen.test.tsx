@@ -41,6 +41,8 @@ describe("RutinaDetalleScreen", () => {
       expect(getAllByText("PPL Hipertrofia").length).toBeGreaterThan(0)
     );
     expect(getAllByText("Legs A").length).toBeGreaterThan(0);
+    // Periodized active routine → the block line paints the RAW block name.
+    expect(getAllByText("Acumulación").length).toBeGreaterThan(0);
   });
 
   it("shows the error state with a retry when the read fails", async () => {

@@ -13,6 +13,7 @@ import type { DayKind } from "../models/RoutineDashboard";
 import type {
   SessionDetailView,
   SessionExerciseItem,
+  SessionMesocycle,
   SessionMuscleShare,
   SessionSet,
 } from "../models/SessionDetailView";
@@ -74,6 +75,19 @@ type SessionSpec = {
 };
 
 const ROUTINE_NAME = "PPL Hipertrofia";
+
+// The block these six sessions were executed in (frozen at execution — see §2c).
+// PPL Hipertrofia is a `date_range` routine, so its sessions carry a block; all
+// six belong to "Acumulación" week 3 (coherent with the dashboard fixture).
+const ACTIVE_BLOCK: SessionMesocycle = {
+  id: "meso-acumulacion",
+  name: "Acumulación",
+  goal: "Volumen",
+  orderIndex: 0,
+  totalBlocks: 3,
+  week: 3,
+  weeks: 6,
+};
 
 // The six newest sessions of the active block (week 3, may). Loads are at plan
 // scale (1×) — these are the current week, so no historical scaling.
@@ -220,6 +234,7 @@ function build(spec: SessionSpec): SessionDetailView {
       completedAt: spec.completedAt,
       type: spec.type,
       routineName: ROUTINE_NAME,
+      mesocycle: ACTIVE_BLOCK,
       completionPct: spec.completion,
       perfectPlan: spec.completion === 100,
     },

@@ -12,7 +12,7 @@
  * (`presentation/training/lib/sessionFormat`). PR flags are not yet exposed by the
  * read-model (see `docs/training-session-detail-spec.md` §7) — dropped for now.
  */
-import type { DayKind } from "./RoutineDashboard";
+import type { DayKind, MesocycleIdentity } from "./RoutineDashboard";
 
 export interface SessionSet {
   weight: number; // kg, as logged
@@ -56,12 +56,25 @@ export interface SessionMuscleShare {
   pct: number; // 0..100, drives the bar
 }
 
+/**
+ * The periodization block the session was executed in — FROZEN at execution from
+ * the session's `mesocycle_id` + `microcycle_week`, not the live resolver. null
+ * when the session had no block (flat routine, or a non-`date_range` routine —
+ * only `date_range` routines are periodized). Drives the "Acumulación · Sem 4/4"
+ * chip. Extends {@link MesocycleIdentity} with the FROZEN week the session sat in.
+ */
+export interface SessionMesocycle extends MesocycleIdentity {
+  week: number; // 1-based microcycle the session belonged to
+  weeks: number; // block durationWeeks
+}
+
 export interface SessionDetailHeader {
   id: string;
   name: string; // "Legs B"
   completedAt: string | null; // raw ISO; the UI localizes the date
   type: DayKind | null; // platform day taxonomy; null when unclassified
   routineName: string; // "PPL Hipertrofia" (empty when the session has no routine)
+  mesocycle: SessionMesocycle | null; // frozen block context; null when not periodized
   completionPct: number; // 0..100
   perfectPlan: boolean; // completionPct === 100 → "Plan perfecto"
 }

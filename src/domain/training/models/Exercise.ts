@@ -17,6 +17,8 @@ export interface ExerciseDetail {
   target: string;
   secondaryMuscles: string[];
   instructions: string[];
+  /** Demo animation URL (optional in the contract) — the guide tab renders it if present. */
+  gifUrl?: string;
   note?: string;
   profileId?: string;
   isCustom: boolean;

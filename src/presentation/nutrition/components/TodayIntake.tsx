@@ -34,6 +34,10 @@ export function TodayIntake({ today, diet, next }: Props) {
   const goal = diet.targets;
   const over = consumed.kcal > goal.kcal;
   const left = Math.max(0, goal.kcal - consumed.kcal);
+  // Ring center reads the *relative* progress (% of goal); the absolute number
+  // lives on the right. Not clamped — >100% is the honest read when over-eating
+  // (the ring fill itself caps at 100%, so the % is what surfaces the overage).
+  const pct = goal.kcal > 0 ? Math.round((consumed.kcal / goal.kcal) * 100) : 0;
 
   const macros = [
     {
@@ -78,23 +82,17 @@ export function TodayIntake({ today, diet, next }: Props) {
           consumed={consumed}
           goalKcal={goal.kcal}
         >
-          <View style={{ alignItems: "center" }}>
-            <Text
-              style={{
-                fontFamily: sans(700),
-                fontSize: 22,
-                color: glass.white,
-                letterSpacing: -0.7,
-              }}
-            >
-              {nInt(consumed.kcal)}
-            </Text>
-            <Text
-              style={{ fontFamily: mono(500), fontSize: 10, color: glass.ink3 }}
-            >
-              {t("nutrition.intake.ofGoal", { goal: nInt(goal.kcal) })}
-            </Text>
-          </View>
+          <Text
+            style={{
+              fontFamily: sans(700),
+              fontSize: 26,
+              color: over ? palette.health.text : glass.white,
+              letterSpacing: -0.7,
+              fontVariant: ["tabular-nums"],
+            }}
+          >
+            {pct}%
+          </Text>
         </MacroRing>
 
         <View style={{ flex: 1, gap: 5 }}>

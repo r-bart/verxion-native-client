@@ -113,6 +113,16 @@ const ENDPOINTS: Record<string, [string, string][]> = {
     // Unified adherence (ring + sub-bars) — behind getProgramAdherence.
     ["GET", "/api/v1/programs/{id}/adherence"],
   ],
+  progress: [
+    // "Progreso" madre (Resumen + Métricas) — behind getOverview.
+    ["GET", "/api/v1/progress"],
+    // Lente Historial (Cinta / Carrete) — behind getHistory.
+    ["GET", "/api/v1/progress/history"],
+    // "Detalle de medida" (6 body/activity metrics) — behind getMeasure.
+    ["GET", "/api/v1/progress/measure/{metric}"],
+    // "Detalle de ejercicio" (tab Progreso) — behind getExerciseDetail.
+    ["GET", "/api/v1/progress/exercise/{slug}"],
+  ],
 };
 
 const ROWS: [string, string, string][] = Object.entries(ENDPOINTS).flatMap(
@@ -206,6 +216,95 @@ describeIfContract("contract drift — native repositories", () => {
       expect(props("DietDetail").scoreState).toBeUndefined();
       expect(props("DietLibraryItem").scoreState).toBeUndefined();
       expect(props("ProgramOverview").adherenceState).toBeUndefined();
+    });
+
+    // Periodization (mesocycles) context the client now paints — shipped 2026-06.
+    // The block header (Entreno landing + routine detail) reads
+    // `ActiveRoutineSummary.mesocycle`; the session-detail chip reads the FROZEN
+    // `WorkoutSessionDetail.session.mesocycle`. If either field/shape is dropped,
+    // the block header / chip silently vanish — catch it here before the sim.
+    it("periodization mesocycle context stays on the read-models the client paints", () => {
+      const s = spec!.components.schemas;
+      // Active block (dashboard + routine detail header)
+      const active = s.ActiveMesocycle?.properties;
+      expect(s.ActiveRoutineSummary?.properties?.mesocycle).toBeDefined();
+      expect(active?.name).toBeDefined();
+      expect(active?.orderIndex).toBeDefined();
+      expect(active?.totalBlocks).toBeDefined();
+      expect(active?.isLastWeek).toBeDefined();
+      expect(active?.isLastBlock).toBeDefined();
+      // Frozen block per completed session (session-detail chip "Acumulación · Sem 4/4")
+      const frozen = s.SessionMesocycle?.properties;
+      expect(
+        s.WorkoutSessionDetail?.properties?.session?.properties?.mesocycle
+      ).toBeDefined();
+      expect(frozen?.name).toBeDefined();
+      expect(frozen?.orderIndex).toBeDefined();
+      expect(frozen?.totalBlocks).toBeDefined();
+      expect(frozen?.week).toBeDefined(); // 1-based microcycle
+      expect(frozen?.weeks).toBeDefined(); // block durationWeeks
+      // Today aggregate surfaces the SAME active block on the routine row
+      // (ActivePlan eyebrow "RUTINA · ACUMULACIÓN"). Same shape as the dashboard.
+      expect(s.RoutineProgress?.properties?.mesocycle).toBeDefined();
+    });
+
+    it("Progress read-models expose the fields the 4 lenses paint", () => {
+      const s = spec!.components.schemas;
+      // Overview (Resumen + Métricas)
+      const overview = s.ProgressOverview?.properties;
+      expect(overview?.metrics?.items?.properties?.spark).toBeDefined();
+      expect(overview?.metrics?.items?.properties?.goodDown).toBeDefined();
+      expect(overview?.strengthPr).toBeDefined();
+      expect(overview?.setup?.properties?.routine).toBeDefined();
+      expect(overview?.dataState?.enum).toEqual(
+        expect.arrayContaining(["full", "fresh", "empty"])
+      );
+      // History (Cinta / Carrete): 3 lanes + phase bands + PR marks
+      const history = s.ProgressHistory?.properties;
+      expect(history?.series?.items?.properties?.points).toBeDefined();
+      expect(history?.bands?.items?.properties?.isMajor).toBeDefined();
+      expect(history?.prMarks?.items?.properties?.slug).toBeDefined();
+      // Measure detail: hero window + chart + records (deltaPrev)
+      const measure = s.ProgressMeasureDetail?.properties;
+      expect(measure?.window?.properties?.now).toBeDefined();
+      expect(measure?.chart?.items?.properties?.value).toBeDefined();
+      expect(measure?.records?.items?.properties?.deltaPrev).toBeDefined();
+      // Exercise detail (tab Progreso): kpis + curve + history + muscles
+      const ex = s.ProgressExerciseDetail?.properties;
+      expect(ex?.kpis?.properties?.e1rmKg).toBeDefined();
+      expect(ex?.curve?.items?.properties?.value).toBeDefined();
+      expect(ex?.history?.items?.properties?.isPr).toBeDefined();
+      expect(ex?.muscles?.items?.properties?.role).toBeDefined();
+    });
+
+    it("Progress lenses declare the period/metric selectors (gap G — landed)", () => {
+      const param = (path: string, name: string) =>
+        ((spec!.paths[path].get as any).parameters ?? []).find(
+          (p: any) => p.name === name
+        );
+      expect(param("/api/v1/progress", "period")?.schema?.enum).toEqual(
+        expect.arrayContaining(["semana", "mes", "trim", "sem6", "ano"])
+      );
+      expect(
+        param("/api/v1/progress/measure/{metric}", "period")?.schema?.enum
+      ).toEqual(expect.arrayContaining(["mes", "trim", "ano"]));
+      expect(
+        param("/api/v1/progress/exercise/{slug}", "metric")?.schema?.enum
+      ).toEqual(expect.arrayContaining(["e1rm", "volumen"]));
+    });
+
+    // The agreed backend follow-up landed (same cascade as gap G): bands carry
+    // `name` + `why` (the "versiones de ti" chapters of the Carrete) and
+    // ProgressExerciseDetail carries `id` (the slug→library bridge for the guide
+    // tab). Lock them in so a regression that drops them fails here. `why` is
+    // nullable (plan without a description). See progress-screen-spec.md §5.A/D.
+    it("Historial narrative + exercise→library bridge are live (name/why/id)", () => {
+      const band = spec!.components.schemas.ProgressHistory?.properties?.bands
+        ?.items?.properties;
+      const ex = spec!.components.schemas.ProgressExerciseDetail?.properties;
+      expect(band?.name).toBeDefined();
+      expect(band?.why?.type).toEqual(expect.arrayContaining(["string", "null"]));
+      expect(ex?.id).toBeDefined();
     });
   });
 });

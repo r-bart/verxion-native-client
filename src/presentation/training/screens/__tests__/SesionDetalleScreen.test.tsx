@@ -41,6 +41,8 @@ describe("SesionDetalleScreen", () => {
       expect(getAllByText("Legs B").length).toBeGreaterThan(0)
     );
     expect(getByText("Peso muerto rumano")).toBeTruthy();
+    // Frozen-block chip: the raw block name is painted verbatim (no i18n).
+    expect(getByText(/Acumulación/)).toBeTruthy();
   });
 
   it("shows the error state with a retry when the read fails", async () => {

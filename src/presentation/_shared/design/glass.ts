@@ -37,6 +37,12 @@ export const glass = {
   up: "#5FE39A",
   upBg: "#0E1A13",
 
+  // insight purple — periodization context on session/history surfaces
+  // (mirrors tokens.ts `insight`; lava stays the active-block accent on rutina/Hoy)
+  insight: "#9B59B6",
+  insightBg: "#1A151C",
+  insightBorder: "rgba(155,89,182,0.3)",
+
   // motion / feedback
   pressOpacity: 0.8,
 } as const;

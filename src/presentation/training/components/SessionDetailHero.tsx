@@ -6,7 +6,7 @@
  */
 import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Star, Repeat } from "lucide-react-native";
+import { Star, Repeat, Layers } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
 import { glass } from "@/presentation/_shared/design/glass";
@@ -111,6 +111,38 @@ export function SessionDetailHero({ header }: { header: SessionDetailHeader }) {
             )}
           </Text>
         </View>
+
+        {/* Frozen periodization block — only when the session had one (§2c).
+            RAW block name (server free text); we localize only "Sem x/y". */}
+        {header.mesocycle && (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+              borderRadius: 9999,
+              backgroundColor: glass.insightBg,
+              borderWidth: 1,
+              borderColor: glass.insightBorder,
+            }}
+          >
+            <Layers size={12} color={glass.insight} strokeWidth={2.4} />
+            <Text
+              style={{ fontFamily: sans(600), fontSize: 12, color: glass.insight }}
+              numberOfLines={1}
+            >
+              {header.mesocycle.name}
+              {" · "}
+              {t("training.sessionDetail.mesocycleWeek", {
+                week: header.mesocycle.week,
+                weeks: header.mesocycle.weeks,
+              })}
+            </Text>
+          </View>
+        )}
+
         <Text
           style={{ fontFamily: mono(500), fontSize: 11.5, color: glass.ink2 }}
         >

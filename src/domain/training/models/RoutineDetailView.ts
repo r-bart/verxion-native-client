@@ -4,7 +4,7 @@
  * detail. Read-only: adjusting a routine is a request to the agent, never an edit.
  * Doubles as the contract proposal for `GET /training/routines/{id}/detail`.
  */
-import type { DayType } from "./RoutineDashboard";
+import type { ActiveMesocycle, DayType } from "./RoutineDashboard";
 import type { RoutineLibraryState } from "./RoutineLibrary";
 
 export type RoutineDayStatus = "done" | "now" | "up" | "rest";
@@ -22,6 +22,13 @@ export interface RoutineDetailHeader {
   weeks: number;
   adherencePct: number; // shown on non-draft blocks
   volumeTotal: string; // "32,1 t" — display-ready
+  /**
+   * Active periodization block (proposal field — this screen is a contract
+   * proposal, not yet a live read-model). null for a flat routine OR a finished
+   * one (no current block). The full proportional phase bar (all blocks) needs
+   * the mesocycle LIST, not exposed yet (◐) — for now only the current block.
+   */
+  mesocycle: ActiveMesocycle | null;
   week: number;
   weekFraction: number | null;
   sessionsDone: number;

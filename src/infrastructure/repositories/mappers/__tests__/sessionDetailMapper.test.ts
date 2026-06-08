@@ -13,6 +13,15 @@ function dto(overrides: Partial<WorkoutSessionDetailDTO> = {}): WorkoutSessionDe
       durationSeconds: 3960,
       notes: "Buen día",
       routine: { id: "r1", name: "PPL Hipertrofia" },
+      mesocycle: {
+        id: "meso-acc",
+        name: "Acumulación",
+        goal: "Volumen",
+        orderIndex: 0,
+        totalBlocks: 3,
+        week: 3,
+        weeks: 6,
+      },
     },
     assessment: {
       pre: {},
@@ -70,6 +79,21 @@ describe("mapSessionDetail", () => {
     expect(v.header.completionPct).toBe(100); // exerciseCompletionRate (0..1) → 0..100
     expect(v.header.perfectPlan).toBe(true);
     expect(v.tiles).toEqual({ volumeKg: 16300, durationSec: 3960, series: 23, reps: 182, peakKg: 125, avgRir: 2 });
+  });
+
+  it("carries the frozen mesocycle block through (raw), null when absent", () => {
+    expect(mapSessionDetail(dto()).header.mesocycle).toEqual({
+      id: "meso-acc",
+      name: "Acumulación",
+      goal: "Volumen",
+      orderIndex: 0,
+      totalBlocks: 3,
+      week: 3,
+      weeks: 6,
+    });
+
+    const flat = mapSessionDetail(dto({ session: { ...dto().session, mesocycle: null } }));
+    expect(flat.header.mesocycle).toBeNull();
   });
 
   it("keeps per-set weight/reps and the prescription raw", () => {

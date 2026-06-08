@@ -1,7 +1,8 @@
 /**
  * RoutineHero — the centerpiece of the Rutina segment: the active routine as a
- * tappable glass card. Eyebrow + chevron, name, goal chip, divider, then the
- * WeekBar. Tapping opens the routine detail. Mirrors the handoff's `RoutineHero`.
+ * tappable glass card. Eyebrow + chevron, name, goal chip, divider, the block
+ * line (when periodized), then the WeekBar. Tapping opens the routine detail.
+ * Mirrors the handoff's `RoutineHero`.
  */
 import { View, Text, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -12,6 +13,7 @@ import { Chip } from "@/presentation/_shared/components/Chip";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
 import { WeekBar } from "./WeekBar";
+import { BlockLine } from "./BlockLine";
 import type { ActiveRoutineSummary } from "@/domain/training/models/RoutineDashboard";
 
 export function RoutineHero({ routine }: { routine: ActiveRoutineSummary }) {
@@ -51,6 +53,9 @@ export function RoutineHero({ routine }: { routine: ActiveRoutineSummary }) {
         )}
 
         <View style={{ height: 1, backgroundColor: glass.stroke, marginVertical: 2 }} />
+
+        {/* Block context — renders only when the routine is periodized (null-safe). */}
+        <BlockLine mesocycle={routine.mesocycle} />
 
         <WeekBar routine={routine} />
       </GlassSurface>

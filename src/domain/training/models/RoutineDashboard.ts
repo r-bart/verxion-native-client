@@ -40,6 +40,33 @@ export type RoutineDashboardState = "active" | "fresh" | "empty";
 /** Each node of the weekly rotation spine. */
 export type SpineStatus = "done" | "now" | "live" | "up";
 
+/**
+ * The fields every mesocycle reference shares — block identity + position. Both
+ * the live `ActiveMesocycle` (dashboard/routine detail) and the frozen
+ * `SessionMesocycle` (session detail, see `SessionDetailView`) extend this, so
+ * the common shape stays single-sourced and a display like `BlockLine` can paint
+ * any of them. `name`/`goal` are RAW server free text (English-only, no i18n).
+ */
+export interface MesocycleIdentity {
+  id: string;
+  name: string; // "Acumulación"
+  goal: string | null; // "Volumen" | null
+  orderIndex: number; // 0-based → "Bloque {orderIndex+1}/{totalBlocks}"
+  totalBlocks: number;
+}
+
+/**
+ * The active periodization block (mesocycle) of the routine. null when there is
+ * NO active block: a flat routine (no mesocycles), OR a periodized routine
+ * currently outside its block timeline (finished/paused). So `mesocycle === null`
+ * is NOT "this routine isn't periodized" — treat it as "no block header to show".
+ * The week WITHIN the block rides on `week`/`weeks` (mesocycle-resolved), not here.
+ */
+export interface ActiveMesocycle extends MesocycleIdentity {
+  isLastWeek: boolean; // current week is the block's final microcycle
+  isLastBlock: boolean; // current block is the routine's final mesocycle
+}
+
 export interface ActiveRoutineSummary {
   id: string;
   name: string;
@@ -54,6 +81,8 @@ export interface ActiveRoutineSummary {
    * partial fill of the active week cell. Null when not partway (fresh week).
    */
   weekFraction: number | null;
+  /** Active periodization block; null when the routine has no active block (flat / finished / paused). */
+  mesocycle: ActiveMesocycle | null;
   sessionsDone: number;
   /** Planned sessions for the block; null for open-ended routines. */
   sessionsPlanned: number | null;

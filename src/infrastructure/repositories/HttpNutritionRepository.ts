@@ -39,9 +39,17 @@ export class HttpNutritionRepository implements INutritionPort {
   async getMealDetail(planId: string, mealId: string): Promise<MealDetail> {
     // GET /api/v1/nutrition/meal-detail/{planId}/{mealId} → { data: MealDetail }.
     // Curated read-model: a planned meal's items + supplements.
-    return apiClient.get<MealDetail>(
+    const dto = await apiClient.get<MealDetail>(
       `/nutrition/meal-detail/${planId}/${mealId}`
     );
+    // The contract types `items` and `supplements` as required arrays, but the
+    // live API sometimes omits an empty `supplements` (and, defensively, items).
+    // Coerce here so the domain invariant holds and the screen can map freely.
+    return {
+      ...dto,
+      items: dto.items ?? [],
+      supplements: dto.supplements ?? [],
+    };
   }
 
   async getFoodDetail(kind: FoodKind, id: string): Promise<FoodDetail> {

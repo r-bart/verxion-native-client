@@ -17,8 +17,9 @@ export function ProgramWeekCells({
   height?: number;
 }) {
   const { week, totalWeeks, weekFrac, status } = program;
-  if (totalWeeks <= 0) return null;
-  const cells = Math.max(totalWeeks, week);
+  // Open-ended / missing weeks → no cells (the caller shows "week N" instead).
+  if (!totalWeeks || totalWeeks <= 0) return null;
+  const cells = Math.max(totalWeeks, Number.isFinite(week) ? week : 1);
   const completed = status === "completed";
   const partial =
     !completed && weekFrac != null && weekFrac > 0 && weekFrac < 1 ? weekFrac : null;

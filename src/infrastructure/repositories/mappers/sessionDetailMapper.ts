@@ -14,6 +14,7 @@ import type {
   SessionAssessment,
   SessionDetailView,
   SessionExerciseItem,
+  SessionMesocycle,
   SessionMuscleShare,
 } from "@/domain/training/models/SessionDetailView";
 import type { DayKind } from "@/domain/training/models/RoutineDashboard";
@@ -31,6 +32,17 @@ export interface WorkoutSessionDetailDTO {
     durationSeconds: number | null;
     notes: string | null;
     routine: { id: string; name: string } | null;
+    // Frozen periodization block (`workoutSessionDetailSchema.session.mesocycle`);
+    // null when the session had no block. 1-based `week`.
+    mesocycle: {
+      id: string;
+      name: string;
+      goal: string | null;
+      orderIndex: number;
+      totalBlocks: number;
+      week: number;
+      weeks: number;
+    } | null;
   };
   assessment: {
     pre: Record<string, number | string | null>;
@@ -92,6 +104,22 @@ export function mapSessionDetail(dto: WorkoutSessionDetailDTO): SessionDetailVie
     .sort((a, b) => b.volumeKg - a.volumeKg)
     .slice(0, 4);
 
+  // Build the frozen block explicitly (don't pass the raw DTO sub-object through):
+  // the inline DTO type and the domain `SessionMesocycle` are separate decls, so an
+  // explicit field-by-field map is what keeps them honest if either shape drifts.
+  const m = session.mesocycle;
+  const mesocycle: SessionMesocycle | null = m
+    ? {
+        id: m.id,
+        name: m.name,
+        goal: m.goal,
+        orderIndex: m.orderIndex,
+        totalBlocks: m.totalBlocks,
+        week: m.week,
+        weeks: m.weeks,
+      }
+    : null;
+
   const hasAssessment = post.effortScore != null || post.qualityScore != null || post.pump != null;
   const assessmentView: SessionAssessment | null = hasAssessment
     ? { effort: post.effortScore ?? 0, quality: post.qualityScore ?? 0, pump: post.pump ?? 0 }
@@ -104,6 +132,7 @@ export function mapSessionDetail(dto: WorkoutSessionDetailDTO): SessionDetailVie
       completedAt: session.completedAt,
       type: session.dayType,
       routineName: session.routine?.name ?? "",
+      mesocycle,
       completionPct,
       perfectPlan: completionPct === 100,
     },

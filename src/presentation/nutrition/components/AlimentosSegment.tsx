@@ -40,8 +40,9 @@ function GroupChip({
     >
       <View
         style={{
-          paddingHorizontal: 13,
-          paddingVertical: 8,
+          paddingHorizontal: 15,
+          minHeight: 44,
+          justifyContent: "center",
           borderRadius: 9999,
           backgroundColor: selected ? glass.lavaBg : glass.fill,
           borderWidth: 1,
@@ -63,7 +64,6 @@ function GroupChip({
 }
 
 function FoodRow({ item }: { item: FoodLibraryItem }) {
-  const { t } = useTranslation();
   const router = useRouter();
   const Icon = item.kind === "recipe" ? ChefHat : Apple;
   const meta = [item.brand, item.group].filter(Boolean).join(" · ");
@@ -128,6 +128,14 @@ export function AlimentosSegment() {
   // keeps them on screen while a new query is in flight. (If the API ever starts
   // returning facets filtered-to-results, hoist these to sticky state.)
   const groups = data?.facets.groups ?? [];
+
+  // API group values are raw lowercase English (the filter sends them verbatim);
+  // we only localize the *visible* label, falling back to a capitalized version
+  // for any group the i18n map doesn't yet cover.
+  const groupLabel = (g: string) =>
+    t(`nutrition.foods.groups.${g.toLowerCase()}`, {
+      defaultValue: g.charAt(0).toUpperCase() + g.slice(1),
+    });
 
   let list: React.ReactNode;
   if (isLoading) {
@@ -234,20 +242,27 @@ export function AlimentosSegment() {
       </GlassSurface>
 
       {groups.length > 0 && (
-        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
-          <GroupChip
-            label={t("nutrition.foods.allGroups")}
-            selected={group === ""}
-            onPress={() => setGroup("")}
-          />
-          {groups.map((g) => (
+        <View style={{ marginHorizontal: -16, marginBottom: 14 }}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flexDirection: "row", gap: 8, paddingHorizontal: 16 }}
+          >
             <GroupChip
-              key={g}
-              label={g}
-              selected={group === g}
-              onPress={() => setGroup((p) => (p === g ? "" : g))}
+              label={t("nutrition.foods.allGroups")}
+              selected={group === ""}
+              onPress={() => setGroup("")}
             />
-          ))}
+            {groups.map((g) => (
+              <GroupChip
+                key={g}
+                label={groupLabel(g)}
+                selected={group === g}
+                onPress={() => setGroup((p) => (p === g ? "" : g))}
+              />
+            ))}
+          </ScrollView>
         </View>
       )}
 

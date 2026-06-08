@@ -23,6 +23,8 @@ describe("RutinaSegment", () => {
     // The hero name proves we left the skeleton and painted the aggregate —
     // the exact regression the placeholderData/isLoading guard hid.
     await waitFor(() => expect(getByText("PPL Hipertrofia")).toBeTruthy());
+    // Periodized fixture → the block line paints the RAW block name verbatim.
+    expect(getByText("Acumulación")).toBeTruthy();
   });
 
   it("shows the error state with a retry when the read fails", async () => {

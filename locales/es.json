@@ -72,6 +72,7 @@
     "routine": {
       "activeEyebrow": "Rutina activa",
       "week": "Semana {{week}} de {{weeks}}",
+      "block": "Bloque {{index}}/{{total}}",
       "sessions": "{{done}} de {{planned}} sesiones"
     },
     "next": {
@@ -230,6 +231,7 @@
       "planPerfect": "Plan perfecto",
       "planFollowed": "Plan seguido",
       "completedPct": "{{pct}}% completado",
+      "mesocycleWeek": "Sem {{week}}/{{weeks}}",
       "prCount": "{{count}} PR",
       "prCount_other": "{{count}} PRs",
       "recapFrom": "verxion · informe",
@@ -567,6 +569,7 @@
       "none": "Aún sin plan activo · pídeselo a verxion"
     },
     "planWeek": "Semana {{week}} / {{total}}",
+    "planBlockSub": "Bloque {{index}}/{{total}} · Sem {{week}}/{{weeks}}",
     "yourDay": "Tu día",
     "now": "Ahora",
     "pending": "Pendiente · sin hora",
@@ -624,29 +627,106 @@
     }
   },
   "progress": {
-    "overview": "Resumen",
-    "bodyComposition": "Composición",
-    "exercises": "Ejercicios",
-    "trends": "Tendencias",
-    "records": "Récords",
-    "timeline": "Línea de tiempo",
-    "weeks": "Semanas",
-    "months": "Meses",
-    "sessionReport": "Reporte de sesión",
-    "totalSessions": "Total sesiones",
-    "totalVolume": "Volumen total",
-    "totalSets": "Total series",
-    "totalReps": "Total reps",
-    "trainingDays": "Días de entreno",
-    "uniqueExercises": "Ejercicios únicos",
-    "currentWeight": "Peso actual",
-    "weightChange": "Cambio de peso",
-    "personalRecords": "Récords personales",
-    "noRecordsYet": "Completa entrenamientos para establecer récords",
-    "noHistoryYet": "Tu historial de entrenamientos aparecerá aquí",
-    "noTimelineYet": "Entrena unas semanas para ver tu línea de tiempo",
-    "startFirstWorkout": "Comienza tu primer entrenamiento para ver tu progreso",
-    "summaryGenerating": "Generando resumen..."
+    "title": "Progreso",
+    "segments": {
+      "resumen": "Resumen",
+      "metricas": "Métricas",
+      "historial": "Historial"
+    },
+    "resumen": {
+      "label": "Tu resumen",
+      "strengthLabel": "Fuerza",
+      "strengthCaption": "ÚLTIMO PR",
+      "goalRemaining": "obj {{goal}} · faltan {{diff}}"
+    },
+    "metricas": {
+      "soon": "El inventario completo de métricas llega aquí.",
+      "viewDetail": "ver detalle",
+      "groups": {
+        "cuerpo": "Cuerpo",
+        "entrenamiento": "Entrenamiento",
+        "nutricion": "Nutrición",
+        "actividad": "Actividad"
+      }
+    },
+    "measure": {
+      "today": "Hoy",
+      "change": "Cambio",
+      "max": "Máx",
+      "min": "Mín",
+      "goal": "Objetivo",
+      "average": "Media",
+      "records": "Registros",
+      "goalLine": "obj {{goal}}",
+      "readOnly": "Solo lectura. Tus medidas las registra verxion — pídeselo al agente para anotar una nueva.",
+      "period": {
+        "mes": "Mes",
+        "trim": "3 m",
+        "ano": "Año"
+      }
+    },
+    "historial": {
+      "soon": "Tu historia —la cinta— llega aquí.",
+      "writing": "Tu historia se está escribiendo",
+      "cinta": "La cinta",
+      "youNow": "TU YO DE HOY",
+      "youThen": "TU YO DE ENTONCES",
+      "thisWeek": "esta semana",
+      "weeksAgo": "hace {{n}} sem",
+      "weekRange": "sem {{from}}–{{to}}",
+      "focus": "Ampliar",
+      "allDomains": "Todos los dominios",
+      "axisNow": "hoy",
+      "focusHint": "Arrastra para viajar"
+    },
+    "exercise": {
+      "tabs": {
+        "progress": "Progreso",
+        "guide": "Cómo se hace"
+      },
+      "metric": {
+        "e1rm": "e1RM",
+        "volumen": "Volumen"
+      },
+      "kpis": {
+        "pr": "PR carga",
+        "e1rm": "e1RM",
+        "bestVol": "Mejor vol",
+        "logs": "Registros"
+      },
+      "history": "Historial",
+      "muscles": "Músculos",
+      "emptyTitle": "Aún sin registros",
+      "emptyBody": "Cuando entrenes este ejercicio, aquí verás tu curva y tus récords.",
+      "agentNote": "verxion · lectura",
+      "askAgent": "Pídeselo al agente — métela en tu rutina, cámbiala o pide una progresión nueva.",
+      "guideSoon": "Los pasos de ejecución de este ejercicio llegan aquí.",
+      "guideMediaAlt": "Animación de ejecución del ejercicio",
+      "steps": "Pasos"
+    },
+    "metrics": {
+      "peso": "Peso",
+      "cintura": "Cintura",
+      "cadera": "Cadera",
+      "brazo": "Brazo",
+      "volumen": "Volumen",
+      "adherencia": "Adherencia",
+      "nutricion": "Adherencia",
+      "proteina": "Proteína",
+      "carbos": "Carbohidratos",
+      "grasa": "Grasa",
+      "kcal": "Calorías",
+      "pasos": "Pasos",
+      "cardio": "Cardio",
+      "sesiones": "Sesiones"
+    },
+    "states": {
+      "freshTitle": "Llevas pocos días",
+      "freshBody": "verxion necesita ~2 semanas de registros para leer tus tendencias con confianza.",
+      "emptyTitle": "Tu trayectoria empieza aquí",
+      "emptyBody": "Pídele un objetivo al agente, registra tu peso y medidas en Hoy, y vuelve para ver tu evolución.",
+      "stable": "estable"
+    }
   },
   "quickActions": {
     "logWeight": "Registrar peso",

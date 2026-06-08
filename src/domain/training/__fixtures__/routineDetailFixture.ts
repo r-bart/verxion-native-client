@@ -22,6 +22,15 @@ const pplHipertrofia: RoutineDetailView = {
     weeks: 6,
     adherencePct: 39,
     volumeTotal: "32,1 t",
+    mesocycle: {
+      id: "meso-acumulacion",
+      name: "Acumulación",
+      goal: "Volumen",
+      orderIndex: 0,
+      totalBlocks: 3,
+      isLastWeek: false,
+      isLastBlock: false,
+    },
     week: 3,
     weekFraction: 3 / 7,
     sessionsDone: 14,
@@ -134,6 +143,7 @@ const pplBase: RoutineDetailView = {
     weeks: 8,
     adherencePct: 92,
     volumeTotal: "41,8 t",
+    mesocycle: null, // finished routine → no active block (tri-state null)
     week: 8,
     weekFraction: null,
     sessionsDone: 44,
@@ -234,6 +244,7 @@ const iniciacionFullbody: RoutineDetailView = {
     weeks: 4,
     adherencePct: 92,
     volumeTotal: "12,4 t",
+    mesocycle: null, // flat / finished → no active block
     week: 4,
     weekFraction: null,
     sessionsDone: 11,
