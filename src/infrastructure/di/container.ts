@@ -15,6 +15,7 @@ import { HttpNutritionRepository } from "../repositories/HttpNutritionRepository
 import { HttpExerciseCatalogRepository } from "../repositories/HttpExerciseCatalogRepository";
 import { HttpSettingsRepository } from "../repositories/HttpSettingsRepository";
 import { HealthKitRepository } from "../repositories/HealthKitRepository";
+import { HttpHealthSyncRepository } from "../repositories/HttpHealthSyncRepository";
 import { HttpTodayRepository } from "../repositories/HttpTodayRepository";
 import { HttpProgramRepository } from "../repositories/HttpProgramRepository";
 
@@ -110,6 +111,7 @@ import { DeleteAccountUseCase } from "@/application/settings/DeleteAccountUseCas
 import { GetHealthStatusUseCase } from "@/application/health/GetHealthStatusUseCase";
 import { RequestHealthAuthorizationUseCase } from "@/application/health/RequestHealthAuthorizationUseCase";
 import { SetHealthMetricUseCase } from "@/application/health/SetHealthMetricUseCase";
+import { SyncHealthToPlatformUseCase } from "@/application/health/SyncHealthToPlatformUseCase";
 
 import { GetTodayDashboardUseCase } from "@/application/today/GetTodayDashboardUseCase";
 import { ListProgramsUseCase } from "@/application/program/ListProgramsUseCase";
@@ -122,6 +124,7 @@ import { track, identify } from "../analytics/analytics";
 import * as onboardingDraftStore from "../storage/onboardingDraft";
 import * as languagePreference from "../storage/languagePreference";
 import * as lastAuthProvider from "../storage/lastAuthProvider";
+import * as healthSyncAnchors from "../storage/healthSyncAnchors";
 import { appVersion } from "../config/appConfig";
 
 bootstrapInfrastructure();
@@ -143,6 +146,7 @@ const nutritionRepo = new HttpNutritionRepository();
 const exerciseCatalogRepo = new HttpExerciseCatalogRepository();
 const settingsRepo = new HttpSettingsRepository();
 const healthRepo = new HealthKitRepository();
+const healthSyncRepo = new HttpHealthSyncRepository();
 const todayRepo = new HttpTodayRepository();
 const programRepo = new HttpProgramRepository();
 
@@ -267,6 +271,14 @@ export const container = {
   getHealthStatus: new GetHealthStatusUseCase(healthRepo),
   requestHealthAuthorization: new RequestHealthAuthorizationUseCase(healthRepo),
   setHealthMetric: new SetHealthMetricUseCase(healthRepo),
+  // HealthKit → platform sync. The push side (HTTP) is live; the device-read
+  // side (healthRepo) is stubbed inert until the native binding lands, so this
+  // is a safe no-op in JS builds. Anchors persist via ephemeral SecureStore.
+  syncHealthToPlatform: new SyncHealthToPlatformUseCase(
+    healthRepo,
+    healthSyncRepo,
+    healthSyncAnchors,
+  ),
 
   // Today ("Hoy" aggregate — GET /today eager + lazy timeline detail)
   getTodayDashboard: new GetTodayDashboardUseCase(todayRepo),

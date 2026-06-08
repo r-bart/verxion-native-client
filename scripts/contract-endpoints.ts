@@ -91,6 +91,14 @@ export const CONTRACT_ENDPOINTS = {
     ["GET", "/api/v1/analytics/weekly-review/training"],
   ],
   measurements: [["POST", "/api/v1/measurements/weight"]],
+  // Apple Health → platform sync (HttpHealthSyncRepository). Weight POST is shared
+  // with the `measurements` row above; the rest are sync-only ingestion routes.
+  healthSync: [
+    ["POST", "/api/v1/activity/cardio"],
+    ["POST", "/api/v1/activity/steps/upsert"],
+    ["DELETE", "/api/v1/measurements/weight/by-external/{source}/{externalId}"],
+    ["DELETE", "/api/v1/activity/cardio/by-external/{source}/{externalId}"],
+  ],
   sessions: [
     ["GET", "/api/v1/sessions"],
     ["GET", "/api/v1/sessions/{id}/live-progress"],

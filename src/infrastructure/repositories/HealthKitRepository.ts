@@ -1,4 +1,12 @@
-import type { IHealthPort, HealthMetric, HealthStatus } from "@/domain/health";
+import type {
+  IHealthPort,
+  HealthMetric,
+  HealthStatus,
+  HealthChangeSet,
+  WeightSample,
+  CardioSample,
+  StepsDailyAggregate,
+} from "@/domain/health";
 
 /**
  * Stub Apple Health adapter. The native HealthKit binding (react-native-healthkit
@@ -27,5 +35,20 @@ export class HealthKitRepository implements IHealthPort {
     _enabled: boolean,
   ): Promise<HealthStatus> {
     return UNAVAILABLE;
+  }
+
+  // ── Sync reads — inert until the native binding lands ──────────────────────
+  // Empty changesets / no days mean SyncHealthToPlatformUseCase is a safe no-op
+  // in JS builds: it pushes nothing and just advances anchors to "".
+  async pullWeightChanges(_anchor: string | null): Promise<HealthChangeSet<WeightSample>> {
+    return { samples: [], deletedExternalIds: [], newAnchor: _anchor ?? "" };
+  }
+
+  async pullCardioChanges(_anchor: string | null): Promise<HealthChangeSet<CardioSample>> {
+    return { samples: [], deletedExternalIds: [], newAnchor: _anchor ?? "" };
+  }
+
+  async recomputeDailySteps(_fromDate: string): Promise<StepsDailyAggregate[]> {
+    return [];
   }
 }
