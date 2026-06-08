@@ -89,11 +89,28 @@ export function ActivePlan({
   // ── otherwise: standalone routine and/or diet rows ────────────────────────
   const rows: React.ReactNode[] = [];
   if (routineActive && routine) {
+    // Periodized → block name in the eyebrow + "Bloque x/y · Sem w/t" sub; flat
+    // (mesocycle null) → the plain "RUTINA · SEMANA x/y" eyebrow, no sub.
+    const block = routine.mesocycle;
     rows.push(
       <PlanRow
         key="routine"
-        label={`${t("today.plans.routine")} · ${week(routine.week, routine.totalWeeks)}`}
+        label={
+          block
+            ? `${t("today.plans.routine")} · ${block.name.toUpperCase()}`
+            : `${t("today.plans.routine")} · ${week(routine.week, routine.totalWeeks)}`
+        }
         name={routine.name}
+        subtitle={
+          block
+            ? t("today.planBlockSub", {
+                index: block.orderIndex + 1,
+                total: block.totalBlocks,
+                week: routine.week,
+                weeks: routine.totalWeeks,
+              })
+            : null
+        }
         Icon={Dumbbell}
         iconColor={glass.lava}
         adherenceScore={routine.adherenceScore}

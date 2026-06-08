@@ -19,6 +19,7 @@ const routine: RoutineProgress = {
   totalWeeks: 1,
   adherenceScore: 100,
   adherenceMax: 100,
+  mesocycle: null, // flat routine
 };
 const diet: DietProgress = {
   name: "Diet Phase 3",
@@ -85,6 +86,35 @@ describe("ActivePlan", () => {
     expect(getByText("5-Day Hypertrophy")).toBeTruthy();
     expect(queryByText("Diet Phase 3")).toBeNull();
     expect(queryByText("today.plans.looseHint")).toBeNull();
+  });
+
+  it("paints the block eyebrow + sub when the routine is periodized", () => {
+    const periodized: RoutineProgress = {
+      ...routine,
+      week: 2,
+      totalWeeks: 4,
+      mesocycle: {
+        id: "m1",
+        name: "Acumulación",
+        goal: "Volumen",
+        orderIndex: 0,
+        totalBlocks: 3,
+        isLastWeek: false,
+        isLastBlock: false,
+      },
+    };
+    const { getByText } = render(
+      <ActivePlan
+        setup={setup({ routine: "active" })}
+        routine={periodized}
+        diet={null}
+        program={null}
+      />,
+    );
+    // Eyebrow carries the RAW block name (uppercased); the sub key proves the
+    // periodized branch (this mock's `t` returns the key, no interpolation).
+    expect(getByText(/ACUMULACIÓN/)).toBeTruthy();
+    expect(getByText("today.planBlockSub")).toBeTruthy();
   });
 
   it("falls back to the empty hint when nothing is active", () => {

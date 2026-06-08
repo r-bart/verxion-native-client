@@ -59,10 +59,30 @@ export interface DayRing {
   total: number;
 }
 
+/**
+ * The active periodization block of the routine, as Hoy surfaces it. Mirrors the
+ * contract's `activeMesocycleSchema` — IDENTICAL to the Entreno landing's
+ * `ActiveMesocycle` (same resolver), re-declared locally to keep this aggregate's
+ * domain module self-contained (like `DietProgress`/`ProgramProgress`). Tri-state
+ * `null`: flat routine, periodized-but-finished, or paused → no block eyebrow,
+ * just "Sem x/y". `name`/`goal` are RAW server free text (no i18n).
+ */
+export interface RoutineBlock {
+  id: string;
+  name: string; // "Acumulación"
+  goal: string | null;
+  orderIndex: number; // 0-based → "Bloque {orderIndex+1}/{totalBlocks}"
+  totalBlocks: number;
+  isLastWeek: boolean;
+  isLastBlock: boolean;
+}
+
 /** The active routine's position + adherence, for the "RUTINA · SEMANA x/y" row. */
 export interface RoutineProgress {
   name: string;
+  /** Current week WITHIN the active block (mesocycle-resolved), 1-based. */
   week: number;
+  /** Total weeks of the active block; for a flat routine, the routine's length. */
   totalWeeks: number;
   /**
    * Adherence score for the routine (e.g. 86) — the platform's `executionScore`.
@@ -71,6 +91,8 @@ export interface RoutineProgress {
   adherenceScore: number | null;
   /** Scale of the adherence score (e.g. 100). */
   adherenceMax: number;
+  /** Active block; null when flat/finished/paused → no block eyebrow, just "Sem x/y". */
+  mesocycle: RoutineBlock | null;
 }
 
 /**
