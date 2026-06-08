@@ -5,7 +5,7 @@
  * content (the native tab bar owns the bottom).
  */
 import { View } from "react-native";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useCurrentUser } from "@/presentation/_shared/hooks/useCurrentUser";
 import { Isotype } from "@/presentation/_shared/components/Isotype";
@@ -37,7 +37,7 @@ export function AppHeader() {
       <GlassAvatarButton
         initials={initials(user?.name, user?.username, user?.email)}
         accessibilityLabel={t("settings.title")}
-        onPress={() => router.push("/settings" as Href)}
+        onPress={() => router.push("/settings")}
       />
     </View>
   );

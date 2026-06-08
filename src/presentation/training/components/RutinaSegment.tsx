@@ -11,7 +11,7 @@ import { useMemo } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { Rows3, ChevronRight } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { Isotype } from "@/presentation/_shared/components/Isotype";
@@ -57,7 +57,7 @@ function EmptyRoutine() {
         {t("training.empty.body")}
       </Text>
       <Pressable
-        onPress={() => router.push("/agent" as Href)}
+        onPress={() => router.push("/agent")}
         accessibilityRole="button"
         style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
       >
@@ -89,7 +89,7 @@ function AllRoutinesLink() {
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => router.push("/workout/rutinas" as Href)}
+      onPress={() => router.push("/workout/rutinas")}
       accessibilityRole="button"
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
     >
@@ -124,7 +124,7 @@ function LiveBanner({ name }: { name: string }) {
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => router.push("/workout/sesion" as Href)}
+      onPress={() => router.push("/workout/sesion")}
       accessibilityRole="button"
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
     >

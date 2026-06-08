@@ -20,7 +20,7 @@ const NODE = 22;
 
 function hrefFor(day: SpineDay): Href | null {
   if (day.type === "rest") return null;
-  if (day.status === "live") return "/workout/sesion" as Href;
+  if (day.status === "live") return "/workout/sesion";
   if (day.status === "now") return `/workout/prescripcion?dayId=${day.dayId}` as Href;
   return `/workout/dia/${day.dayId}` as Href;
 }

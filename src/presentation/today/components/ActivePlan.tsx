@@ -80,7 +80,7 @@ export function ActivePlan({
           iconColor={glass.ink}
           adherenceScore={program.adherenceScore}
           adherenceMax={program.adherenceMax}
-          onPress={go("/programas/activo" as Href)}
+          onPress={go("/programas/activo")}
         />
       </>
     );
@@ -115,7 +115,7 @@ export function ActivePlan({
         iconColor={glass.lava}
         adherenceScore={routine.adherenceScore}
         adherenceMax={routine.adherenceMax}
-        onPress={go("/workout" as Href)}
+        onPress={go("/workout")}
       />,
     );
   }
@@ -134,7 +134,7 @@ export function ActivePlan({
         iconColor={FRONT_VISUALS.nutrition.color}
         adherenceScore={diet.adherenceScore}
         adherenceMax={diet.adherenceMax}
-        onPress={go("/nutrition" as Href)}
+        onPress={go("/nutrition")}
       />,
     );
   }

@@ -4,7 +4,7 @@
  * "Hoy" tab, so the date is the headline; the avatar keeps Settings reachable.
  */
 import { View, Text, Pressable } from "react-native";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Layers } from "lucide-react-native";
 import { useCurrentUser } from "@/presentation/_shared/hooks/useCurrentUser";
@@ -44,7 +44,7 @@ export function TodayHeader({ date }: { date: string }) {
 
       <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
         <Pressable
-          onPress={() => router.push("/programas" as Href)}
+          onPress={() => router.push("/programas")}
           accessibilityRole="button"
           accessibilityLabel={t("program.title")}
           style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
@@ -57,7 +57,7 @@ export function TodayHeader({ date }: { date: string }) {
         <GlassAvatarButton
           initials={initials(user?.name, user?.username, user?.email)}
           accessibilityLabel={t("settings.title")}
-          onPress={() => router.push("/settings" as Href)}
+          onPress={() => router.push("/settings")}
         />
       </View>
     </View>

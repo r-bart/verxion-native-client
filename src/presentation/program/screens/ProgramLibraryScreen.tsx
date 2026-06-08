@@ -9,7 +9,7 @@ import { useState } from "react";
 import { View, Text, Pressable, TextInput, ScrollView } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import {
   Search,
   ArrowUpDown,
@@ -41,7 +41,7 @@ function BackButton() {
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => (router.canGoBack() ? router.back() : router.push("/today" as Href))}
+      onPress={() => (router.canGoBack() ? router.back() : router.push("/today"))}
       accessibilityRole="button"
       accessibilityLabel={t("common.back")}
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
@@ -89,18 +89,20 @@ function AskAgentSurface() {
   const { t } = useTranslation();
   const router = useRouter();
   return (
-    <Pressable onPress={() => router.push("/agent" as Href)} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1, marginTop: 32 })}>
-      <GlassSurface radius={18} style={{ padding: 16, flexDirection: "row", alignItems: "center", gap: 13 }}>
-        <View style={{ width: 38, height: 38, borderRadius: 12, backgroundColor: glass.lavaBg, borderWidth: 1, borderColor: glass.lavaBorder, alignItems: "center", justifyContent: "center" }}>
-          <Sparkles size={18} color={glass.lava} strokeWidth={2} />
-        </View>
-        <View style={{ flex: 1, gap: 3 }}>
-          <Text style={{ fontFamily: sans(600), fontSize: 14, color: glass.white }}>{t("program.ask.title")}</Text>
-          <Text style={{ fontFamily: mono(400), fontSize: 11.5, color: glass.ink2, lineHeight: 16 }}>{t("program.ask.body")}</Text>
-        </View>
-        <ChevronRight size={18} color="rgba(255,255,255,0.28)" strokeWidth={2} />
-      </GlassSurface>
-    </Pressable>
+    <View style={{ marginTop: 32 }}>
+      <Pressable onPress={() => router.push("/agent")} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}>
+        <GlassSurface radius={18} style={{ padding: 16, flexDirection: "row", alignItems: "center", gap: 13 }}>
+          <View style={{ width: 38, height: 38, borderRadius: 12, backgroundColor: glass.lavaBg, borderWidth: 1, borderColor: glass.lavaBorder, alignItems: "center", justifyContent: "center" }}>
+            <Sparkles size={18} color={glass.lava} strokeWidth={2} />
+          </View>
+          <View style={{ flex: 1, gap: 3 }}>
+            <Text style={{ fontFamily: sans(600), fontSize: 14, color: glass.white }}>{t("program.ask.title")}</Text>
+            <Text style={{ fontFamily: mono(400), fontSize: 11.5, color: glass.ink2, lineHeight: 16 }}>{t("program.ask.body")}</Text>
+          </View>
+          <ChevronRight size={18} color="rgba(255,255,255,0.28)" strokeWidth={2} />
+        </GlassSurface>
+      </Pressable>
+    </View>
   );
 }
 

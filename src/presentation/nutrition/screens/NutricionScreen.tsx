@@ -6,7 +6,7 @@
  */
 import { View, Pressable, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Layers } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
@@ -50,7 +50,7 @@ export function NutricionScreen() {
             {t("nutrition.title")}
           </Text>
           <Pressable
-            onPress={() => router.push("/nutrition/dietas" as Href)}
+            onPress={() => router.push("/nutrition/dietas")}
             accessibilityRole="button"
             accessibilityLabel={t("nutrition.library")}
             style={({ pressed }) => ({

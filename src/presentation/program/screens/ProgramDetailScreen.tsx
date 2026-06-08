@@ -9,7 +9,7 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { useLocalSearchParams, useRouter, type Href } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import {
   ChevronLeft,
   ChevronRight,
@@ -166,7 +166,7 @@ function AskAgent({ program }: { program: ProgramOverview }) {
           : "adjust";
   return (
     <View style={{ marginTop: 32 }}>
-      <Pressable onPress={() => router.push("/agent" as Href)} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}>
+      <Pressable onPress={() => router.push("/agent")} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}>
         <GlassSurface radius={18} style={{ padding: 16, flexDirection: "row", alignItems: "center", gap: 13 }}>
           <View style={{ width: 38, height: 38, borderRadius: 12, backgroundColor: glass.lavaBg, borderWidth: 1, borderColor: glass.lavaBorder, alignItems: "center", justifyContent: "center" }}>
             <Sparkles size={18} color={glass.lava} strokeWidth={2} />
@@ -252,7 +252,7 @@ export function ProgramDetailScreen() {
       <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
         <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingTop: 8, paddingBottom: 12, gap: 12 }}>
           <Pressable
-            onPress={() => (router.canGoBack() ? router.back() : router.push("/today" as Href))}
+            onPress={() => (router.canGoBack() ? router.back() : router.push("/today"))}
             accessibilityRole="button"
             accessibilityLabel={t("common.back")}
             style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}

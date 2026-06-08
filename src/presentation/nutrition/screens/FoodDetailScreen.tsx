@@ -155,7 +155,7 @@ function AskAgentSurface() {
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => router.push("/agent" as Href)}
+      onPress={() => router.push("/agent")}
       accessibilityRole="button"
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1, marginTop: 28 })}
     >

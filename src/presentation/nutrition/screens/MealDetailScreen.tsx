@@ -13,7 +13,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { useLocalSearchParams, useRouter, type Href } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import {
   ChevronLeft,
   ChevronRight,
@@ -106,7 +106,7 @@ function AskAgentSurface() {
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => router.push("/agent" as Href)}
+      onPress={() => router.push("/agent")}
       accessibilityRole="button"
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1, marginTop: 28 })}
     >

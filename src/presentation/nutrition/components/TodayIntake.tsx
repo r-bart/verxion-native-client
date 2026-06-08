@@ -6,7 +6,7 @@
  */
 import { View, Text, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { MacroRing } from "@/presentation/_shared/components/MacroRing";
@@ -166,7 +166,7 @@ export function TodayIntake({ today, diet, next }: Props) {
 
       {next && (
         <Pressable
-          onPress={() => router.push("/nutrition/plan-comidas" as Href)}
+          onPress={() => router.push("/nutrition/plan-comidas")}
           accessibilityRole="button"
           style={({ pressed }) => ({
             opacity: pressed ? glass.pressOpacity : 1,

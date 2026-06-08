@@ -5,7 +5,7 @@
  * agent, never an edit. Rest days render a minimal view.
  */
 import { View, Text, Pressable } from "react-native";
-import { useLocalSearchParams, useRouter, type Href } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ChevronRight, Sparkles, Moon, Dumbbell } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
@@ -28,7 +28,7 @@ function AskAgentSurface() {
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => router.push("/agent" as Href)}
+      onPress={() => router.push("/agent")}
       accessibilityRole="button"
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
     >

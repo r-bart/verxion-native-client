@@ -7,7 +7,7 @@
  */
 import { View, Text, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { Isotype } from "@/presentation/_shared/components/Isotype";
 import { glass } from "@/presentation/_shared/design/glass";
@@ -51,7 +51,7 @@ export function NutritionInvite({ state }: { state: DietState }) {
           from the ({pressed}) callback doesn't size the slot — see CLAUDE.md);
           press opacity moves to the inner View via the render-function form. */}
       <Pressable
-        onPress={() => router.push("/agent" as Href)}
+        onPress={() => router.push("/agent")}
         accessibilityRole="button"
         style={{ width: "100%" }}
       >

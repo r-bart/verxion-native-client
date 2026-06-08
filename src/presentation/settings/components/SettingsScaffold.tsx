@@ -1,6 +1,6 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ChevronLeft } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
@@ -32,7 +32,7 @@ export function SettingsScaffold({ title, subtitle, children, footer }: Props) {
   // throws "GO_BACK was not handled". Fall back to the home tab in that case.
   const handleBack = () => {
     if (router.canGoBack()) router.back();
-    else router.replace("/(tabs)/today" as Href);
+    else router.replace("/(tabs)/today");
   };
 
   return (

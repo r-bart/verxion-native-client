@@ -7,7 +7,7 @@
  */
 import { View, Pressable, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter, type Href } from "expo-router";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Layers } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
@@ -44,7 +44,7 @@ export function EntrenoScreen() {
             {t("training.title")}
           </Text>
           <Pressable
-            onPress={() => router.push("/workout/rutinas" as Href)}
+            onPress={() => router.push("/workout/rutinas")}
             accessibilityRole="button"
             accessibilityLabel={t("training.library")}
             style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}

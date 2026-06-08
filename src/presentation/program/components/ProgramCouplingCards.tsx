@@ -62,7 +62,7 @@ function EmptyCouple({ kind }: { kind: "routine" | "diet" }) {
   const isDiet = kind === "diet";
   const Icon = isDiet ? Utensils : Dumbbell;
   return (
-    <Pressable onPress={() => router.push("/agent" as Href)} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}>
+    <Pressable onPress={() => router.push("/agent")} accessibilityRole="button" style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}>
       <View style={{ padding: 13, borderRadius: 16, borderWidth: 1, borderColor: glass.stroke, borderStyle: "dashed", flexDirection: "row", alignItems: "center", gap: 12 }}>
         <View style={{ width: 44, height: 44, borderRadius: 13, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: glass.stroke, borderStyle: "dashed" }}>
           <Icon size={20} color={glass.ink3} strokeWidth={2} />

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
-import { useRouter, useSegments, type Href } from "expo-router";
+import { useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useSession } from "@/presentation/auth/hooks/useSession";
 import { useCurrentUser } from "@/presentation/_shared/hooks/useCurrentUser";
@@ -41,7 +41,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   const group = segments[0] as string | undefined;
   const inAuth = group === "(auth)";
   const inOnboarding = group === "(onboarding)";
-  const onboardingHref = "/(onboarding)" as Href;
+  const onboardingHref = "/(onboarding)";
 
   // Once the session resolves we can drop the native splash; the in-app
   // spinner below covers the brief current-user fetch.

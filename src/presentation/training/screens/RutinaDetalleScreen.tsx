@@ -5,7 +5,7 @@
  * Adjusting a routine is a request to the agent, never an edit here.
  */
 import { View, Text, Pressable } from "react-native";
-import { useLocalSearchParams, useRouter, type Href } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Layers, ChevronRight, Sparkles } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
@@ -83,7 +83,7 @@ function AskAgentSurface({ state }: { state: RoutineLibraryState }) {
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => router.push("/agent" as Href)}
+      onPress={() => router.push("/agent")}
       accessibilityRole="button"
       style={({ pressed }) => ({ opacity: pressed ? glass.pressOpacity : 1 })}
     >
@@ -218,7 +218,7 @@ export function RutinaDetalleScreen() {
         {data.sessionsBlockCount > 0 && (
           <SessionsLink
             count={data.sessionsBlockCount}
-            onPress={() => router.push("/workout" as Href)}
+            onPress={() => router.push("/workout")}
           />
         )}
 
