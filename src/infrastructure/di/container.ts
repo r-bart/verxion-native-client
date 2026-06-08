@@ -1,5 +1,6 @@
 import { authClient } from "../auth/authClient";
 import { apiClient } from "../api/apiClient";
+import { queryClient } from "./queryClient";
 import { bootstrapInfrastructure } from "./bootstrap";
 import { HttpAuthRepository } from "../repositories/HttpAuthRepository";
 import { HttpOnboardingRepository } from "../repositories/HttpOnboardingRepository";
@@ -130,6 +131,27 @@ import { appVersion } from "../config/appConfig";
 bootstrapInfrastructure();
 // Wire auth cookie to API client at infrastructure initialization
 apiClient.setGetCookie(() => authClient.getCookie());
+
+// On a 401 the stored session is invalid (expired, revoked, or a stale cookie
+// that survived a reinstall via the keychain). Self-clear it so the AuthGuard
+// routes back to login instead of trapping the user on data screens that keep
+// 401-ing. Guard against the burst of concurrent 401s firing this repeatedly.
+let clearingInvalidSession = false;
+apiClient.setUnauthorizedHandler(() => {
+  if (clearingInvalidSession) return;
+  clearingInvalidSession = true;
+  // best-effort server sign-out — also wipes the local SecureStore cookie so a
+  // later getSession can't resurrect the dead session.
+  void authClient
+    .signOut()
+    .catch(() => {})
+    .finally(() => {
+      clearingInvalidSession = false;
+    });
+  // Flip the session to null now so the guard reacts on the next render.
+  queryClient.setQueryData(["auth", "session"], null);
+  queryClient.removeQueries({ queryKey: ["user", "currentUser"] });
+});
 
 const authRepo = new HttpAuthRepository();
 const onboardingRepo = new HttpOnboardingRepository();
