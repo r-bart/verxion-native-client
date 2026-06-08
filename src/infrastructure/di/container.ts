@@ -1,5 +1,6 @@
 import { authClient } from "../auth/authClient";
 import { apiClient } from "../api/apiClient";
+import { bootstrapInfrastructure } from "./bootstrap";
 import { HttpAuthRepository } from "../repositories/HttpAuthRepository";
 import { HttpOnboardingRepository } from "../repositories/HttpOnboardingRepository";
 import { HttpAnalyticsRepository } from "../repositories/HttpAnalyticsRepository";
@@ -8,6 +9,8 @@ import { HttpActivityRepository } from "../repositories/HttpActivityRepository";
 import { HttpMeasurementsRepository } from "../repositories/HttpMeasurementsRepository";
 import { HttpProgressRepository } from "../repositories/HttpProgressRepository";
 import { HttpTrainingRepository } from "../repositories/HttpTrainingRepository";
+import { FixtureTrainingReadModelsRepository } from "../repositories/FixtureTrainingReadModelsRepository";
+import { TrainingRepository } from "../repositories/TrainingRepository";
 import { HttpNutritionRepository } from "../repositories/HttpNutritionRepository";
 import { HttpExerciseCatalogRepository } from "../repositories/HttpExerciseCatalogRepository";
 import { HttpSettingsRepository } from "../repositories/HttpSettingsRepository";
@@ -116,17 +119,14 @@ import { GetProgramAdherenceUseCase } from "@/application/program/GetProgramAdhe
 import { GetTimelineItemDetailUseCase } from "@/application/today/GetTimelineItemDetailUseCase";
 
 import { track, identify } from "../analytics/analytics";
-import { initPostHog } from "../analytics/posthogClient";
 import * as onboardingDraftStore from "../storage/onboardingDraft";
 import * as languagePreference from "../storage/languagePreference";
 import * as lastAuthProvider from "../storage/lastAuthProvider";
 import { appVersion } from "../config/appConfig";
 
+bootstrapInfrastructure();
 // Wire auth cookie to API client at infrastructure initialization
 apiClient.setGetCookie(() => authClient.getCookie());
-// Initialize telemetry here (DI wiring), so presentation never imports the
-// analytics module directly — it reaches `track`/`identify` via `useDI`.
-initPostHog();
 
 const authRepo = new HttpAuthRepository();
 const onboardingRepo = new HttpOnboardingRepository();
@@ -135,7 +135,10 @@ const sessionRepo = new HttpSessionRepository();
 const activityRepo = new HttpActivityRepository();
 const measurementsRepo = new HttpMeasurementsRepository();
 const progressRepo = new HttpProgressRepository();
-const trainingRepo = new HttpTrainingRepository();
+const trainingRepo = new TrainingRepository(
+  new HttpTrainingRepository(),
+  new FixtureTrainingReadModelsRepository()
+);
 const nutritionRepo = new HttpNutritionRepository();
 const exerciseCatalogRepo = new HttpExerciseCatalogRepository();
 const settingsRepo = new HttpSettingsRepository();

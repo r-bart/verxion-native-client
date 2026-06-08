@@ -1,5 +1,4 @@
-import type { ISettingsPort } from "@/domain/settings";
-import type { ConnectedApp } from "@/domain/settings";
+import type { ISettingsPort , ConnectedApp } from "@/domain/settings";
 
 export class ListConnectedAppsUseCase {
   constructor(private readonly port: ISettingsPort) {}

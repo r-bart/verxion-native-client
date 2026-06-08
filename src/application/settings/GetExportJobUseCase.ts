@@ -1,5 +1,4 @@
-import type { ISettingsPort } from "@/domain/settings";
-import type { PrivacyExportJob } from "@/domain/settings";
+import type { ISettingsPort , PrivacyExportJob } from "@/domain/settings";
 
 export class GetExportJobUseCase {
   constructor(private readonly port: ISettingsPort) {}

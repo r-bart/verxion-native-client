@@ -1,5 +1,4 @@
-import type { ISettingsPort } from "@/domain/settings";
-import type { UpdatePreferencesInput } from "@/domain/settings";
+import type { ISettingsPort , UpdatePreferencesInput } from "@/domain/settings";
 
 export class UpdatePreferencesUseCase {
   constructor(private readonly port: ISettingsPort) {}

@@ -1,5 +1,4 @@
-import type { ISettingsPort } from "@/domain/settings";
-import type { UserAccount } from "@/domain/settings";
+import type { ISettingsPort , UserAccount } from "@/domain/settings";
 
 export class GetAccountUseCase {
   constructor(private readonly port: ISettingsPort) {}

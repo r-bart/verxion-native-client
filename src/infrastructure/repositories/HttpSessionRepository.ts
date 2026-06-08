@@ -150,7 +150,7 @@ export class HttpSessionRepository implements ISessionPort {
     if (params?.offset != null) queryParams.offset = String(params.offset);
 
     const response = await apiClient.get<{
-      reports: Array<{
+      reports: {
         id: string;
         workoutSessionId: string;
         sessionName: string;
@@ -165,7 +165,7 @@ export class HttpSessionRepository implements ISessionPort {
         durationSeconds: number;
         completionRate: number;
         summaryGeneratedAt: string | null;
-      }>;
+      }[];
       total: number;
       limit: number;
       offset: number;

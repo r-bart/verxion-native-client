@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "fs";
 import { resolve } from "path";
+import { flattenContractEndpoints } from "../../../../scripts/contract-endpoints";
 
 /**
  * Contract drift guard — asserts that the platform endpoints our hand-written
@@ -36,101 +37,7 @@ if (!spec) {
   );
 }
 
-// (method, /api/v1 path) pairs the hand-written repositories call, grouped by
-// module. Path params use the spec's `{param}` template form (repos build the
-// concrete URLs from these at runtime). Extend a module's list as its repo grows.
-const ENDPOINTS: Record<string, [string, string][]> = {
-  settings: [
-    ["GET", "/api/v1/users/me"],
-    ["PUT", "/api/v1/users/me"],
-    ["PUT", "/api/v1/users/me/preferences"],
-    ["DELETE", "/api/v1/users/me"],
-    ["POST", "/api/v1/users/me/export"],
-    ["GET", "/api/v1/users/me/export/latest"],
-    ["GET", "/api/v1/users/me/export/{id}"],
-    ["GET", "/api/v1/profiles/me"],
-    ["PUT", "/api/v1/profiles/me"],
-    ["PUT", "/api/v1/profiles/me/username"],
-    ["POST", "/api/v1/profiles/me/avatar"],
-    ["DELETE", "/api/v1/profiles/me/avatar"],
-    ["PUT", "/api/v1/profiles/me/visibility"],
-    ["PUT", "/api/v1/profiles/me/showcase"],
-    ["PUT", "/api/v1/profiles/me/timeline-detail"],
-    ["PUT", "/api/v1/profiles/me/follow-approval"],
-    ["GET", "/api/v1/profiles/me/feed-sharing"],
-    ["PUT", "/api/v1/profiles/me/feed-sharing"],
-    ["GET", "/api/v1/auth-sessions"],
-    ["DELETE", "/api/v1/auth-sessions/{id}"],
-    ["POST", "/api/v1/auth-sessions/revoke-all"],
-    ["GET", "/api/v1/auth-sessions/apps"],
-    ["DELETE", "/api/v1/auth-sessions/apps/{clientId}"],
-    ["PATCH", "/api/v1/auth-sessions/apps/{clientId}/scopes"],
-  ],
-  today: [
-    ["GET", "/api/v1/today"],
-    ["GET", "/api/v1/today/timeline/{kind}/{id}"],
-  ],
-  training: [
-    // Entreno landing "Rutina" aggregate — live read-model the repo calls.
-    ["GET", "/api/v1/training/routine-dashboard"],
-    // Entreno landing "Sesiones" feed — live read-model behind getSessionFeed.
-    ["GET", "/api/v1/training/sessions-feed"],
-    // "Detalle de sesión" report — live read-model behind getSessionDetailView.
-    ["GET", "/api/v1/sessions/{id}/detail"],
-  ],
-  nutrition: [
-    // Nutrición landing "Plan" aggregate — live read-model behind getDietDashboard.
-    ["GET", "/api/v1/nutrition/diet-dashboard"],
-    // "Dietas" library — curated read-model behind getDietLibrary.
-    ["GET", "/api/v1/nutrition/diet-library"],
-    // "Detalle de dieta" — curated read-model behind getDietDetail.
-    ["GET", "/api/v1/nutrition/diet-detail/{planId}"],
-    // "Detalle de comida" — curated read-model behind getMealDetail.
-    ["GET", "/api/v1/nutrition/meal-detail/{planId}/{mealId}"],
-    // "Detalle de alimento" — curated read-model behind getFoodDetail.
-    ["GET", "/api/v1/nutrition/food-detail/{kind}/{id}"],
-    // "Plan de comidas del día" — curated read-model behind getDietDayPlan.
-    ["GET", "/api/v1/nutrition/diet-day-plan"],
-    // "Diario" — curated read-model behind getDiaryFeed.
-    ["GET", "/api/v1/nutrition/diary-feed"],
-    // "Detalle de día del diario" — curated read-model behind getDiaryDay.
-    ["GET", "/api/v1/nutrition/diary-day/{date}"],
-    // "Alimentos" — curated read-model behind getFoodLibrary.
-    ["GET", "/api/v1/nutrition/food-library"],
-  ],
-  onboarding: [
-    ["GET", "/api/v1/users/me"],
-    ["GET", "/api/v1/users/check-username/{username}"],
-    ["POST", "/api/v1/users/onboard"],
-  ],
-  program: [
-    // "Programas" library — composed ProgramOverview read-model behind listPrograms.
-    ["GET", "/api/v1/programs"],
-    // Active program (Hoy slot target) — behind getActiveProgram.
-    ["GET", "/api/v1/programs/active"],
-    // "Detalle de programa" overview — behind getProgram.
-    ["GET", "/api/v1/programs/{id}"],
-    // Unified adherence (ring + sub-bars) — behind getProgramAdherence.
-    ["GET", "/api/v1/programs/{id}/adherence"],
-  ],
-  progress: [
-    // "Progreso" madre (Resumen + Métricas) — behind getOverview.
-    ["GET", "/api/v1/progress"],
-    // Lente Historial (Cinta / Carrete) — behind getHistory.
-    ["GET", "/api/v1/progress/history"],
-    // "Detalle de medida" (6 body/activity metrics) — behind getMeasure.
-    ["GET", "/api/v1/progress/measure/{metric}"],
-    // "Detalle de ejercicio" (tab Progreso) — behind getExerciseDetail.
-    ["GET", "/api/v1/progress/exercise/{slug}"],
-  ],
-};
-
-const ROWS: [string, string, string][] = Object.entries(ENDPOINTS).flatMap(
-  ([module, eps]) =>
-    eps.map(
-      ([method, path]) => [module, method, path] as [string, string, string]
-    )
-);
+const ROWS = flattenContractEndpoints();
 
 const describeIfContract = spec ? describe : describe.skip;
 

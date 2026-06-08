@@ -39,6 +39,7 @@ describe("SettingsScreen (hub)", () => {
     const container = createMockContainer({ signOut: { execute } });
 
     const { getByTestId } = renderWithProviders(<SettingsScreen />, { container });
+    await waitFor(() => expect(container.getCurrentUser.execute).toHaveBeenCalled());
     fireEvent.press(getByTestId("sign-out"));
 
     await waitFor(() => expect(execute).toHaveBeenCalled());
@@ -47,35 +48,41 @@ describe("SettingsScreen (hub)", () => {
     await waitFor(() => expect(mockReplace).toHaveBeenCalledWith("/(auth)/login"));
   });
 
-  it("switches language via the toggle and persists it", () => {
+  it("switches language via the toggle and persists it", async () => {
     const setStoredLanguage = jest.fn().mockResolvedValue(undefined);
     const container = createMockContainer({ languagePreference: { setStoredLanguage } });
 
     const { getByTestId } = renderWithProviders(<SettingsScreen />, { container });
+    await waitFor(() => expect(container.getCurrentUser.execute).toHaveBeenCalled());
     fireEvent.press(getByTestId("language-es"));
 
     expect(mockChangeLanguage).toHaveBeenCalledWith("es");
     expect(setStoredLanguage).toHaveBeenCalledWith("es");
   });
 
-  it("navigates back from the header", () => {
-    const { getByTestId } = renderWithProviders(<SettingsScreen />);
+  it("navigates back from the header", async () => {
+    const container = createMockContainer();
+    const { getByTestId } = renderWithProviders(<SettingsScreen />, { container });
+    await waitFor(() => expect(container.getCurrentUser.execute).toHaveBeenCalled());
     fireEvent.press(getByTestId("settings-back"));
     expect(mockBack).toHaveBeenCalled();
   });
 
-  it("navigates to subscreens from the nav rows", () => {
-    const { getByTestId } = renderWithProviders(<SettingsScreen />);
+  it("navigates to subscreens from the nav rows", async () => {
+    const container = createMockContainer();
+    const { getByTestId } = renderWithProviders(<SettingsScreen />, { container });
+    await waitFor(() => expect(container.getCurrentUser.execute).toHaveBeenCalled());
     fireEvent.press(getByTestId("nav-account"));
     expect(mockPush).toHaveBeenCalledWith("/settings/account");
     fireEvent.press(getByTestId("nav-personal"));
     expect(mockPush).toHaveBeenCalledWith("/settings/personal");
   });
 
-  it("shows the app version from the DI appInfo service", () => {
+  it("shows the app version from the DI appInfo service", async () => {
     const container = createMockContainer({ appInfo: { version: "9.9.9" } });
 
     const { getByText } = renderWithProviders(<SettingsScreen />, { container });
+    await waitFor(() => expect(container.getCurrentUser.execute).toHaveBeenCalled());
     expect(getByText("9.9.9")).toBeTruthy();
   });
 });

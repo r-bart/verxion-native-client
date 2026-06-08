@@ -82,8 +82,8 @@ domain  ←  application  ←  infrastructure
 | `domain/` | Nothing. Only standard library types and `@verxion/shared` response types |
 | `application/` | `domain/` (ports, models) |
 | `infrastructure/` | `domain/` (to implement ports), `application/` (to wire UCs in container) |
-| `presentation/` | `domain/` (types only), `infrastructure/di/` (useDI hook only) |
-| `app/` (routes) | `presentation/` (screens only) |
+| `presentation/` | `domain/` (types, immutable constants, pure domain errors), `infrastructure/di/DIContext` (useDI hook only) |
+| `app/` (routes) | `presentation/` (screens or app-shell delegators only) |
 
 > **App-shell exception.** The composition root under `presentation/app/`
 > (`AppProvider`, `AppShell`, the `*Stack`/`*Layout` delegators) is where global
@@ -91,6 +91,18 @@ domain  ←  application  ←  infrastructure
 > `infrastructure/di/` directly — e.g. `queryClient`, `DIProvider`,
 > `BottomSheetModalProvider`. This is the only presentation code allowed past the
 > `useDI`-only rule; feature screens/components still go through `useDI`.
+
+> **Cross-cutting DI services exception.** The container may expose a narrow set
+> of non-use-case services so presentation still imports them through `useDI`,
+> never concrete infrastructure modules: `telemetry`, `onboardingDraftStore`,
+> `languagePreference`, `lastAuthProvider`, and `appInfo`. Add new keys only with
+> an explicit architecture note.
+
+> **Fixture exception.** Production `Http*Repository` classes must not serve
+> fixtures. Temporary fixture-backed behavior must live in an explicitly named
+> fixture repository (for example `FixtureTrainingReadModelsRepository`) and be
+> wired through DI/composition so it is visible and easy to remove once the
+> platform endpoint ships.
 
 ### What each layer CANNOT import (violations)
 
@@ -102,6 +114,17 @@ domain  ←  application  ←  infrastructure
 | application → presentation | `import { SomeHook } from '@/presentation'` in a UC | Application doesn't know about UI |
 | presentation → infrastructure (direct) | `import { apiClient } from '@/infrastructure/api'` in a hook | Must go through UC via useDI |
 | app/ → anything except presentation | `import { SomeUseCase } from '@/application'` in a route | Routes only render screens |
+
+## Executable Guardrails
+
+Architecture rules are enforced by `npm run architecture:check`, which is also
+included in `npm run lint`. Repository/contract inventory drift is enforced by
+`npm run contract:coverage`, also included in `npm run lint`.
+
+```bash
+npm run architecture:check
+npm run contract:coverage
+```
 
 ## Use Case Pattern
 

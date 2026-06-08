@@ -1,5 +1,4 @@
-import type { ISettingsPort } from "@/domain/settings";
-import type { AthleteProfile, UpdateProfileInput } from "@/domain/settings";
+import type { ISettingsPort , AthleteProfile, UpdateProfileInput } from "@/domain/settings";
 
 export class UpdateAthleteProfileUseCase {
   constructor(private readonly port: ISettingsPort) {}

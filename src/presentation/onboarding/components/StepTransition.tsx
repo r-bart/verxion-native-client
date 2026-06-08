@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Animated, { Easing, useSharedValue, useAnimatedStyle, withTiming, runOnJS } from "react-native-reanimated";
+import Animated, { Easing, useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
 interface Props {
   /** Changing this key replays the entrance animation. */

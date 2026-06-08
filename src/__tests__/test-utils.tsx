@@ -1,6 +1,22 @@
 import React from "react";
-import { render, renderHook, type RenderOptions } from "@testing-library/react-native";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { act, cleanup, render, renderHook, type RenderOptions } from "@testing-library/react-native";
+import { QueryClient, QueryClientProvider, notifyManager } from "@tanstack/react-query";
+
+notifyManager.setScheduler((callback) => callback());
+notifyManager.setNotifyFunction((callback) => {
+  act(callback);
+});
+
+const testQueryClients = new Set<QueryClient>();
+
+afterEach(() => {
+  cleanup();
+  for (const client of testQueryClients) {
+    client.clear();
+    client.unmount();
+  }
+  testQueryClients.clear();
+});
 
 // Create a mock container factory with sensible defaults
 export function createMockContainer(overrides: Partial<Record<string, any>> = {}) {
@@ -184,12 +200,14 @@ export function createMockContainer(overrides: Partial<Record<string, any>> = {}
 }
 
 export function createTestQueryClient() {
-  return new QueryClient({
+  const client = new QueryClient({
     defaultOptions: {
       queries: { retry: false, gcTime: 0 },
       mutations: { retry: false },
     },
   });
+  testQueryClients.add(client);
+  return client;
 }
 
 // Mock the DIContext module so we can inject any container

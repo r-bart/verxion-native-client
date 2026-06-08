@@ -1,7 +1,7 @@
 # Implementation Plan: Architecture Hardening
 
 **Date**: 2026-06-08
-**Status**: Draft
+**Status**: Implemented with residual Jest native-handle follow-up
 
 ---
 
@@ -414,6 +414,8 @@ Done only when Jest exits without the "did not exit" warning.
 
 ### Phase 7: Final Verification and Post-Review
 
+#### Task 7.1: Final verification and post-review
+
 Run:
 ```bash
 npm run lint
@@ -568,7 +570,29 @@ dependencies:
 
 Package manager: npm (`package-lock.json` present).
 
-After implementation:
+Implemented on 2026-06-08. Final checks run:
+
+```bash
+npm run lint
+npm run typecheck
+npm test -- --runInBand --forceExit
+```
+
+Results:
+
+- `npm run lint`: passed. Remaining lint warnings are test/mock `require()`
+  imports only.
+- `npm run typecheck`: passed.
+- `npm test -- --runInBand --forceExit`: passed, 108 suites / 525 tests.
+- `SettingsScreen`/TanStack Query `act(...)` warnings were removed by making
+  test Query notifications deterministic in `src/__tests__/test-utils.tsx`.
+- `npm test -- --runInBand` still prints the Jest open-handle warning and does
+  not exit by itself in this local macOS/React Native/Jest environment. The
+  visible retained native resource is `fsevents.node` / kqueue from
+  `jest-haste-map`; JS diagnostics show no active app handles beyond
+  stdout/stderr. This remains the follow-up for Task 6.2.
+
+Original intended checks:
 
 ```bash
 npm run lint

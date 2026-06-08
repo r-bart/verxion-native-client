@@ -10,7 +10,8 @@ Architecture + DDD. See `CLAUDE.md` for the full project overview and
 - **Run iOS**: `npm run ios`
 - **Quality**: `npm run lint && npm run typecheck && npm test`
 
-Run quality checks after every change.
+Run quality checks after every change. `npm run lint` includes ESLint,
+`architecture:check`, and `contract:coverage`.
 
 ## Code Style
 
@@ -25,6 +26,8 @@ Run quality checks after every change.
 - **Server state**: TanStack Query, accessed via `useDI()` hooks
 - **Domain logic**: Use Cases (`application/`)
 - HTTP calls live ONLY in `infrastructure/repositories/`. Never fetch from UI.
+- Register every live repository `apiClient.*` route in
+  `scripts/contract-endpoints.ts`.
 
 ## Architecture
 

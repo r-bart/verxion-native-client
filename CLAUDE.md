@@ -40,7 +40,9 @@ app/               # Expo Router route files (3-5 lines: import screen, default 
 - **domain** imports nothing
 - **application** imports domain ports/models only
 - **presentation** accesses use cases via `useDI()` — never imports repos or `apiClient`
-- **app/** imports only from `presentation/` (screens)
+- **app/** imports only from `presentation/` screens/app-shell delegators
+- `npm run architecture:check` enforces these boundaries; it is included in
+  `npm run lint`.
 
 ### Data flow
 
@@ -76,6 +78,10 @@ Every operation (read or write) flows through a Use Case. No shortcuts.
 - Auth via a Better Auth session cookie (stored in `expo-secure-store`); use
   `getCookie()` from `@better-auth/expo` for the auth header.
 - HTTP calls live ONLY in `infrastructure/repositories/` — nowhere else.
+- Every live `apiClient.*` repository route must be registered in
+  `scripts/contract-endpoints.ts`; `npm run contract:coverage` enforces the
+  registry and `contractDrift.test.ts` validates it against the sibling
+  platform contract when available.
 
 ### UI components
 - react-native-reusables (shadcn for RN): Card, Badge, Button, Skeleton, Tabs,
@@ -110,7 +116,9 @@ Every operation (read or write) flows through a Use Case. No shortcuts.
 ## Quality checks
 
 ```bash
-npm run lint        # ESLint
+npm run lint        # ESLint + architecture/contract guardrails
+npm run architecture:check  # focused layer-boundary scan
+npm run contract:coverage   # repository route ↔ contract registry scan
 npm run typecheck   # tsc — app (tsconfig.json) + tests/scripts (tsconfig.test.json)
 npm test            # Jest
 npx expo start      # dev server

@@ -1,5 +1,4 @@
-import type { ISettingsPort } from "@/domain/settings";
-import type { AthleteProfile, AvatarFile } from "@/domain/settings";
+import type { ISettingsPort , AthleteProfile, AvatarFile } from "@/domain/settings";
 
 export class UploadAvatarUseCase {
   constructor(private readonly port: ISettingsPort) {}

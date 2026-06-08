@@ -1,5 +1,4 @@
-import type { ISettingsPort } from "@/domain/settings";
-import type { RevokeAllSessionsResult } from "@/domain/settings";
+import type { ISettingsPort , RevokeAllSessionsResult } from "@/domain/settings";
 
 export class RevokeAllSessionsUseCase {
   constructor(private readonly port: ISettingsPort) {}

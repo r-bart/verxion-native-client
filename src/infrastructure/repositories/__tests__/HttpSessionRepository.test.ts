@@ -1,6 +1,6 @@
 import { HttpSessionRepository } from "../HttpSessionRepository";
 import { apiClient } from "../../api/apiClient";
-import type { Session, LiveSessionProgress } from "@/domain/sessions/models/Session";
+import type { Session } from "@/domain/sessions/models/Session";
 
 jest.mock("../../api/apiClient", () => ({
   apiClient: {

@@ -1,4 +1,3 @@
-import type { ITrainingPort } from "@/domain/training/ports/ITrainingPort";
 import type {
   Routine,
   RoutineDetail,
@@ -15,22 +14,14 @@ import type {
   SessionFeedPage,
   SessionFeedParams,
 } from "@/domain/training/models/SessionFeed";
-import type { ExerciseLibrary } from "@/domain/training/models/ExerciseLibrary";
-import type { RoutineLibrary } from "@/domain/training/models/RoutineLibrary";
-import type { RoutineDetailView } from "@/domain/training/models/RoutineDetailView";
-import type { DayDetailView } from "@/domain/training/models/DayDetailView";
 import type { SessionDetailView } from "@/domain/training/models/SessionDetailView";
-import { exerciseLibraryFixture } from "@/domain/training/__fixtures__/exerciseLibraryFixture";
-import { routineLibraryFixture } from "@/domain/training/__fixtures__/routineLibraryFixture";
-import { routineDetailFixtureFor } from "@/domain/training/__fixtures__/routineDetailFixture";
-import { dayDetailFixtureFor } from "@/domain/training/__fixtures__/dayDetailFixture";
 import { apiClient, ApiError } from "../api/apiClient";
 import {
   mapSessionDetail,
   type WorkoutSessionDetailDTO,
 } from "./mappers/sessionDetailMapper";
 
-export class HttpTrainingRepository implements ITrainingPort {
+export class HttpTrainingRepository {
   /**
    * Entreno landing "Rutina" aggregate — live read-model
    * (`GET /api/v1/training/routine-dashboard`, shipped to staging). The
@@ -62,48 +53,6 @@ export class HttpTrainingRepository implements ITrainingPort {
     // No params → pass undefined (not {}) so the URL has no trailing "?".
     const qs = Object.keys(query).length > 0 ? query : undefined;
     return apiClient.get<SessionFeedPage>("/training/sessions-feed", qs);
-  }
-
-  /**
-   * Entreno landing "Ejercicios" library — proposed platform read-model.
-   * STUB until `GET /training/exercise-library` ships; then swap for:
-   *   `return apiClient.get<ExerciseLibrary>("/training/exercise-library");`
-   */
-  async getExerciseLibrary(): Promise<ExerciseLibrary> {
-    return exerciseLibraryFixture;
-  }
-
-  /**
-   * "Todas las rutinas" library — proposed platform read-model.
-   * STUB until `GET /training/routine-library` ships; then swap for:
-   *   `return apiClient.get<RoutineLibrary>("/training/routine-library");`
-   * The backend composes this from the raw routine list (see `getRoutines`),
-   * enriching each with the per-block week/adherence/score the screen renders.
-   */
-  async getRoutineLibrary(): Promise<RoutineLibrary> {
-    return routineLibraryFixture;
-  }
-
-  /**
-   * "Detalle de rutina" aggregate — proposed platform read-model.
-   * STUB until `GET /training/routines/{id}/detail` ships; then swap for:
-   *   `return apiClient.get<RoutineDetailView>(`/training/routines/${id}/detail`);`
-   * The backend composes it from the raw routine + days + per-day exercise counts
-   * (see `getRoutineDetail` / `getWorkoutDayExercises`).
-   */
-  async getRoutineDetailView(id: string): Promise<RoutineDetailView> {
-    return routineDetailFixtureFor(id);
-  }
-
-  /**
-   * "Detalle de día" aggregate — proposed platform read-model.
-   * STUB until `GET /training/days/{id}/detail` ships; then swap for:
-   *   `return apiClient.get<DayDetailView>(`/training/days/${dayId}/detail`);`
-   * The backend composes it from the workout day's exercises + each exercise's
-   * last logged set (see `getWorkoutDayExercises`).
-   */
-  async getDayDetailView(dayId: string): Promise<DayDetailView> {
-    return dayDetailFixtureFor(dayId);
   }
 
   /**

@@ -2,7 +2,6 @@ import { HttpTrainingRepository } from "../HttpTrainingRepository";
 import { apiClient } from "../../api/apiClient";
 import { routineDashboardFixture } from "@/domain/training/__fixtures__/routineDashboardFixture";
 import { sessionFeedFixture } from "@/domain/training/__fixtures__/sessionFeedFixture";
-import { exerciseLibraryFixture } from "@/domain/training/__fixtures__/exerciseLibraryFixture";
 
 jest.mock("../../api/apiClient", () => ({
   apiClient: { get: jest.fn() },
@@ -119,15 +118,6 @@ describe("HttpTrainingRepository", () => {
         "/training/sessions-feed",
         undefined
       );
-    });
-  });
-
-  describe("getExerciseLibrary", () => {
-    it("returns the exercise library (stub of the proposed endpoint)", async () => {
-      const result = await repo.getExerciseLibrary();
-      expect(result).toBe(exerciseLibraryFixture);
-      expect(result.exercises.length).toBeGreaterThan(0);
-      expect(result.facets.groups.length).toBeGreaterThan(0);
     });
   });
 });
