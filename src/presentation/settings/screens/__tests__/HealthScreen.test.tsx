@@ -26,7 +26,7 @@ describe("HealthScreen", () => {
         execute: jest.fn().mockResolvedValue({
           available: true,
           connected: false,
-          metrics: { weight: false, steps: false, water: false },
+          metrics: { weight: false, steps: false, cardio: false },
         }),
       },
     });

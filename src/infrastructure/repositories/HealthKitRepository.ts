@@ -10,7 +10,7 @@ import type { IHealthPort, HealthMetric, HealthStatus } from "@/domain/health";
 const UNAVAILABLE: HealthStatus = {
   available: false,
   connected: false,
-  metrics: { weight: false, steps: false, water: false },
+  metrics: { weight: false, steps: false, cardio: false },
 };
 
 export class HealthKitRepository implements IHealthPort {

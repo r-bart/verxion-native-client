@@ -165,21 +165,21 @@ export function createMockContainer(overrides: Partial<Record<string, any>> = {}
       execute: jest.fn().mockResolvedValue({
         available: false,
         connected: false,
-        metrics: { weight: false, steps: false, water: false },
+        metrics: { weight: false, steps: false, cardio: false },
       }),
     },
     requestHealthAuthorization: {
       execute: jest.fn().mockResolvedValue({
         available: false,
         connected: false,
-        metrics: { weight: false, steps: false, water: false },
+        metrics: { weight: false, steps: false, cardio: false },
       }),
     },
     setHealthMetric: {
       execute: jest.fn().mockResolvedValue({
         available: false,
         connected: false,
-        metrics: { weight: false, steps: false, water: false },
+        metrics: { weight: false, steps: false, cardio: false },
       }),
     },
   };
