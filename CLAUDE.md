@@ -118,6 +118,13 @@ Every operation (read or write) flows through a Use Case. No shortcuts.
 - TypeScript strict, functional components only.
 - Co-locate hooks with features. Screen files are thin (compose components);
   logic lives in hooks. Route files are 3-5 lines.
+- **Navigation (typed routes):** `typedRoutes` is enabled (`app.json`), so do NOT
+  cast static route literals with `as Href` — the cast bypasses route validation
+  and a typo'd path 404s at runtime instead of failing to compile. Let the
+  generated types check them (`router.push("/settings")`, not
+  `router.push("/settings" as Href)`). Reserve `as Href` only for interpolated
+  template-literal targets the generator can't narrow
+  (`` `/workout/dia/${id}` as Href ``).
 - **Reanimated:** update shared values only inside `useEffect` (or worklets),
   never in the render body — a render-body write re-fires the animation on
   every render. Gate pulses/glow behind `useReducedMotion`. (See
