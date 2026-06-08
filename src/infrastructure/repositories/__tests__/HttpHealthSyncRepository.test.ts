@@ -1,5 +1,6 @@
 import { HttpHealthSyncRepository } from "../HttpHealthSyncRepository";
 import { apiClient } from "../../api/apiClient";
+import { ApiError } from "@/domain/_shared/errors";
 import type {
   WeightSample,
   CardioSample,
@@ -89,9 +90,20 @@ describe("HttpHealthSyncRepository", () => {
   });
 
   it("deleteCardioByExternal hits the by-external route with the apple_health source", async () => {
+    mockDel.mockResolvedValue(undefined);
     await repo.deleteCardioByExternal("uuid-c1");
     expect(mockDel).toHaveBeenCalledWith(
       "/activity/cardio/by-external/apple_health/uuid-c1",
     );
+  });
+
+  it("swallows a 404 on delete (already gone — idempotent)", async () => {
+    mockDel.mockRejectedValue(new ApiError("Not found", 404, "NOT_FOUND"));
+    await expect(repo.deleteWeightByExternal("gone")).resolves.toBeUndefined();
+  });
+
+  it("propagates non-404 errors on delete", async () => {
+    mockDel.mockRejectedValue(new ApiError("Server error", 500));
+    await expect(repo.deleteCardioByExternal("x")).rejects.toThrow("Server error");
   });
 });

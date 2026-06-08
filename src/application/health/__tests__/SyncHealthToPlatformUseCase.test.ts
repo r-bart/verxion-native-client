@@ -98,4 +98,60 @@ describe("SyncHealthToPlatformUseCase", () => {
     expect(anchors.set).toHaveBeenCalledWith("weight", "a-new");
     expect(anchors.set).toHaveBeenCalledWith("cardio", "a-new");
   });
+
+  it("isolates a failing metric: weight failure does NOT advance its anchor or starve cardio/steps", async () => {
+    const weight: WeightSample = { externalId: "w1", weightKg: 80, loggedAt: "2026-06-08T07:00:00Z" };
+    const cardio: CardioSample = { externalId: "c1", activityType: "run", durationMinutes: 30, loggedDate: "2026-06-08" };
+    const health = createHealthPort({
+      pullWeightChanges: jest.fn().mockResolvedValue({ samples: [weight], deletedExternalIds: [], newAnchor: "w-anchor" }),
+      pullCardioChanges: jest.fn().mockResolvedValue({ samples: [cardio], deletedExternalIds: [], newAnchor: "c-anchor" }),
+      recomputeDailySteps: jest.fn().mockResolvedValue([{ loggedDate: "2026-06-08", totalSteps: 5000 }]),
+    });
+    const sync = createSyncPort();
+    sync.pushWeight.mockRejectedValueOnce(new Error("422 invalid"));
+    const anchors = createAnchorStore();
+
+    const result = await new SyncHealthToPlatformUseCase(health, sync, anchors).execute("2026-06-08");
+
+    // weight failed → anchor NOT advanced, failure surfaced
+    expect(result.weight).toEqual({ pushed: 0, deleted: 0, failed: 1, anchorAdvanced: false });
+    expect(anchors.set).not.toHaveBeenCalledWith("weight", "w-anchor");
+    // cardio + steps still ran
+    expect(sync.pushCardio).toHaveBeenCalledWith(cardio);
+    expect(anchors.set).toHaveBeenCalledWith("cardio", "c-anchor");
+    expect(sync.upsertSteps).toHaveBeenCalledTimes(1);
+    expect(result.cardio.anchorAdvanced).toBe(true);
+    expect(result.steps).toEqual({ upserted: 1, failed: 0 });
+  });
+
+  it("isolates a failing item within a metric and reports it without advancing the anchor", async () => {
+    const ok: WeightSample = { externalId: "w-ok", weightKg: 80, loggedAt: "2026-06-08T07:00:00Z" };
+    const bad: WeightSample = { externalId: "w-bad", weightKg: -1, loggedAt: "2026-06-08T08:00:00Z" };
+    const health = createHealthPort({
+      pullWeightChanges: jest.fn().mockResolvedValue({ samples: [ok, bad], deletedExternalIds: [], newAnchor: "w-anchor" }),
+    });
+    const sync = createSyncPort();
+    sync.pushWeight.mockImplementation(async (s) => {
+      if (s.externalId === "w-bad") throw new Error("422");
+    });
+    const anchors = createAnchorStore();
+
+    const result = await new SyncHealthToPlatformUseCase(health, sync, anchors).execute("2026-06-08");
+
+    expect(result.weight).toEqual({ pushed: 1, deleted: 0, failed: 1, anchorAdvanced: false });
+    expect(sync.pushWeight).toHaveBeenCalledTimes(2); // the good one was not blocked by the bad one
+    expect(anchors.set).not.toHaveBeenCalledWith("weight", "w-anchor");
+  });
+
+  it("a device read that throws is captured as a failure, not a crash", async () => {
+    const health = createHealthPort({
+      pullWeightChanges: jest.fn().mockRejectedValue(new Error("HealthKit unavailable")),
+    });
+    const anchors = createAnchorStore();
+
+    const result = await new SyncHealthToPlatformUseCase(health, createSyncPort(), anchors).execute("2026-06-08");
+
+    expect(result.weight).toEqual({ pushed: 0, deleted: 0, failed: 1, anchorAdvanced: false });
+    expect(anchors.set).not.toHaveBeenCalledWith("weight", expect.anything());
+  });
 });

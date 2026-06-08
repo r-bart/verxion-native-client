@@ -5,9 +5,16 @@ import type {
   StepsDailyAggregate,
 } from "@/domain/health/models/HealthSync";
 import { apiClient } from "../api/apiClient";
+import { ApiError } from "@/domain/_shared/errors";
 
 /** The native client only ever syncs Apple Health data, so the source is constant. */
 const SOURCE = "apple_health";
+
+/** A delete is idempotent: if the row is already gone (404), the goal is met. */
+function ignore404(error: unknown): void {
+  if (error instanceof ApiError && error.status === 404) return;
+  throw error;
+}
 
 /**
  * Pushes Apple Health samples to the platform ingestion routes. Weight/cardio are
@@ -54,14 +61,23 @@ export class HttpHealthSyncRepository implements IHealthSyncPort {
   }
 
   async deleteWeightByExternal(externalId: string): Promise<void> {
-    await apiClient.del(
-      `/measurements/weight/by-external/${SOURCE}/${encodeURIComponent(externalId)}`,
-    );
+    // Literal kept at the call site so the contract-coverage scanner sees the route.
+    try {
+      await apiClient.del(
+        `/measurements/weight/by-external/${SOURCE}/${encodeURIComponent(externalId)}`,
+      );
+    } catch (error) {
+      ignore404(error);
+    }
   }
 
   async deleteCardioByExternal(externalId: string): Promise<void> {
-    await apiClient.del(
-      `/activity/cardio/by-external/${SOURCE}/${encodeURIComponent(externalId)}`,
-    );
+    try {
+      await apiClient.del(
+        `/activity/cardio/by-external/${SOURCE}/${encodeURIComponent(externalId)}`,
+      );
+    } catch (error) {
+      ignore404(error);
+    }
   }
 }
