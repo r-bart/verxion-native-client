@@ -19,15 +19,27 @@ export type ExerciseMetric = "e1rm" | "volumen";
 
 /**
  * The closed catalog of metric keys the API emits for `metrics[]`, `measure.metric`
- * and `window.key` (contract enum, identical across the three). Body + activity
- * (`peso`…`cardio`) deep-link to a measure detail; nutrition (`kcal`…`nutricion`)
- * deep-link to Nutrición. Strength has no key here — it rides on `strengthPr`.
+ * and `window.key` (contract enum, identical across the three). Body (`peso` + the
+ * 13 perimeter sites) + activity (`pasos`/`cardio`) deep-link to a measure detail;
+ * nutrition (`kcal`…`nutricion`) deep-links to Nutrición. Strength has no key here
+ * — it rides on `strengthPr`. The 13 perimeter keys are `MeasurementType.rawValue`
+ * (English, each side independent); they replaced the prior `cintura/cadera/brazo`.
  */
 export type MetricKey =
   | "peso"
-  | "cintura"
-  | "cadera"
-  | "brazo"
+  | "waist"
+  | "hips"
+  | "chest"
+  | "shoulders"
+  | "neck"
+  | "bicep_right"
+  | "bicep_left"
+  | "forearm_right"
+  | "forearm_left"
+  | "thigh_right"
+  | "thigh_left"
+  | "calf_right"
+  | "calf_left"
   | "pasos"
   | "cardio"
   | "kcal"

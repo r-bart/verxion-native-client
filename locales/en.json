@@ -502,7 +502,8 @@
         "metricsTitle": "Sync metrics",
         "weight": "Weight",
         "steps": "Steps",
-        "cardio": "Cardio"
+        "cardio": "Cardio",
+        "syncNow": "Sync now"
       },
       "notifications": {
         "title": "Notifications",
@@ -717,9 +718,19 @@
     },
     "metrics": {
       "peso": "Weight",
-      "cintura": "Waist",
-      "cadera": "Hips",
-      "brazo": "Arm",
+      "waist": "Waist",
+      "hips": "Hips",
+      "chest": "Chest",
+      "shoulders": "Shoulders",
+      "neck": "Neck",
+      "bicep_right": "Bicep R.",
+      "bicep_left": "Bicep L.",
+      "forearm_right": "Forearm R.",
+      "forearm_left": "Forearm L.",
+      "thigh_right": "Thigh R.",
+      "thigh_left": "Thigh L.",
+      "calf_right": "Calf R.",
+      "calf_left": "Calf L.",
       "volumen": "Volume",
       "adherencia": "Adherence",
       "nutricion": "Adherence",

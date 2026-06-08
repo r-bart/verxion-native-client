@@ -34,10 +34,14 @@ GET /api/v1/progress/exercise/{slug}      → 200 { data: ProgressExerciseDetail
   `/progress/measure/{metric}`, ni `?metric=` (e1rm|volumen) en
   `/progress/exercise/{slug}` — pese a que los read-models devuelven esos campos.
   **Es el fix que backend ya tiene en marcha.**
-- **Catálogo de `{metric}`** (del handoff §7, no enumerado en el contrato):
-  `peso · cintura · cadera · brazo · pasos · cardio` (6, cuerpo + actividad).
-  Las métricas de entreno/nutrición del inventario **no** tienen detalle de
-  medida: deep-linkean a Entreno / Nutrición.
+- **Catálogo de `{metric}`** (enum del contrato `ProgressMeasureDetail.metric`,
+  idéntico a `metrics[].key` y `window.key`): `peso · waist · hips · chest ·
+  shoulders · neck · bicep_right · bicep_left · forearm_right · forearm_left ·
+  thigh_right · thigh_left · calf_right · calf_left · pasos · cardio` (cuerpo +
+  actividad). Los 13 perímetros son `MeasurementType.rawValue` (inglés, cada lado
+  independiente) y reemplazaron a los antiguos `cintura/cadera/brazo`. Las
+  métricas de entreno/nutrición del inventario **no** tienen detalle de medida:
+  deep-linkean a Entreno / Nutrición.
 - **`{slug}`** se alcanza desde `strengthPr.slug`, `prMarks[].slug` e hitos PR.
 
 ---
@@ -208,7 +212,9 @@ semántica que Hoy/diet-dashboard (`diet-dashboard-state-semantics`).
 
 ## 4. Preguntas del review que el handoff YA resuelve
 
-- **Catálogo de `metric`** → `peso, cintura, cadera, brazo, pasos, cardio` (6).
+- **Catálogo de `metric`** → `peso` + 13 perímetros (`waist, hips, chest,
+  shoulders, neck, bicep_right, bicep_left, forearm_right, forearm_left,
+  thigh_right, thigh_left, calf_right, calf_left`) + `pasos, cardio`.
 - **Valores de `period`** → coinciden con el contrato (medida `mes/trim/ano`;
   overview `semana/mes/trim/sem6/ano`).
 - **Origen de `slug`** → `strengthPr.slug`, `prMarks[].slug`, hitos PR.

@@ -50,8 +50,8 @@ describe("HttpProgressRepository", () => {
     });
 
     it("omits the param when period is undefined and encodes the metric", async () => {
-      await repo.getMeasure("cintura");
-      expect(mockGet).toHaveBeenCalledWith("/progress/measure/cintura", undefined);
+      await repo.getMeasure("waist");
+      expect(mockGet).toHaveBeenCalledWith("/progress/measure/waist", undefined);
     });
   });
 

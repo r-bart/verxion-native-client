@@ -29,13 +29,21 @@ export function MetricasView({
   const insets = useSafeAreaInsets();
   const [openKey, setOpenKey] = useState<string | null>(null);
   const GUTTER = 10;
-  const cardW = width - 32;
-  const colW = (cardW - GUTTER) / 2;
+  const chartW = width - 32; // full content width for the expand chart (Skia needs px)
 
   const byGroup = METRIC_GROUP_ORDER.map((group) => ({
     group,
     metrics: overview.metrics.filter((m) => metricVisual(m.key).group === group),
   })).filter((g) => g.metrics.length > 0);
+
+  // Chunk a group's metrics into rows of two. Each tile lives in a `flex:1` cell
+  // so columns are exact halves regardless of content; a lone trailing card gets
+  // a single-cell row and fills the full width.
+  const rowsOf = <T,>(items: T[]): T[][] => {
+    const rows: T[][] = [];
+    for (let i = 0; i < items.length; i += 2) rows.push(items.slice(i, i + 2));
+    return rows;
+  };
 
   return (
     <ScrollView
@@ -49,25 +57,25 @@ export function MetricasView({
             <Text style={{ fontFamily: mono(500), fontSize: 11, letterSpacing: 0.6, color: glass.ink3, paddingHorizontal: 4 }}>
               {t(`progress.metricas.groups.${group as MetricGroup}`).toUpperCase()}
             </Text>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: GUTTER }}>
-              {metrics.map((m, i) => {
-                // A lone trailing card in an odd group spans the full row.
-                const isLastOdd = i === metrics.length - 1 && metrics.length % 2 === 1;
-                return (
-                  <MetricInventoryCard
-                    key={m.key}
-                    metric={m}
-                    width={isLastOdd ? cardW : colW}
-                    open={openKey === m.key}
-                    onToggle={() => setOpenKey((cur) => (cur === m.key ? null : m.key))}
-                  />
-                );
-              })}
+            <View style={{ gap: GUTTER }}>
+              {rowsOf(metrics).map((row) => (
+                <View key={row[0].key} style={{ flexDirection: "row", gap: GUTTER }}>
+                  {row.map((m) => (
+                    <View key={m.key} style={{ flex: 1, minWidth: 0 }}>
+                      <MetricInventoryCard
+                        metric={m}
+                        open={openKey === m.key}
+                        onToggle={() => setOpenKey((cur) => (cur === m.key ? null : m.key))}
+                      />
+                    </View>
+                  ))}
+                </View>
+              ))}
             </View>
             {openMetric && (
               <MetricExpand
                 metric={openMetric}
-                width={cardW}
+                width={chartW}
                 onOpenDetail={onOpenMeasure ? () => onOpenMeasure(openMetric.key) : undefined}
               />
             )}

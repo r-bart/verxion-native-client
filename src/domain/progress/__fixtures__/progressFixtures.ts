@@ -51,9 +51,10 @@ function metric(
 }
 
 const pesoSpark = ramp(83.6, 82.4, 12);
-const cinturaSpark = ramp(84.0, 81.5, 12);
-const caderaSpark = ramp(99.7, 98.5, 12);
-const brazoSpark = ramp(38.8, 39.2, 12);
+const waistSpark = ramp(84.0, 81.5, 12);
+const hipsSpark = ramp(99.7, 98.5, 12);
+const bicepRightSpark = ramp(38.8, 39.2, 12);
+const bicepLeftSpark = ramp(38.6, 39.0, 12);
 const proteinaSpark = ramp(172, 181, 12, 0);
 const pasosSpark = ramp(7600, 8214, 12, 0);
 const cardioSpark = ramp(75, 95, 12, 0);
@@ -62,9 +63,12 @@ export const progressOverviewFixture: ProgressOverview = {
   period: "mes",
   metrics: [
     metric("peso", pesoSpark, { unit: "kg", dec: 1, goodDown: true, goal: 79 }),
-    metric("cintura", cinturaSpark, { unit: "cm", dec: 1, goodDown: true, goal: null }),
-    metric("cadera", caderaSpark, { unit: "cm", dec: 1, goodDown: true, goal: null }),
-    metric("brazo", brazoSpark, { unit: "cm", dec: 1, goodDown: false, goal: null }),
+    // Perimeter sites: server sets goodDown (waist/hips → true; limbs → false).
+    // bicep_right/bicep_left arrive adjacent so the 2-col grid pairs der./izq.
+    metric("waist", waistSpark, { unit: "cm", dec: 1, goodDown: true, goal: null }),
+    metric("hips", hipsSpark, { unit: "cm", dec: 1, goodDown: true, goal: null }),
+    metric("bicep_right", bicepRightSpark, { unit: "cm", dec: 1, goodDown: false, goal: null }),
+    metric("bicep_left", bicepLeftSpark, { unit: "cm", dec: 1, goodDown: false, goal: null }),
     metric("proteina", proteinaSpark, { unit: "g", dec: 0, goodDown: false, goal: 180 }),
     metric("pasos", pasosSpark, { unit: "", dec: 0, goodDown: false, goal: 10000 }),
     metric("cardio", cardioSpark, { unit: "min", dec: 0, goodDown: false, goal: null }),

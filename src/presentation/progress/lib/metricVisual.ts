@@ -44,11 +44,31 @@ export const TONE_COLOR: Record<DomainTone, { ink: string; tint: string }> = {
 
 type MetricVisual = { icon: LucideIcon; tone: DomainTone; measure: boolean; group: MetricGroup };
 
+// The 13 perimeter sites the API emits (MeasurementType.rawValue): each side is
+// an independent row, all mapped to the BODY group with a measure-detail subpage
+// (`/progress/measure/{site}`, identity). The contract order pairs right/left
+// adjacent, so the 2-col grid lands der./izq. on the same row automatically.
+const PERIMETER_SITES = [
+  "waist",
+  "hips",
+  "chest",
+  "shoulders",
+  "neck",
+  "bicep_right",
+  "bicep_left",
+  "forearm_right",
+  "forearm_left",
+  "thigh_right",
+  "thigh_left",
+  "calf_right",
+  "calf_left",
+] as const;
+
+const PERIMETER_VISUAL: MetricVisual = { icon: Ruler, tone: "neutral", measure: true, group: "cuerpo" };
+
 const REGISTRY: Record<string, MetricVisual> = {
   peso: { icon: Scale, tone: "body", measure: true, group: "cuerpo" },
-  cintura: { icon: Ruler, tone: "neutral", measure: true, group: "cuerpo" },
-  cadera: { icon: Ruler, tone: "neutral", measure: true, group: "cuerpo" },
-  brazo: { icon: Ruler, tone: "neutral", measure: true, group: "cuerpo" },
+  ...Object.fromEntries(PERIMETER_SITES.map((site) => [site, PERIMETER_VISUAL])),
   pasos: { icon: Footprints, tone: "neutral", measure: true, group: "actividad" },
   cardio: { icon: HeartPulse, tone: "health", measure: true, group: "actividad" },
   volumen: { icon: Dumbbell, tone: "lava", measure: false, group: "entrenamiento" },

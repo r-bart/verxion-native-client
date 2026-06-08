@@ -39,7 +39,7 @@ describe("MetricasView", () => {
     );
 
     fireEvent.press(getByTestId("metric-card-peso"));
-    fireEvent.press(getByTestId("metric-card-cintura"));
+    fireEvent.press(getByTestId("metric-card-waist"));
     // Only one MetricExpand mounted → its stats label (uppercased) appears once.
     expect(getAllByText("PROGRESS.MEASURE.MAX").length).toBe(1);
   });
