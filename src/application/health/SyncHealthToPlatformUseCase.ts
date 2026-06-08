@@ -1,33 +1,16 @@
 import type { IHealthPort } from "@/domain/health/ports/IHealthPort";
 import type { IHealthSyncPort } from "@/domain/health/ports/IHealthSyncPort";
 import type { IHealthAnchorStore } from "@/domain/health/ports/IHealthAnchorStore";
-import type { HealthChangeSet, SyncMetric } from "@/domain/health/models/HealthSync";
+import type {
+  HealthChangeSet,
+  SyncMetric,
+  AnchoredOutcome,
+  StepsOutcome,
+  SyncResult,
+} from "@/domain/health/models/HealthSync";
 
 /** Days re-walked for steps each cycle, to catch late-arriving Watch samples (spec §0.5). */
 const STEPS_DRAG_DAYS = 7;
-
-/** Outcome of syncing one anchored metric (weight/cardio). */
-export interface AnchoredOutcome {
-  pushed: number;
-  deleted: number;
-  failed: number;
-  /** Anchor only advances when the whole delta succeeded, so failures retry next cycle. */
-  anchorAdvanced: boolean;
-}
-
-/** Outcome of the steps recompute→upsert pass. */
-export interface StepsOutcome {
-  upserted: number;
-  failed: number;
-}
-
-/** Structured result so the (Phase 5) background trigger can emit telemetry — the UC
- *  stays free of an infrastructure telemetry dependency. */
-export interface SyncResult {
-  weight: AnchoredOutcome;
-  cardio: AnchoredOutcome;
-  steps: StepsOutcome;
-}
 
 /** `YYYY-MM-DD` minus N days, in UTC. Input is the device-local `today` date.
  *  A slightly wide window is harmless: the platform upserts steps by date. */

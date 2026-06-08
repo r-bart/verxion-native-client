@@ -62,3 +62,27 @@ export interface HealthChangeSet<TSample> {
   /** Opaque cursor to persist and pass back on the next read. */
   newAnchor: string;
 }
+
+// ── Sync run results (observability seam: the trigger logs these) ────────────
+
+/** Outcome of syncing one anchored metric (weight/cardio). */
+export interface AnchoredOutcome {
+  pushed: number;
+  deleted: number;
+  failed: number;
+  /** Anchor only advances when the whole delta succeeded, so failures retry next cycle. */
+  anchorAdvanced: boolean;
+}
+
+/** Outcome of the steps recompute→upsert pass. */
+export interface StepsOutcome {
+  upserted: number;
+  failed: number;
+}
+
+/** Full result of a sync run, returned by SyncHealthToPlatformUseCase. */
+export interface SyncResult {
+  weight: AnchoredOutcome;
+  cardio: AnchoredOutcome;
+  steps: StepsOutcome;
+}

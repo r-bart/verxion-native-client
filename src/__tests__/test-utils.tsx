@@ -182,6 +182,13 @@ export function createMockContainer(overrides: Partial<Record<string, any>> = {}
         metrics: { weight: false, steps: false, cardio: false },
       }),
     },
+    syncHealthToPlatform: {
+      execute: jest.fn().mockResolvedValue({
+        weight: { pushed: 0, deleted: 0, failed: 0, anchorAdvanced: true },
+        cardio: { pushed: 0, deleted: 0, failed: 0, anchorAdvanced: true },
+        steps: { upserted: 0, failed: 0 },
+      }),
+    },
   };
   // Cross-cutting services (not use-cases) and static config.
   const services: Record<string, any> = {

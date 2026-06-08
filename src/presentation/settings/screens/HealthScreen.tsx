@@ -10,6 +10,7 @@ import {
   useHealthStatus,
   useRequestHealthAuthorization,
   useSetHealthMetric,
+  useSyncHealth,
 } from "../hooks/useHealth";
 import { glass } from "@/presentation/_shared/design/glass";
 import { sans, mono } from "@/presentation/_shared/design/fonts";
@@ -19,6 +20,7 @@ export function HealthScreen() {
   const status = useHealthStatus();
   const authorize = useRequestHealthAuthorization();
   const setMetric = useSetHealthMetric();
+  const syncNow = useSyncHealth();
 
   if (status.isLoading || !status.data) {
     return <SettingsSkeleton title={t("settings.screens.health.title")} variant="list" />;
@@ -84,6 +86,17 @@ export function HealthScreen() {
                 </View>
               ))}
             </SettingsSection>
+          )}
+
+          {connected && (
+            <View style={{ alignSelf: "flex-start", marginTop: 4 }}>
+              <OnboardingButton
+                label={t("settings.screens.health.syncNow")}
+                loading={syncNow.isPending}
+                onPress={() => syncNow.mutate()}
+                testID="health-sync-now"
+              />
+            </View>
           )}
         </>
       )}

@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import { AuthGuard } from "@/presentation/auth/components/AuthGuard";
+import { useHealthAutoSync } from "./useHealthAutoSync";
 
 /**
  * Root navigator. A Stack (not a bare Slot) so screens like Settings can be
@@ -8,6 +9,7 @@ import { AuthGuard } from "@/presentation/auth/components/AuthGuard";
  * their files; AuthGuard drives which group is active.
  */
 export function AppShell() {
+  useHealthAutoSync(); // HealthKit → platform sync on launch / foreground (inert until the native binding)
   return (
     <AuthGuard>
       <Stack screenOptions={{ headerShown: false }}>

@@ -10,4 +10,7 @@ export type {
   CardioSample,
   StepsDailyAggregate,
   HealthChangeSet,
+  AnchoredOutcome,
+  StepsOutcome,
+  SyncResult,
 } from "./models/HealthSync";

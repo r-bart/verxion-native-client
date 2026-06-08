@@ -35,4 +35,20 @@ describe("HealthScreen", () => {
     fireEvent.press(await findByTestId("health-connect"));
     await waitFor(() => expect(c.requestHealthAuthorization.execute).toHaveBeenCalled());
   });
+
+  it("runs a manual sync from the connected state", async () => {
+    const container = createMockContainer({
+      getHealthStatus: {
+        execute: jest.fn().mockResolvedValue({
+          available: true,
+          connected: true,
+          metrics: { weight: true, steps: true, cardio: true },
+        }),
+      },
+    });
+    const { findByTestId, container: c } = renderWithProviders(<HealthScreen />, { container });
+
+    fireEvent.press(await findByTestId("health-sync-now"));
+    await waitFor(() => expect(c.syncHealthToPlatform.execute).toHaveBeenCalled());
+  });
 });
