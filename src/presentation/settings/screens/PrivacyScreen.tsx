@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { View, Text, Pressable, ActivityIndicator } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
 import {
   SHOWCASE_METRICS,
@@ -11,6 +11,7 @@ import {
   type ShowcaseMetric,
 } from "@/domain/settings";
 import { SettingsScaffold } from "../components/SettingsScaffold";
+import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { SettingsSection } from "../components/SettingsSection";
 import { SettingsRow } from "../components/SettingsRow";
 import { Toggle } from "../components/Toggle";
@@ -32,11 +33,7 @@ export function PrivacyScreen() {
   const feedQuery = useFeedSharing();
 
   if (profileQuery.isLoading || feedQuery.isLoading || !profileQuery.data || !feedQuery.data) {
-    return (
-      <SettingsScaffold title={t("settings.screens.privacy.title")}>
-        <ActivityIndicator color={glass.lava} style={{ marginTop: 24 }} />
-      </SettingsScaffold>
-    );
+    return <SettingsSkeleton title={t("settings.screens.privacy.title")} variant="form" />;
   }
 
   const seedKey = `${JSON.stringify(profileQuery.data.sectionVisibility)}|${profileQuery.data.showcaseMetrics.join(",")}|${profileQuery.data.timelineDetailLevel}|${profileQuery.data.requireFollowApproval}|${JSON.stringify(feedQuery.data)}`;

@@ -1,9 +1,10 @@
-import { View, Text, Switch, ActivityIndicator } from "react-native";
+import { View, Text, Switch } from "react-native";
 import { useTranslation } from "react-i18next";
 import { HEALTH_METRICS } from "@/domain/health";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
 import { OnboardingButton } from "@/presentation/_shared/components/OnboardingButton";
 import { SettingsScaffold } from "../components/SettingsScaffold";
+import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { SettingsSection } from "../components/SettingsSection";
 import {
   useHealthStatus,
@@ -20,11 +21,7 @@ export function HealthScreen() {
   const setMetric = useSetHealthMetric();
 
   if (status.isLoading || !status.data) {
-    return (
-      <SettingsScaffold title={t("settings.screens.health.title")}>
-        <ActivityIndicator color={glass.lava} style={{ marginTop: 24 }} />
-      </SettingsScaffold>
-    );
+    return <SettingsSkeleton title={t("settings.screens.health.title")} variant="list" />;
   }
 
   const { available, connected, metrics } = status.data;

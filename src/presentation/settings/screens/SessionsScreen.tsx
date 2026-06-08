@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import type { AuthSessionItem } from "@/domain/settings";
 import { useSignOut } from "@/presentation/auth/hooks/useSignOut";
@@ -10,6 +10,7 @@ import { formatSessionLabel } from "@/presentation/_shared/lib/sessionLabel";
 import { SettingsScaffold } from "../components/SettingsScaffold";
 import { SettingsSection } from "../components/SettingsSection";
 import { ConfirmDialog } from "../components/ConfirmDialog";
+import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { useAuthSessions } from "../hooks/useAuthSessions";
 import { useRevokeSession } from "../hooks/useRevokeSession";
 import { useRevokeAllSessions } from "../hooks/useRevokeAllSessions";
@@ -95,11 +96,7 @@ export function SessionsScreen() {
   };
 
   if (sessions.isLoading) {
-    return (
-      <SettingsScaffold title={t("settings.screens.sessions.title")}>
-        <ActivityIndicator color={glass.lava} style={{ marginTop: 24 }} />
-      </SettingsScaffold>
-    );
+    return <SettingsSkeleton title={t("settings.screens.sessions.title")} variant="list" />;
   }
 
   const items = sessions.data?.items ?? [];

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, Switch, ActivityIndicator } from "react-native";
+import { View, Text, Switch } from "react-native";
 import { useTranslation } from "react-i18next";
 import { AppWindow } from "lucide-react-native";
 import type { ConnectedApp, ConsentCategory } from "@/domain/settings";
@@ -8,6 +8,7 @@ import { EmptyState } from "@/presentation/_shared/components/EmptyState";
 import { OnboardingButton } from "@/presentation/_shared/components/OnboardingButton";
 import { formatRelativeTime } from "@/presentation/_shared/lib/relativeTime";
 import { SettingsScaffold } from "../components/SettingsScaffold";
+import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { useConnectedApps } from "../hooks/useConnectedApps";
 import { useRevokeConnectedApp } from "../hooks/useRevokeConnectedApp";
@@ -100,11 +101,7 @@ export function ConnectedAppsScreen() {
   const [appToRevoke, setAppToRevoke] = useState<ConnectedApp | null>(null);
 
   if (apps.isLoading) {
-    return (
-      <SettingsScaffold title={t("settings.screens.connectedApps.title")}>
-        <ActivityIndicator color={glass.lava} style={{ marginTop: 24 }} />
-      </SettingsScaffold>
-    );
+    return <SettingsSkeleton title={t("settings.screens.connectedApps.title")} variant="list" />;
   }
 
   const list = apps.data ?? [];

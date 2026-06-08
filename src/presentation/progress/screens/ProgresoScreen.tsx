@@ -7,7 +7,7 @@
  * placeholders pending their own passes. Read-only — every "edit" affordance is a
  * local view-state or a handoff to the agent, never a write.
  */
-import { View, Text, ActivityIndicator, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useRouter, type Href } from "expo-router";
@@ -22,6 +22,7 @@ import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh"
 import { useProgressOverview } from "../hooks/useProgressOverview";
 import { useProgresoSegment } from "../hooks/useProgresoSegment";
 import { ResumenView } from "../components/ResumenView";
+import { ResumenSkeleton } from "../components/ResumenSkeleton";
 import { MetricasView } from "../components/MetricasView";
 import { HistorialView } from "../components/HistorialView";
 
@@ -82,9 +83,7 @@ export function ProgresoScreen() {
         </View>
 
         {isLoading ? (
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <ActivityIndicator color={glass.ink2} />
-          </View>
+          <ResumenSkeleton />
         ) : isError || !overview ? (
           <ProgresoError onRetry={() => refetch()} />
         ) : overview.dataState === "empty" ? (

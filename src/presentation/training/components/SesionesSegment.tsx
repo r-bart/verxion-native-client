@@ -9,7 +9,7 @@ import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { Layers, ChevronDown, ArrowUpDown } from "lucide-react-native";
-import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
 import { glass } from "@/presentation/_shared/design/glass";
@@ -87,7 +87,7 @@ export function SesionesSegment() {
     return (
       <View style={{ paddingHorizontal: 16, gap: 8, paddingTop: 8 }}>
         {Array.from({ length: 6 }).map((_, i) => (
-          <GlassSurface key={i} radius={16} style={{ height: 70 }} />
+          <SkeletonBlock key={i} radius={16} height={70} />
         ))}
       </View>
     );

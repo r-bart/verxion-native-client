@@ -27,6 +27,7 @@ import {
 } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { BottomSheet } from "@/presentation/_shared/components/BottomSheet";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
@@ -387,9 +388,9 @@ export function DietasScreen() {
   if (isLoading) {
     body = (
       <View style={{ gap: 12, paddingTop: 8 }}>
-        <GlassSurface radius={14} style={{ height: 44 }} />
+        <SkeletonBlock radius={14} height={44} />
         {Array.from({ length: 3 }).map((_, i) => (
-          <GlassSurface key={i} radius={20} style={{ height: 150 }} />
+          <SkeletonBlock key={i} radius={20} height={150} />
         ))}
       </View>
     );

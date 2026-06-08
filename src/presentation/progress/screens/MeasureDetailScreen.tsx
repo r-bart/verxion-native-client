@@ -6,7 +6,7 @@
  * logging a measurement is the agent's job, never a write here.
  */
 import { useState } from "react";
-import { View, Text, Pressable, ScrollView, ActivityIndicator, useWindowDimensions } from "react-native";
+import { View, Text, Pressable, ScrollView, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -27,6 +27,7 @@ import { formatValue, formatDelta } from "../lib/format";
 import { MeasureChart } from "../components/MeasureChart";
 import { MeasureRecordRow } from "../components/MeasureRecordRow";
 
+import { MeasureDetailSkeleton } from "../components/MeasureDetailSkeleton";
 const PERIODS: MeasurePeriod[] = ["mes", "trim", "ano"];
 
 function KpiCell({ label, value }: { label: string; value: string }) {
@@ -81,9 +82,7 @@ export function MeasureDetailScreen() {
         </View>
 
         {isLoading ? (
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <ActivityIndicator color={glass.ink2} />
-          </View>
+          <MeasureDetailSkeleton />
         ) : isError || !data ? (
           <View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 14, paddingHorizontal: 32 }}>
             <Text style={{ fontFamily: sans(700), fontSize: 16, color: glass.white, textAlign: "center" }}>

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { View, Text, TextInput, ActivityIndicator } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
 import type { UserAccount, AthleteProfile } from "@/domain/settings";
 import { inputStyle, FieldLabel } from "@/presentation/_shared/components/Field";
 import { useUsernameAvailability } from "@/presentation/_shared/hooks/useUsernameAvailability";
 import { SettingsScaffold } from "../components/SettingsScaffold";
+import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { SaveBar } from "../components/SaveBar";
 import { AvatarField } from "../components/AvatarField";
 import { useAccount } from "../hooks/useAccount";
@@ -24,11 +25,7 @@ export function AccountScreen() {
   const profile = profileQuery.data;
 
   if (profileQuery.isLoading || account.isLoading || !profile || !account.data) {
-    return (
-      <SettingsScaffold title={t("settings.screens.account.title")}>
-        <ActivityIndicator color={glass.lava} style={{ marginTop: 24 }} />
-      </SettingsScaffold>
-    );
+    return <SettingsSkeleton title={t("settings.screens.account.title")} variant="form" />;
   }
 
   // Remount (re-seed) whenever the server values change — e.g. after a save.

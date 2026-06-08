@@ -120,6 +120,14 @@ export function LoginScreen() {
                 apple.mutate();
               }}
             />
+            {apple.isPending && (
+              <View
+                pointerEvents="none"
+                style={[StyleSheet.absoluteFill, { alignItems: "center", justifyContent: "center" }]}
+              >
+                <ActivityIndicator color={tokens.text.primary} />
+              </View>
+            )}
           </View>
 
           <View style={{ position: "relative" }}>

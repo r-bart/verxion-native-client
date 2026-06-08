@@ -7,7 +7,7 @@
  * Read-only: editing the exercise is a request to the agent, never a write.
  */
 import { useState } from "react";
-import { View, Text, Pressable, ScrollView, ActivityIndicator, useWindowDimensions } from "react-native";
+import { View, Text, Pressable, ScrollView, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import { useTranslation } from "react-i18next";
@@ -31,6 +31,7 @@ import { formatNumber, formatValue } from "../lib/format";
 import { MeasureChart } from "../components/MeasureChart";
 import { ExerciseHistoryRow } from "../components/ExerciseHistoryRow";
 import { MuscleBar } from "../components/MuscleBar";
+import { ExerciseDetailSkeleton } from "../components/ExerciseDetailSkeleton";
 
 const PART_TINT: Record<string, { ink: string; tint: string }> = {
   push: { ink: glass.lava, tint: glass.lavaBg },
@@ -112,9 +113,7 @@ export function ExerciseDetailScreen() {
         <Header title={data?.name ?? ""} />
 
         {isLoading ? (
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <ActivityIndicator color={glass.ink2} />
-          </View>
+          <ExerciseDetailSkeleton />
         ) : isError || !data ? (
           <ErrorBox onRetry={() => refetch()} />
         ) : (
@@ -291,11 +290,7 @@ function GuideTab({
   const { t } = useTranslation();
 
   if (loading) {
-    return (
-      <View style={{ paddingTop: 28, alignItems: "center" }}>
-        <ActivityIndicator color={glass.ink2} />
-      </View>
-    );
+    return <ExerciseDetailSkeleton variant="guide" />;
   }
   if (error) return <View style={{ paddingTop: 12 }}><ErrorBox onRetry={onRetry} /></View>;
   if (instructions.length === 0 && !gifUrl) {

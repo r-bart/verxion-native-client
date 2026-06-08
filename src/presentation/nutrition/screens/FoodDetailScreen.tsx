@@ -23,6 +23,7 @@ import {
 } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
 import { Chip } from "@/presentation/_shared/components/Chip";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
@@ -216,8 +217,8 @@ export function FoodDetailScreen() {
   if (isLoading) {
     body = (
       <View style={{ gap: 14, paddingTop: 8 }}>
-        <GlassSurface radius={24} style={{ height: 140 }} />
-        <GlassSurface radius={18} style={{ height: 90 }} />
+        <SkeletonBlock radius={24} height={140} />
+        <SkeletonBlock radius={18} height={90} />
       </View>
     );
   } else if (isError || !data) {

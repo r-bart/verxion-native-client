@@ -22,6 +22,7 @@ import {
 } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
@@ -203,8 +204,8 @@ export function ProgramDetailScreen() {
   if (query.isLoading) {
     body = (
       <View style={{ gap: 14, paddingTop: 8 }}>
-        <GlassSurface radius={22} style={{ height: 230 }} />
-        <GlassSurface radius={20} style={{ height: 190 }} />
+        <SkeletonBlock radius={22} height={230} />
+        <SkeletonBlock radius={20} height={190} />
       </View>
     );
   } else if (query.isError || !program) {

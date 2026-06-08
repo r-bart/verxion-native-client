@@ -4,6 +4,7 @@ import { useRouter, type Href } from "expo-router";
 import { User, Activity, ShieldCheck, AppWindow, Database, LogOut, Lock } from "lucide-react-native";
 import { useDI } from "@/infrastructure/di/DIContext";
 import { useCurrentUser } from "@/presentation/_shared/hooks/useCurrentUser";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { useSignOut } from "@/presentation/auth/hooks/useSignOut";
 import { ProfileCard } from "../components/ProfileCard";
 import { SettingsScaffold } from "../components/SettingsScaffold";
@@ -22,7 +23,7 @@ import { sans, mono } from "@/presentation/_shared/design/fonts";
 export function SettingsScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { data: user } = useCurrentUser();
+  const { data: user, isLoading: userLoading } = useCurrentUser();
   const signOut = useSignOut();
   const { language, setLanguage } = useLanguage();
   const appVersion = useDI((c) => c.appInfo.version);
@@ -37,17 +38,21 @@ export function SettingsScreen() {
 
   return (
     <SettingsScaffold title={t("settings.title")}>
-      <Pressable onPress={go("/settings/account")} accessibilityRole="button" testID="profile-card">
-        {({ pressed }) => (
-          <View style={{ opacity: pressed ? glass.pressOpacity : 1 }}>
-            <ProfileCard
-              name={user?.name ?? null}
-              username={user?.username ?? null}
-              email={user?.email ?? ""}
-            />
-          </View>
-        )}
-      </Pressable>
+      {userLoading && !user ? (
+        <SkeletonBlock height={84} radius={20} />
+      ) : (
+        <Pressable onPress={go("/settings/account")} accessibilityRole="button" testID="profile-card">
+          {({ pressed }) => (
+            <View style={{ opacity: pressed ? glass.pressOpacity : 1 }}>
+              <ProfileCard
+                name={user?.name ?? null}
+                username={user?.username ?? null}
+                email={user?.email ?? ""}
+              />
+            </View>
+          )}
+        </Pressable>
+      )}
 
       <SettingsSection label={t("settings.groups.account")}>
         <SettingsRow

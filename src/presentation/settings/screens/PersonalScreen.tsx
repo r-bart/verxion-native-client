@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { View, Text, TextInput, ActivityIndicator } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
 import type {
   GenderType,
@@ -14,6 +14,7 @@ import { OptionList, type Option } from "@/presentation/_shared/components/Optio
 import { DateOfBirthField } from "@/presentation/_shared/components/DateOfBirthField";
 import { inputStyle, FieldLabel } from "@/presentation/_shared/components/Field";
 import { SettingsScaffold } from "../components/SettingsScaffold";
+import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { SaveBar } from "../components/SaveBar";
 import { useAccount } from "../hooks/useAccount";
 import { useUpdatePersonal } from "../hooks/useUpdatePersonal";
@@ -35,11 +36,7 @@ export function PersonalScreen() {
   const data = account.data;
 
   if (account.isLoading || !data) {
-    return (
-      <SettingsScaffold title={t("settings.screens.personal.title")}>
-        <ActivityIndicator color={glass.lava} style={{ marginTop: 24 }} />
-      </SettingsScaffold>
-    );
+    return <SettingsSkeleton title={t("settings.screens.personal.title")} variant="form" />;
   }
 
   const seedKey = [

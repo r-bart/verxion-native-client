@@ -15,6 +15,7 @@ import { useRouter, type Href } from "expo-router";
 import { ChevronLeft, ChevronRight, Pill, Sparkles, UtensilsCrossed } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
@@ -151,7 +152,7 @@ export function DietDayPlanScreen() {
     body = (
       <View style={{ gap: 12, paddingTop: 8 }}>
         {Array.from({ length: 4 }).map((_, i) => (
-          <GlassSurface key={i} radius={16} style={{ height: 66 }} />
+          <SkeletonBlock key={i} radius={16} height={66} />
         ))}
       </View>
     );

@@ -12,6 +12,7 @@ import { useRouter, type Href } from "expo-router";
 import { CalendarDays, Star, ChevronRight } from "lucide-react-native";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
 import { glass } from "@/presentation/_shared/design/glass";
@@ -160,9 +161,9 @@ export function DiarioSegment() {
   if (isLoading) {
     body = (
       <View style={{ gap: 12 }}>
-        <GlassSurface radius={20} style={{ height: 96 }} />
+        <SkeletonBlock radius={20} height={96} />
         {Array.from({ length: 4 }).map((_, i) => (
-          <GlassSurface key={i} radius={14} style={{ height: 60 }} />
+          <SkeletonBlock key={i} radius={14} height={60} />
         ))}
       </View>
     );

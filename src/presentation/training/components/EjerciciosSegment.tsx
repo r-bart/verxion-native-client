@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { Search, SlidersHorizontal, ArrowUpDown, X } from "lucide-react-native";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { BottomSheet } from "@/presentation/_shared/components/BottomSheet";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
@@ -90,7 +91,7 @@ export function EjerciciosSegment() {
     return (
       <View style={{ paddingHorizontal: 16, gap: 8, paddingTop: 8 }}>
         {Array.from({ length: 7 }).map((_, i) => (
-          <GlassSurface key={i} radius={16} style={{ height: 62 }} />
+          <SkeletonBlock key={i} radius={16} height={62} />
         ))}
       </View>
     );

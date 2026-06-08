@@ -3,6 +3,7 @@ import { View, Text, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
 import type { PrivacyExportStatus } from "@/domain/settings";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { OnboardingButton } from "@/presentation/_shared/components/OnboardingButton";
 import { inputStyle } from "@/presentation/_shared/components/Field";
 import { formatRelativeTime } from "@/presentation/_shared/lib/relativeTime";
@@ -63,21 +64,25 @@ export function DataScreen() {
           <Text style={{ fontFamily: sans(700), fontSize: 16, color: glass.white }}>
             {t("settings.screens.data.exportTitle")}
           </Text>
-          <View
-            style={{
-              paddingHorizontal: 10,
-              paddingVertical: 3,
-              borderRadius: 9999,
-              backgroundColor: glass.fill,
-              borderWidth: 1,
-              borderColor: glass.stroke,
-            }}
-            testID="export-status"
-          >
-            <Text style={{ fontFamily: sans(600), fontSize: 11, color: TONE_COLOR[STATUS_TONE[status]] }}>
-              {t(STATUS_LABEL[status])}
-            </Text>
-          </View>
+          {latest.isLoading ? (
+            <SkeletonBlock height={22} width={84} radius={9999} />
+          ) : (
+            <View
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 3,
+                borderRadius: 9999,
+                backgroundColor: glass.fill,
+                borderWidth: 1,
+                borderColor: glass.stroke,
+              }}
+              testID="export-status"
+            >
+              <Text style={{ fontFamily: sans(600), fontSize: 11, color: TONE_COLOR[STATUS_TONE[status]] }}>
+                {t(STATUS_LABEL[status])}
+              </Text>
+            </View>
+          )}
         </View>
 
         <Text style={{ fontFamily: mono(400), fontSize: 13, lineHeight: 19, color: glass.ink2 }}>

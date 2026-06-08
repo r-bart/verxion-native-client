@@ -1,6 +1,6 @@
 /** Loading placeholder for "Hoy" — mirrors the screen's rhythm (header, ring + fronts, cards). */
 import { View } from "react-native";
-import { Skeleton } from "@/presentation/_shared/components/ui/skeleton";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 
 export function TodaySkeleton() {
   return (
@@ -8,25 +8,25 @@ export function TodaySkeleton() {
       {/* header */}
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <View style={{ gap: 8 }}>
-          <Skeleton className="h-3 w-24" />
-          <Skeleton className="h-7 w-44" />
+          <SkeletonBlock height={12} width={96} radius={6} />
+          <SkeletonBlock height={28} width={176} radius={8} />
         </View>
-        <Skeleton className="h-[38px] w-[38px] rounded-full" />
+        <SkeletonBlock height={38} width={38} radius={9999} />
       </View>
 
       {/* ring + fronts */}
       <View style={{ flexDirection: "row", alignItems: "center", gap: 18 }}>
-        <Skeleton className="h-32 w-32 rounded-full" />
+        <SkeletonBlock height={128} width={128} radius={9999} />
         <View style={{ flex: 1, gap: 14 }}>
           {[0, 1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-8 w-full" />
+            <SkeletonBlock key={i} height={32} radius={8} />
           ))}
         </View>
       </View>
 
-      <Skeleton className="h-12 w-full rounded-2xl" />
-      <Skeleton className="h-20 w-full rounded-2xl" />
-      <Skeleton className="h-40 w-full rounded-2xl" />
+      <SkeletonBlock height={48} radius={16} />
+      <SkeletonBlock height={80} radius={16} />
+      <SkeletonBlock height={160} radius={16} />
     </View>
   );
 }

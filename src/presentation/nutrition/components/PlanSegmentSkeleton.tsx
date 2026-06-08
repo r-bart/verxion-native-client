@@ -4,21 +4,17 @@
  * blocks. Mirrors Entreno's `RoutineDashboardSkeleton`.
  */
 import { View } from "react-native";
-import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
-
-function Block({ height, radius = 16 }: { height: number; radius?: number }) {
-  return <GlassSurface radius={radius} style={{ height }} />;
-}
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 
 export function PlanSegmentSkeleton() {
   return (
     <View style={{ gap: 14 }}>
-      <Block height={184} radius={24} />
-      <Block height={232} radius={20} />
-      <Block height={72} />
+      <SkeletonBlock height={184} radius={24} />
+      <SkeletonBlock height={232} radius={20} />
+      <SkeletonBlock height={72} />
       <View style={{ gap: 8, marginTop: 4 }}>
         {Array.from({ length: 5 }).map((_, i) => (
-          <Block key={i} height={64} />
+          <SkeletonBlock key={i} height={64} />
         ))}
       </View>
     </View>

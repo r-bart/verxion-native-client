@@ -13,6 +13,7 @@ import { useRouter, type Href } from "expo-router";
 import { Search, X, Carrot, ChefHat, Apple, ChevronRight } from "lucide-react-native";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
 import { GlassRefreshControl } from "@/presentation/_shared/components/GlassRefreshControl";
 import { usePullToRefresh } from "@/presentation/_shared/hooks/usePullToRefresh";
@@ -142,7 +143,7 @@ export function AlimentosSegment() {
     list = (
       <View style={{ gap: 8, marginTop: 4 }}>
         {Array.from({ length: 5 }).map((_, i) => (
-          <GlassSurface key={i} radius={16} style={{ height: 72 }} />
+          <SkeletonBlock key={i} radius={16} height={72} />
         ))}
       </View>
     );

@@ -15,6 +15,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { ChevronLeft, Check, Droplet, UtensilsCrossed } from "lucide-react-native";
 import { ScreenBloom } from "@/presentation/_shared/components/ScreenBloom";
 import { GlassSurface } from "@/presentation/_shared/components/GlassSurface";
+import { SkeletonBlock } from "@/presentation/_shared/components/SkeletonBlock";
 import { IconBubble } from "@/presentation/_shared/components/IconBubble";
 import { Chip } from "@/presentation/_shared/components/Chip";
 import { EmptyState } from "@/presentation/_shared/components/EmptyState";
@@ -111,9 +112,9 @@ export function DiaryDayScreen() {
   if (isLoading) {
     body = (
       <View style={{ gap: 14, paddingTop: 8 }}>
-        <GlassSurface radius={24} style={{ height: 150 }} />
+        <SkeletonBlock radius={24} height={150} />
         {Array.from({ length: 3 }).map((_, i) => (
-          <GlassSurface key={i} radius={16} style={{ height: 56 }} />
+          <SkeletonBlock key={i} radius={16} height={56} />
         ))}
       </View>
     );
