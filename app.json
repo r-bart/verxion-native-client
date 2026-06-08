@@ -11,6 +11,7 @@
       "ios"
     ],
     "ios": {
+      "icon": "./assets/expo.icon",
       "bundleIdentifier": "app.verxion.native",
       "supportsTablet": false,
       "usesAppleSignIn": true,
