@@ -46,16 +46,9 @@ import { ListStepLogsUseCase } from "@/application/activity/ListStepLogsUseCase"
 import { LogWeightUseCase } from "@/application/measurements/LogWeightUseCase";
 
 import { GetProgressOverviewUseCase } from "@/application/progress/GetProgressOverviewUseCase";
-import { GetBodyCompositionUseCase } from "@/application/progress/GetBodyCompositionUseCase";
-import { GetExerciseStatsUseCase } from "@/application/progress/GetExerciseStatsUseCase";
-import { GetExerciseDetailUseCase } from "@/application/progress/GetExerciseDetailUseCase";
-import { GetRecordsUseCase } from "@/application/progress/GetRecordsUseCase";
-import { GetTimelineUseCase } from "@/application/progress/GetTimelineUseCase";
-import { GetWeeksUseCase } from "@/application/progress/GetWeeksUseCase";
-import { GetWeekDetailUseCase } from "@/application/progress/GetWeekDetailUseCase";
-import { GetMonthsUseCase } from "@/application/progress/GetMonthsUseCase";
-import { GetMonthDetailUseCase } from "@/application/progress/GetMonthDetailUseCase";
-import { GetSessionReportUseCase } from "@/application/progress/GetSessionReportUseCase";
+import { GetProgressHistoryUseCase } from "@/application/progress/GetProgressHistoryUseCase";
+import { GetProgressMeasureUseCase } from "@/application/progress/GetProgressMeasureUseCase";
+import { GetProgressExerciseDetailUseCase } from "@/application/progress/GetProgressExerciseDetailUseCase";
 
 import { GetRoutineDashboardUseCase } from "@/application/training/GetRoutineDashboardUseCase";
 import { GetSessionFeedUseCase } from "@/application/training/GetSessionFeedUseCase";
@@ -200,18 +193,11 @@ export const container = {
   // Measurements
   logWeight: new LogWeightUseCase(measurementsRepo),
 
-  // Progress
+  // Progress (curated /api/v1/progress read-models — read-only)
   getProgressOverview: new GetProgressOverviewUseCase(progressRepo),
-  getBodyComposition: new GetBodyCompositionUseCase(progressRepo),
-  getExerciseStats: new GetExerciseStatsUseCase(progressRepo),
-  getExerciseDetail: new GetExerciseDetailUseCase(progressRepo),
-  getRecords: new GetRecordsUseCase(progressRepo),
-  getTimeline: new GetTimelineUseCase(progressRepo),
-  getWeeks: new GetWeeksUseCase(progressRepo),
-  getWeekDetail: new GetWeekDetailUseCase(progressRepo),
-  getMonths: new GetMonthsUseCase(progressRepo),
-  getMonthDetail: new GetMonthDetailUseCase(progressRepo),
-  getSessionReport: new GetSessionReportUseCase(progressRepo),
+  getProgressHistory: new GetProgressHistoryUseCase(progressRepo),
+  getProgressMeasure: new GetProgressMeasureUseCase(progressRepo),
+  getProgressExerciseDetail: new GetProgressExerciseDetailUseCase(progressRepo),
 
   // Training (routines & workout days)
   getRoutineDashboard: new GetRoutineDashboardUseCase(trainingRepo),
