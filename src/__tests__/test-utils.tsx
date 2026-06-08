@@ -50,38 +50,24 @@ export function createMockContainer(overrides: Partial<Record<string, any>> = {}
     },
     getProgressOverview: {
       execute: jest.fn().mockResolvedValue({
-        totalSessions: 0,
-        totalVolume: 0,
-        totalDuration: 0,
-        currentStreak: 0,
-        weekSummary: { sessions: 0, volume: 0, adherence: 0 },
+        period: "mes",
+        metrics: [],
+        strengthPr: null,
+        setup: { routine: "none", dietPlan: "none", program: "none" },
+        dataState: "empty",
       }),
     },
-    getBodyComposition: {
+    getProgressHistory: {
       execute: jest.fn().mockResolvedValue({
-        weightTrend: [],
-        perimeterTrend: {},
-        currentWeight: null,
-        weightChange: null,
+        weeks: 0,
+        series: [],
+        bands: [],
+        prMarks: [],
+        dataState: "empty",
       }),
     },
-    getExerciseStats: {
-      execute: jest.fn().mockResolvedValue({
-        totalVolume: 0,
-        totalSets: 0,
-        uniqueExercises: 0,
-        trainingDays: 0,
-        muscleGroups: [],
-      }),
-    },
-    getExerciseDetail: { execute: jest.fn() },
-    getRecords: { execute: jest.fn().mockResolvedValue([]) },
-    getTimeline: { execute: jest.fn().mockResolvedValue([]) },
-    getWeeks: { execute: jest.fn().mockResolvedValue([]) },
-    getWeekDetail: { execute: jest.fn() },
-    getMonths: { execute: jest.fn().mockResolvedValue([]) },
-    getMonthDetail: { execute: jest.fn() },
-    getSessionReport: { execute: jest.fn() },
+    getProgressMeasure: { execute: jest.fn() },
+    getProgressExerciseDetail: { execute: jest.fn() },
 
     // Onboarding username check (reused by the settings Account editor).
     checkUsername: {

@@ -1,8 +1,15 @@
 {
+  // Env vars live in each profile's `env` block (not the EAS dashboard) so
+  // builds are self-contained and behave identically with `--local` and on
+  // cloud. All vars are EXPO_PUBLIC_* (public client values) — safe to commit
+  // and embed in the bundle. appVersionSource: local keeps the version in
+  // app.json, no remote version management needed.
   "cli": {
-    "version": ">= 15.0.0"
+    "version": ">= 15.0.0",
+    "appVersionSource": "local"
   },
   "build": {
+    // LOCAL (simulator) — custom dev client against the API on your Mac.
     "development": {
       "developmentClient": true,
       "distribution": "internal",
@@ -10,34 +17,54 @@
         "simulator": true
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://localhost:3000"
+        "EXPO_PUBLIC_API_URL": "http://localhost:3000",
+        "EXPO_PUBLIC_POSTHOG_KEY": "phc_vfFyYWc9BvAzd79ZS7kN5APweyHUiYrESXzNUWF6mMbA",
+        "EXPO_PUBLIC_POSTHOG_HOST": "https://eu.i.posthog.com"
       },
       "channel": "development"
     },
+    // LOCAL (physical device) — dev client on a tethered iPhone vs your Mac API.
     "development-device": {
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://localhost:3000"
+        "EXPO_PUBLIC_API_URL": "http://localhost:3000",
+        "EXPO_PUBLIC_POSTHOG_KEY": "phc_vfFyYWc9BvAzd79ZS7kN5APweyHUiYrESXzNUWF6mMbA",
+        "EXPO_PUBLIC_POSTHOG_HOST": "https://eu.i.posthog.com"
       },
       "channel": "development"
     },
+    // STAGING — standalone build for a physical iPhone, pointed at the public
+    // staging API (HTTPS). JS bundle embedded (Release), no Metro needed.
+    // Internal distribution → install via QR. This is the "independent build".
+    //   eas build --profile preview --platform ios --local
     "preview": {
       "distribution": "internal",
+      "autoIncrement": false,
       "ios": {
         "buildConfiguration": "Release"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://staging.your-verxion-api.example.com"
+        "EXPO_PUBLIC_API_URL": "https://api.rbart-dev.com",
+        "EXPO_PUBLIC_POSTHOG_KEY": "phc_vfFyYWc9BvAzd79ZS7kN5APweyHUiYrESXzNUWF6mMbA",
+        "EXPO_PUBLIC_POSTHOG_HOST": "https://eu.i.posthog.com"
       },
       "channel": "preview"
     },
+    // PRODUCTION — store / TestFlight build.
+    // TODO: prod backend not provisioned yet (contracts only have develop +
+    // staging). Points at staging for now — swap EXPO_PUBLIC_API_URL when the
+    // production API exists.
     "production": {
+      "distribution": "store",
+      "autoIncrement": true,
       "ios": {
         "buildConfiguration": "Release"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://your-verxion-api.example.com"
+        "EXPO_PUBLIC_API_URL": "https://api.rbart-dev.com",
+        "EXPO_PUBLIC_POSTHOG_KEY": "phc_vfFyYWc9BvAzd79ZS7kN5APweyHUiYrESXzNUWF6mMbA",
+        "EXPO_PUBLIC_POSTHOG_HOST": "https://eu.i.posthog.com"
       },
       "channel": "production"
     }
@@ -45,9 +72,10 @@
   "submit": {
     "production": {
       "ios": {
+        "appleTeamId": "YJ37Y4TMK5",
+        // TODO: fill when the App Store Connect app exists.
         "appleId": "TBD",
-        "ascAppId": "TBD",
-        "appleTeamId": "TBD"
+        "ascAppId": "TBD"
       }
     }
   }

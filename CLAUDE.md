@@ -89,6 +89,14 @@ Every operation (read or write) flows through a Use Case. No shortcuts.
   GlassSurface is fine as a lone full-width / fixed-size surface. Tests run the
   fallback `View`, so flex-row sizing only shows on device. (See the filter pills
   in `SesionesSegment`/`EjerciciosSegment`.)
+- **Scrubbable / draggable controls inside a ScrollView** (e.g. the Cinta's
+  timeline scrub): use react-native-gesture-handler `Gesture.Pan()` with
+  `.activeOffsetX([-8,8])` + `.failOffsetY([-12,12])` so the pan only claims
+  horizontal drags and a vertical drag falls through to the page scroll. Do NOT
+  use the RN responder system (`onMoveShouldSetResponder => true`) for this — it
+  hijacks vertical scrolling over the control. The root already has
+  `GestureHandlerRootView` (`app/_layout.tsx`). gesture-handler + reanimated's
+  `runOnJS` are mocked in `jest.setup.js`. (See `CintaView`.)
 
 ### Code style
 - TypeScript strict, functional components only.

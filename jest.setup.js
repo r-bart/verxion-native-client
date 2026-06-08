@@ -37,6 +37,31 @@ jest.mock("expo-image-picker", () => ({
 // plain Views (no gestures/reanimated needed in jsdom).
 jest.mock("@gorhom/bottom-sheet", () => require("@gorhom/bottom-sheet/mock"));
 
+// react-native-gesture-handler — jsdom has no gesture system. Render
+// GestureDetector / RootView as pass-through Views and make Gesture.Pan() a
+// chainable no-op so components mount; gestures don't fire under test anyway.
+jest.mock("react-native-gesture-handler", () => {
+  const { View, ScrollView } = require("react-native");
+  const makeGesture = () => {
+    const g = {};
+    const methods = [
+      "activeOffsetX", "failOffsetY", "onStart", "onUpdate", "onBegin",
+      "onEnd", "onFinalize", "enabled", "minDistance", "hitSlop",
+    ];
+    methods.forEach((m) => {
+      g[m] = () => g;
+    });
+    return g;
+  };
+  return {
+    __esModule: true,
+    GestureDetector: ({ children }) => children,
+    GestureHandlerRootView: View,
+    ScrollView,
+    Gesture: { Pan: () => makeGesture() },
+  };
+});
+
 // Liquid Glass (iOS 26+) — unavailable in the test env; render the translucent
 // fallback path. GlassView passes through as a plain View.
 jest.mock("expo-glass-effect", () => {
@@ -117,6 +142,7 @@ jest.mock("react-native-reanimated", () => {
     useAnimatedStyle: jest.fn((fn) => fn()),
     useDerivedValue: jest.fn((fn) => ({ value: fn() })),
     useReducedMotion: jest.fn(() => false),
+    runOnJS: (fn) => fn,
     withSpring: jest.fn((val) => val),
     withTiming: jest.fn((val) => val),
     withRepeat: jest.fn((val) => val),
