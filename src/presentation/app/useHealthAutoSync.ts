@@ -1,23 +1,29 @@
 import { useEffect, useRef } from "react";
 import { AppState } from "react-native";
 import { useDI } from "@/infrastructure/di/DIContext";
+import { useSession } from "@/presentation/auth/hooks/useSession";
 import { deviceToday, flattenSyncResult } from "@/presentation/_shared/lib/healthSync";
 
 /**
  * Drives HealthKit → platform sync on app start and on each return to the
- * foreground. Runs only when Apple Health is available on this build (the stub
- * reports `available:false`, so this is inert in JS/simulator). Failures are
- * isolated inside the use case and reported via telemetry; one in-flight run at
- * a time. The closed-app HKObserver/background-delivery path is a device-tuned
- * follow-up; this foreground trigger covers the common "open the app" case.
+ * foreground. Gated on an authenticated session (the push targets the user's
+ * API — syncing while logged out would just 401 and re-read the full delta every
+ * foreground) AND on Apple Health being available on this build (the stub reports
+ * `available:false`, so this is inert in JS/simulator). Failures are isolated
+ * inside the use case and reported via telemetry; one in-flight run at a time.
+ * The closed-app HKObserver/background-delivery path is a device-tuned follow-up;
+ * this foreground trigger covers the common "open the app" case.
  */
 export function useHealthAutoSync() {
   const sync = useDI((c) => c.syncHealthToPlatform);
   const status = useDI((c) => c.getHealthStatus);
   const { track } = useDI((c) => c.telemetry);
+  const { data: session, isError: sessionError } = useSession();
+  const hasSession = !!session && !sessionError;
   const running = useRef(false);
 
   useEffect(() => {
+    if (!hasSession) return; // never sync without an authenticated session
     const run = async () => {
       if (running.current) return;
       running.current = true;
@@ -35,10 +41,10 @@ export function useHealthAutoSync() {
       }
     };
 
-    void run(); // initial reconcile on mount
+    void run(); // initial reconcile once authenticated
     const subscription = AppState.addEventListener("change", (state) => {
       if (state === "active") void run();
     });
     return () => subscription.remove();
-  }, [sync, status, track]);
+  }, [hasSession, sync, status, track]);
 }
